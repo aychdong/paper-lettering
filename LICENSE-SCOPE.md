@@ -1,6 +1,6 @@
 # License scope / 许可范围
 
-The proposed MIT license is intended for the original editor source, scripts and original text documentation. It does not cover the assets listed below. The final license will be confirmed by the owner before publication.
+The MIT license in LICENSE applies to the original editor source, scripts and original text documentation. It does not cover the assets listed below.
 
 - `resources/fonts/files/`：第三方字体，适用对应 `resources/fonts/licenses/` 中的原 SIL OFL；来源与哈希在 `manifest.json`。
 - `examples/`：两张生成示例及对应预排版工程数据，只按个人非商业演示与学习范围提供。

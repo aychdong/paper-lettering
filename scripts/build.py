@@ -18,7 +18,7 @@ def main():
     shutil.copytree(ROOT/'tools/lettering/ai',dest/'ai',dirs_exist_ok=True,ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
     shutil.copytree(ROOT/'resources/fonts/licenses',dest/'font-licenses',dirs_exist_ok=True)
     shutil.copytree(ROOT/'licenses',dest/'licenses',dirs_exist_ok=True)
-    license_name='LICENSE' if (ROOT/'LICENSE').is_file() else 'LICENSE-MIT.proposed'
+    license_name='LICENSE'
     for name in ['README.md','AI-CONNECTION.md','AI-API.md','PRIVACY.md','THIRD_PARTY_NOTICES.md','LICENSE-SCOPE.md','CONTRIBUTING.md','CHANGELOG.md','使用指南.md',license_name]:
         shutil.copyfile(ROOT/name,dest/name)
     if license_name=='LICENSE':

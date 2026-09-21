@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audit source assets and accidental private data before a proposed public release."""
+"""Audit source assets and accidental private data before a public release."""
 import hashlib,json,re,struct
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
