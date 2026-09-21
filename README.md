@@ -2,9 +2,9 @@
 
 **让照片上的文字，可以自由修改。**
 
-An offline typography editor for photos and paper collages, with editable Chinese and English text, print textures, and optional AI layout through your own ChatGPT/Codex account.
+An offline typography editor for photos and paper collages, with editable Chinese and English text, print textures, and optional AI copywriting and layout through your own ChatGPT/Codex account.
 
-[下载 v0.6.1 试用版](https://github.com/aychdong/paper-lettering/releases/tag/v0.6.1) · [使用指南](使用指南.md) · [连接自己的 ChatGPT](AI-CONNECTION.md) · [许可范围](THIRD_PARTY_NOTICES.md)
+[下载 v0.7.0 试用版](https://github.com/aychdong/paper-lettering/releases/tag/v0.7.0) · [使用指南](使用指南.md) · [连接自己的 ChatGPT](AI-CONNECTION.md) · [许可范围](THIRD_PARTY_NOTICES.md)
 
 ![纸上文字编辑器：两张示例、可直接拖动的文字与四个编辑标签页](docs/workspace.png)
 
@@ -12,11 +12,19 @@ An offline typography editor for photos and paper collages, with editable Chines
 
 ## 三步开始
 
-1. 从 [Releases](https://github.com/aychdong/paper-lettering/releases/tag/v0.6.1) 下载 **Paper-Lettering-0.6.1.zip**，解压完整文件夹。
+1. 从 [Releases](https://github.com/aychdong/paper-lettering/releases/tag/v0.7.0) 下载 **Paper-Lettering-0.7.0.zip**，解压完整文件夹。
 2. 先打开 **开始使用.html**。点击其中的「打开离线编辑器」，或用近期 Chrome / Edge 打开 **纸上文字.html**。首次进入已有两张排好文字的示例。
 3. 顶部点 **打开图片** 导入自己的作品；完成后用 **保存可编辑工程** 留存参数，或 **导出成品 PNG**。
 
 保存的 `.paper.json` 包含底图、独立文字层、参数和用到的字体；PNG 是合并后的成品。浏览器自动草稿只是方便继续编辑，请保存工程作为备份。
+
+## AI 一起写文案和排版
+
+在「AI 创作」页选择 **文案＋排版**，写下想表达的意境，再选文字位置。AI 会一起决定内容、分行、横竖排、字体、字号、行距、颜色和纸面质感。顶部 **一键写文案并排版** 应用首套；**生成两套方案供我选** 先展示完整文案和画面预览。
+
+例如：「写一句原创短诗，冬日暖阳中和爱的人并肩望远，含蓄简洁。」位置选「画面右侧」。双人示例已预置一次真实生成的两套短诗，可离线切换。
+
+已有定稿请选择 **保留原文**：只重新分行、排版，逐字保留文字和标点。结果仍是可编辑层，⌘/Ctrl Z 可以撤销。每张图片分别保存创作要求；生成期间改字、改要求或切换图片，不会被迟到的结果覆盖。隐藏的备用层继续保留。
 
 ## 你可以做什么
 
@@ -27,9 +35,9 @@ An offline typography editor for photos and paper collages, with editable Chines
 | 颜色 | 图片取色、色值输入、本地色彩候选、可选 AI 看图推荐 |
 | 纸上质感 | 油墨、褪色、铅笔、印章等 9 种视觉效果 |
 | 整体预览 | 按 P 隐藏辅助框，查看完整画面 |
-| AI 排版 | 一键初排、两套方案、配色理由、工作阶段与计时；结果仍可编辑和撤销 |
+| AI 创作 | 一键初排、两套方案、配色理由、工作阶段与计时；结果仍可编辑和撤销 |
 
-右侧只有 **文字 / 颜色 / 质感 / AI 排版** 四个标签页。进阶参数按需展开，图层区保持可见。
+右侧只有 **文字 / 颜色 / 质感 / AI 创作** 四个标签页。进阶参数按需展开，图层区保持可见。
 
 ## 两张开箱即用的示例
 
@@ -42,7 +50,7 @@ An offline typography editor for photos and paper collages, with editable Chines
 
 从浏览器下载并解压后，双击 `.command` 可能出现“Apple 无法验证是否包含恶意软件”。当前 AI 启动脚本未签名、公证，之前的本地运行检查没有覆盖下载隔离；这条提示不表示已经进入 ChatGPT 登录。
 
-已确认文件来自本仓库且未被改动时，按 [Apple 官方说明](https://support.apple.com/zh-cn/102445)：先点「完成」，打开 **系统设置 → 隐私与安全性 → 仍要打开**，核对文件名后确认。「连接自己的ChatGPT.command」与「启用AI助手.command」可能分别需要一次确认。0.6.1 补充了指引，**没有消除 Gatekeeper 提示，也未获得 Apple 公证**。详见 [Mac 首次使用](AI-CONNECTION.md#mac-首次使用)。
+已确认文件来自本仓库且未被改动时，按 [Apple 官方说明](https://support.apple.com/zh-cn/102445)：先点「完成」，打开 **系统设置 → 隐私与安全性 → 仍要打开**，核对文件名后确认。「连接自己的ChatGPT.command」与「启用AI助手.command」可能分别需要一次确认。0.7.0 补充了指引，**没有消除 Gatekeeper 提示，也未获得 Apple 公证**。详见 [Mac 首次使用](AI-CONNECTION.md#mac-首次使用)。
 
 ## 可选：用自己的 ChatGPT 连接 AI
 
@@ -70,7 +78,7 @@ An offline typography editor for photos and paper collages, with editable Chines
 | Windows / Linux | 提供 HTML 和 Python 入口，尚未实机验证 |
 | 新账号首次登录 | 使用官方 Codex 流程；调用逻辑有测试，未进行新账号端到端登录测试 |
 
-这是 **0.6.1 试用版**，AI 启动脚本尚未经过 Developer ID 签名和 Apple 公证。离线编辑不需要 Python；AI 连接需要 Python、Codex、网络及账号可用额度。安装组件请使用各自官方渠道。
+这是 **0.7.0 试用版**，AI 启动脚本尚未经过 Developer ID 签名和 Apple 公证。离线编辑不需要 Python；AI 连接需要 Python、Codex、网络及账号可用额度。安装组件请使用各自官方渠道。
 
 已有图片中的像素文字不能自动变回真实字体层；本工具支持在合适的空白纸面上做可撤销覆盖。以后生成作品时，推荐先生成无字底图，再用独立文字层排版。文字质感是视觉近似；系统字体跨设备可能替换，内置/导入且使用的字体会随工程保存。
 

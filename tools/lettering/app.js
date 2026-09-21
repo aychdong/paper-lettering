@@ -21,7 +21,7 @@ async function openDB(){return new Promise((resolve,reject)=>{const r=indexedDB.
 async function getDraft(key=draftKey){return new Promise((resolve,reject)=>{const q=db.transaction('drafts').objectStore('drafts').get(key);q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error);});}
 async function saveDraft(){if(!db){$('saveStatus').textContent='请用「保存工程」留存';return;}const seq=++saveSequence;try{$('saveStatus').textContent='正在保存到浏览器…';await new Promise((resolve,reject)=>{const t=db.transaction('drafts','readwrite');t.objectStore('drafts').put(portableProject(),draftKey);t.oncomplete=resolve;t.onerror=()=>reject(t.error);t.onabort=()=>reject(t.error);});if(seq===saveSequence)$('saveStatus').textContent='已在本机自动保存';}catch(e){$('saveStatus').textContent='自动保存不可用，请保存工程';console.warn(e);}}
 async function loadProject(data){F.importRecords(data.fonts||[]);refreshFontOptions();const next=L.normalizeProject(data),nextImages=new Map();for(const d of next.documents){const preset=starter.documents.find(x=>x.image?.sha256&&x.image.sha256===d.image.sha256);if(!d.aiPalette&&preset?.aiPalette)d.aiPalette=L.copy(preset.aiPalette);if(!d.designSuggestions?.length&&preset?.designSuggestions)d.designSuggestions=L.copy(preset.designSuggestions);const im=await L.loadImage(d.image.dataURL);if(im.naturalWidth!==d.image.width||im.naturalHeight!==d.image.height)throw new Error('底图尺寸与工程记录不一致。');nextImages.set(d.id,im);}await Promise.all([...new Set(next.documents.flatMap(d=>d.layers.map(l=>l.font)))].map(id=>F.ensure(id)));project=next;images.clear();for(const [id,im] of nextImages)images.set(id,im);histories.clear();selectDoc(next.selectedDocumentId);}
-function selectDoc(id){project.selectedDocumentId=project.documents.find(x=>x.id===id)?.id||project.documents[0]?.id||null;activeLayerId=doc()?.layers[0]?.id||null;activeRepairId=doc()?.repairs[0]?.id||null;setMode('select');sync(true);schedule();refreshAssistance();renderDesigns();}
+function selectDoc(id){project.selectedDocumentId=project.documents.find(x=>x.id===id)?.id||project.documents[0]?.id||null;activeLayerId=doc()?.layers[0]?.id||null;activeRepairId=doc()?.repairs[0]?.id||null;setMode('select');sync(true);schedule();refreshAssistance();renderDesigns();syncAISettings();}
 function setMode(next){if(next!=='select'&&preview)setPreview(false);mode=next;$('overlay').dataset.mode=mode;$('pickColor').classList.toggle('active',mode==='pickColor');$('drawRepair').classList.toggle('active',mode==='repair');$('pickPaper').classList.toggle('active',mode==='paper');const tips={select:'拖文字移动 · 拖四角缩放 · 拖圆柄旋转 · Shift 吸附 15° · P 预览',pickColor:'点击画面取文字颜色 · Esc 取消',repair:'拖出覆盖旧字的矩形 · 随后点击「选取纸纹」',paper:'点击附近的空白纸面，作为覆盖区的纸纹来源'};$('hint').textContent=preview?'正在预览成图 · 按 P 或点「返回编辑」继续':tips[mode];schedule();}
 function element(tag,text,cls){const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(cls)el.className=cls;return el;}
 function sync(force=false){const d=doc(),l=layer();$('documents').replaceChildren();for(const item of project.documents){const b=element('button',undefined,'doc-card'+(item.id===d?.id?' active':''));b.dataset.doc=item.id;b.setAttribute('aria-label','选择 '+item.title);const img=element('img');img.src=item.image.dataURL;img.alt=item.title;b.append(img,element('span',item.title));b.onclick=()=>{selectDoc(item.id);changed();};$('documents').append(b);}$('docCount').textContent=project.documents.length+' 张';$('empty').style.display=d?'none':'block';$('canvasWrap').style.display=d?'block':'none';$('artTitle').textContent=d?.title||'纸上文字';$('dimensions').textContent=d?`${d.image.width} × ${d.image.height}`:'';
@@ -126,7 +126,12 @@ function startActivity(){activityStarted=Date.now();$('aiActivity').hidden=false
 function endActivity(){clearInterval(activityTimer);$('aiActivity').hidden=true;$('aiElapsed').textContent='';}
 function connectionState(state,label,detail){$('connectionStatus').dataset.state=state;$('connectionLabel').textContent=label;$('aiConnection').textContent=detail;}
 
-const layoutFingerprint=d=>JSON.stringify({layers:d.layers,repairs:d.repairs});
+const layoutFingerprint=d=>JSON.stringify({layers:d.layers,repairs:d.repairs,aiSettings:d.aiSettings});
+function creativeSettings(d=doc()){return {copyMode:d?.aiSettings?.copyMode==='preserve'?'preserve':'compose',placement:d?.aiSettings?.placement||'auto',preference:d?.aiSettings?.preference||''};}
+function syncAISettings(){const s=creativeSettings();for(const radio of document.querySelectorAll('[name=aiCopyMode]'))radio.checked=radio.value===s.copyMode;$('aiPlacement').value=s.placement;$('aiPreference').value=s.preference;$('aiModeNote').textContent=s.copyMode==='compose'?'会重新创作文案，并决定分行、字号、字体与配色。':'保留每个可见文字层的原文与标点，只调整分行和样式。';aiButtons();}
+function saveAISettings(){if(!doc())return;doc().aiSettings={copyMode:document.querySelector('[name=aiCopyMode]:checked').value,placement:$('aiPlacement').value,preference:$('aiPreference').value};changed();syncAISettings();}
+for(const radio of document.querySelectorAll('[name=aiCopyMode]'))radio.onchange=saveAISettings;
+$('aiPlacement').onchange=saveAISettings;$('aiPreference').oninput=()=>{if(!doc())return;doc().aiSettings={...creativeSettings(),preference:$('aiPreference').value};changed();};
 function readBridge(){bridge=null;try{const key='paper-lettering:connection:'+location.pathname,h=new URLSearchParams(location.hash.slice(1));let url=h.get('bridge'),token=h.get('token');if(!url){const stored=JSON.parse(sessionStorage.getItem(key)||'null');url=stored?.url;token=stored?.token;}if(/^http:\/\/127\.0\.0\.1:\d{1,5}$/.test(url||'')&&/^[\w-]{30,100}$/.test(token||'')){bridge={url,token};try{sessionStorage.setItem(key,JSON.stringify(bridge));}catch(e){}}}catch(e){}}
 readBridge();
 window.addEventListener('hashchange',()=>{readBridge();connectAI();});
@@ -151,7 +156,7 @@ $('hideLayer').onclick=()=>{if(!layer()||layer().locked)return;checkpoint('hide'
 for(const b of document.querySelectorAll('[data-canvas-align]'))b.onclick=()=>{const l=layer(),d=doc();if(!l||l.locked)return;checkpoint('canvas-align',true);const m=L.metrics(l),points=[[0,0],[m.width,0],[m.width,m.height],[0,m.height]].map(([x,y])=>T.world(l,x,y)),xs=points.map(p=>p.x),ys=points.map(p=>p.y),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys),kind=b.dataset.canvasAlign,w=d.image.width,h=d.image.height;if(kind==='left')l.x+=w*.03-minX;if(kind==='center')l.x+=w/2-(minX+maxX)/2;if(kind==='right')l.x+=w*.97-maxX;if(kind==='top')l.y+=h*.03-minY;if(kind==='middle')l.y+=h/2-(minY+maxY)/2;if(kind==='bottom')l.y+=h*.97-maxY;changed();sync(true);};
 function aiButtons(){
  for(const id of ['livePalette','liveDesign'])$(id).disabled=!aiConnected||aiBusy||!doc();$('connectAI').disabled=aiBusy||connectionChecking;$('connectionStatus').disabled=aiBusy||connectionChecking;$('connectAI').textContent=connectionChecking?'正在连接…':'重新连接';
- $('quickLayout').disabled=aiBusy||connectionChecking||!ready;$('quickLayout').setAttribute('aria-busy',String(aiBusy));$('quickLayoutLabel').textContent=aiBusy?'AI 正在工作…':connectionChecking?'正在连接…':!doc()?'导入图片开始':'一键 AI 排版';
+ $('quickLayout').disabled=aiBusy||connectionChecking||!ready;$('quickLayout').setAttribute('aria-busy',String(aiBusy));$('quickLayoutLabel').textContent=aiBusy?'AI 正在工作…':connectionChecking?'正在连接…':!doc()?'导入图片开始':creativeSettings().copyMode==='compose'?'一键写文案并排版':'一键排版 · 保留原文';
  $('showDesigns').disabled=!doc();
 }
 async function api(path,body){if(!bridge)throw new Error('请从「纸上文字.app」或 AI 启动器打开编辑器。');const response=await fetch(bridge.url+path,{method:body?'POST':'GET',headers:{Authorization:'Bearer '+bridge.token,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(30000)});const data=await response.json();if(!response.ok)throw new Error(data.error||'本机 AI 连接失败');return data;}
@@ -163,7 +168,7 @@ async function connectAI(){
   try{
    if(!bridge){connectionState('offline','AI 未启动 · 点击查看','这是离线编辑页，尚未收到启动器的连接信息。双击「纸上文字.app」或分享包的「启用AI助手」，使用新打开的页面。若已启动仍有此提示，请使用启动器新打开的标签页。');return;}
    const current=bridge,s=await api('/status');if(current!==bridge)return;
-   aiConnected=!!s.loggedIn;connectionState(aiConnected?'connected':'error',aiConnected?'AI 已连接 · ChatGPT':'AI 需要登录 · 点击查看',s.message+(aiConnected?'。可直接点击「一键 AI 排版」。':'。完成后点「重新连接」。'));
+   aiConnected=!!s.loggedIn;connectionState(aiConnected?'connected':'error',aiConnected?'AI 已连接 · ChatGPT':'AI 需要登录 · 点击查看',s.message+(aiConnected?'。可直接用一键按钮创作文案与排版。':'。完成后点「重新连接」。'));
   }catch(e){connectionState('error','AI 连接失败 · 点击重试','本机 AI 服务暂时不可达。点击「重新连接」重试；如果启动器已关闭，请再双击「纸上文字.app」。浏览器询问本地网络权限时，请允许本机连接。');}
   finally{connectionChecking=false;aiButtons();}
  })();try{await connectionPromise;}finally{connectionPromise=null;}
@@ -173,19 +178,19 @@ $('connectionStatus').onclick=async()=>{setInspectorTab('ai');await connectAI();
 // Keep an open editor connected; closing all its tabs allows the bridge to expire.
 setInterval(async()=>{if(!bridge||connectionChecking||aiBusy)return;try{await api('/ping');if(!aiConnected)await connectAI();}catch(e){aiConnected=false;connectionState('error','AI 已断开 · 点击重试','本机服务已断开。请重新打开「纸上文字.app」，使用新打开的页面。');aiButtons();}},60000);
 
-function adviceRequest(d,kind){const base=L.render(d,images.get(d.id),'base'),scale=Math.min(1,1200/Math.max(base.width,base.height)),small=L.canvas(Math.floor(base.width*scale),Math.floor(base.height*scale));small.getContext('2d').drawImage(base,0,0,small.width,small.height);return {mode:kind,documentId:d.id,imageSHA256:d.image.sha256||d.image.sourceFileSHA256||null,title:d.title,width:d.image.width,height:d.image.height,preview:{dataURL:small.toDataURL('image/png'),width:small.width,height:small.height},layers:d.layers.map(l=>({text:l.text,font:l.font,size:l.size,x:l.x,y:l.y,color:l.color})),localSuggestions:colorCache?.suggestions||[],preference:$('aiPreference').value};}
+function adviceRequest(d,kind){const base=L.render(d,images.get(d.id),'base'),scale=Math.min(1,1200/Math.max(base.width,base.height)),small=L.canvas(Math.floor(base.width*scale),Math.floor(base.height*scale));small.getContext('2d').drawImage(base,0,0,small.width,small.height);return {mode:kind,...creativeSettings(d),documentId:d.id,imageSHA256:d.image.sha256||d.image.sourceFileSHA256||null,title:d.title,width:d.image.width,height:d.image.height,preview:{dataURL:small.toDataURL('image/png'),width:small.width,height:small.height},layers:d.layers.filter(l=>!l.hidden).map(l=>({text:l.text,font:l.font,size:l.size,x:l.x,y:l.y,color:l.color,direction:l.direction,lineHeight:l.lineHeight})),localSuggestions:colorCache?.suggestions||[],preference:creativeSettings(d).preference};}
 async function applyDesign(proposal,target,expected=layoutFingerprint(target)){
  const seq=++applySequence;
  await Promise.all(proposal.layers.map(l=>F.ensure(l.font)));
  if(seq!==applySequence||target!==doc()||!project.documents.includes(target))return false;
  if(layoutFingerprint(target)!==expected||target.layers.some(l=>l.locked))return false;
- const layers=D.layers(proposal,target);checkpoint('ai-design',true);target.layers=layers;
+ const layers=D.layers(proposal,target);if(target.layers.filter(l=>l.hidden).length+layers.length>30)throw new Error('文字层合计超过 30 层，请先整理隐藏的备用层。');checkpoint('ai-design',true);target.layers=[...target.layers.filter(l=>l.hidden),...layers];
  target.designDecision={name:proposal.name,reason:proposal.reason,provenance:proposal.provenance||null,appliedAt:new Date().toISOString()};activeLayerId=layers[0].id;changed();sync(true);return true;
 }
 async function askAI(kind,{applyFirst=false}={}){
  if(!doc()||aiBusy)return;
  const target=doc(),payload=adviceRequest(target,kind),original=layoutFingerprint(target);
- aiBusy=true;aiButtons();startActivity();progress(applyFirst?'AI 正在选择字体、配色和位置…':'正在分析画面与文字，请稍候…');
+ aiBusy=true;aiButtons();startActivity();progress(kind==='design'&&payload.copyMode==='compose'?'AI 正在看图，创作文案并设计分行与版式…':'正在分析画面与文字，请稍候…');
  try{
   const {job}=await api('/advice',payload);let response;const until=Date.now()+300000;
   while(Date.now()<until){await new Promise(r=>setTimeout(r,1800));const s=await api('/jobs/'+encodeURIComponent(job));if(s.phase)progress(s.phase+'…');if(s.state==='failed')throw new Error(s.error);if(s.state==='complete'){response=s.result;break;}}
@@ -194,8 +199,8 @@ async function askAI(kind,{applyFirst=false}={}){
   const palette=C.validatePalette({...response,type:'paper-lettering-palette'},target);
   if(kind==='design'){
    if(!Array.isArray(response.designs)||!response.designs.length)throw new Error('AI 未返回可用排版，当前文字保持不变。');
-   for(const design of response.designs)D.layers(design,target);
-   target.designSuggestions=response.designs.map(design=>({...design,provenance:{model:response.model,createdAt:response.createdAt,previewSHA256:response.previewSHA256,imageSHA256:response.imageSHA256}}));
+   for(const design of response.designs){D.layers(design,target);if(payload.copyMode==='preserve'){const words=ls=>JSON.stringify(ls.filter(l=>l.text.trim()).map(l=>l.text.replace(/\s+/g,'')).sort());if(words(design.layers)!==words(payload.layers))throw new Error('AI 改动了原文，方案未应用。请重试或切换「文案＋排版」。');}}
+   target.designSuggestions=response.designs.map(design=>({...design,provenance:{model:response.model,createdAt:response.createdAt,previewSHA256:response.previewSHA256,imageSHA256:response.imageSHA256,copyMode:payload.copyMode,placement:payload.placement,preference:payload.preference}}));
   }
   target.aiPalette=palette;changed();renderDesigns();
   if(applyFirst){
@@ -213,7 +218,7 @@ $('quickLayout').onclick=async()=>{
 };
 async function renderDesigns(){
  const seq=++designSequence,d=doc(),box=$('designSuggestions');box.replaceChildren();aiButtons();if(!d)return;
- for(const proposal of d.designSuggestions||[]){try{const layers=D.layers(proposal,d);await Promise.all(layers.map(l=>F.ensure(l.font)));if(seq!==designSequence||d!==doc())return;const fitted=D.layers(proposal,d),card=element('div',undefined,'design-card');card.append(element('strong',proposal.name||'排版方案'),element('p',proposal.reason||''));const thumb=L.canvas(240,240*d.image.height/d.image.width),art=L.render({...d,layers:fitted},images.get(d.id));thumb.getContext('2d').drawImage(art,0,0,thumb.width,thumb.height);card.append(thumb);const button=element('button','应用此方案');button.onclick=async()=>{try{if(await applyDesign(proposal,d)){toast('方案已应用，文字层可继续编辑；可用撤销恢复。');progress('方案已应用。切换文字、颜色或质感页继续微调。');}else toast('画面或文字已变动，或文字层已锁定，请检查后再应用。');}catch(e){safeError(e);}};card.append(button);box.append(card);}catch(e){const note=element('p','此方案无法载入：'+e.message,'micro-note');box.append(note);}}
+ for(const proposal of d.designSuggestions||[]){try{const layers=D.layers(proposal,d);await Promise.all(layers.map(l=>F.ensure(l.font)));if(seq!==designSequence||d!==doc())return;const fitted=D.layers(proposal,d),card=element('div',undefined,'design-card');card.append(element('strong',proposal.name||'排版方案'),element('p',proposal.reason||''));const thumb=L.canvas(240,240*d.image.height/d.image.width),art=L.render({...d,layers:fitted},images.get(d.id));thumb.getContext('2d').drawImage(art,0,0,thumb.width,thumb.height);card.append(element('p',proposal.layers.map(l=>l.text).join('\n\n'),'design-copy'));card.append(element('p',proposal.layers.map(l=>`${l.direction==='vertical'?'竖排':'横排'} · ${l.text.split('\n').length}${l.direction==='vertical'?' 列':' 行'} · ${Math.round(l.size*d.image.width)} px`).join(' / '),'design-spec'));card.append(thumb);const button=element('button','应用此方案');button.onclick=async()=>{try{if(await applyDesign(proposal,d)){toast('方案已应用，文字层可继续编辑；可用撤销恢复。');progress('方案已应用。切换文字、颜色或质感页继续微调。');}else toast('画面或文字已变动，或文字层已锁定，请检查后再应用。');}catch(e){safeError(e);}};card.append(button);box.append(card);}catch(e){const note=element('p','此方案无法载入：'+e.message,'micro-note');box.append(note);}}
 }
 
 $('loadExamples').onclick=async()=>{

@@ -1,9 +1,11 @@
 {
   "version": 3,
-  "id": "paper-lettering-portable-v6",
-  "draftAliases": [],
+  "id": "paper-lettering-portable-v7",
+  "draftAliases": [
+    "paper-lettering-portable-v6"
+  ],
   "title": "纸上文字 · 两张示例",
-  "selectedDocumentId": "p0002",
+  "selectedDocumentId": "p0003",
   "documents": [
     {
       "id": "p0002",
@@ -171,33 +173,33 @@
       "title": "示例 · 并肩看远方",
       "layers": [
         {
-          "id": "606643de-cb5b-4792-84a2-76fafb000b25",
-          "text": "并肩看远方",
-          "x": 330.14000000000004,
-          "y": 307.61,
-          "font": "gf-notoserifsc",
-          "weight": 600,
+          "id": "6bd77e6b-7b0a-4af9-af25-5d842ba8125a",
+          "text": "冬阳暖，风微凉\n与你并肩，远方不必抵达",
+          "x": 699.12,
+          "y": 153.805,
+          "font": "gf-longcang",
+          "weight": 400,
           "thickness": 0,
           "slant": 0,
           "outlineWidth": 0,
           "outlineColor": "#f3ead6",
           "hidden": false,
           "locked": false,
-          "size": 79.622,
-          "tracking": 6.36976,
-          "lineHeight": 1.4,
+          "size": 34.955999999999996,
+          "tracking": 2.0973599999999997,
+          "lineHeight": 1.65,
           "align": "left",
-          "direction": "horizontal",
+          "direction": "vertical",
           "rotation": 0,
-          "color": "#5A5041",
-          "opacity": 0.95,
-          "grain": 0.18,
-          "multiply": false,
-          "effect": "letterpress",
-          "pressure": 0.28,
-          "edgeWear": 0.1,
+          "color": "#665544",
+          "opacity": 0.98,
+          "grain": 0.38,
+          "multiply": true,
+          "effect": "ink",
+          "pressure": 0.62,
+          "edgeWear": 0.18,
           "stampBorder": false,
-          "effectStrength": 0.55,
+          "effectStrength": 0.5,
           "secondaryColor": "#ba694b",
           "seed": 71429
         }
@@ -225,96 +227,109 @@
       "aiPalette": {
         "type": "paper-lettering-palette",
         "version": 1,
-        "model": "gpt-6-astra",
-        "createdAt": "2026-09-21T03:08:26.550560+00:00",
+        "copyMode": "compose",
+        "placement": "right",
         "imageSHA256": "6fed0b52754787e98c751a128cc5ea5284de8d53c09688594d64c52a5917c2f1",
         "previewSHA256": "d390d00ccb7e92d379d547031b30a148cf0908b30802cfc871d05ed884a9ad06",
+        "createdAt": "2026-09-21T05:03:19.274768+00:00",
+        "model": "gpt-6-astra",
         "colors": [
           {
-            "hex": "#5A5041",
-            "name": "暖灰褐",
-            "reason": "呼应纸面、铅笔线与照片中的石材色，温和沉稳，在浅色留白上保持清晰。"
+            "hex": "#665544",
+            "name": "暖墨褐",
+            "reason": "呼应冬阳与照片中的木石暖色，在米白纸面上温润清晰。"
           },
           {
-            "hex": "#3F5A67",
-            "name": "深灰蓝",
-            "reason": "呼应照片中的蓝天，与暖米色纸面形成克制的冷暖对照；降低明度，避免文字显得轻飘。"
+            "hex": "#536469",
+            "name": "清凉青灰",
+            "reason": "呼应天空的冷意，与暖纸形成柔和对照，保持可读性。"
           },
           {
-            "hex": "#5A5041",
-            "name": "暖灰褐",
-            "reason": "呼应纸面、铅笔线与照片中的石材色，温和沉稳，在浅色留白上保持清晰。"
+            "hex": "#665544",
+            "name": "暖墨褐",
+            "reason": "适合自然手写质感。"
           }
         ]
       },
       "designSuggestions": [
         {
-          "name": "横排·纸上留白",
-          "reason": "拟用600字重的思源宋体，兼顾标题分量与笔画通透感。暖灰褐搭配压印质感，贴合纸张肌理；横排置于上方中央留白，适当放宽字距，避开两侧线条、建筑与下方人物。",
+          "name": "远方不必抵达",
+          "reason": "以冬阳与微凉的风写体感，以“不必抵达”写并肩相伴的惬意。右下有窗框与人物，拟用相邻的右上纸面留白，避开撕纸边与黑色竖线。两列从右向左读，长列自然下垂。",
           "layers": [
             {
-              "text": "并肩看远方",
-              "font": "gf-notoserifsc",
-              "size": 0.082,
-              "weight": 600,
-              "thickness": 0,
-              "slant": 0,
-              "x": 0.34,
-              "y": 0.19,
-              "rotation": 0,
-              "direction": "horizontal",
-              "align": "left",
-              "tracking": 0.08,
-              "color": "#5A5041",
-              "effect": "letterpress"
-            }
-          ],
-          "provenance": {
-            "model": "gpt-6-astra",
-            "createdAt": "2026-09-21T03:08:26.550560+00:00",
-            "imageSHA256": "6fed0b52754787e98c751a128cc5ea5284de8d53c09688594d64c52a5917c2f1",
-            "previewSHA256": "d390d00ccb7e92d379d547031b30a148cf0908b30802cfc871d05ed884a9ad06"
-          }
-        },
-        {
-          "name": "竖排·远望题字",
-          "reason": "拟用马善政毛笔字体，以自然笔势和墨迹质感呈现题字感，不额外增粗，保留笔画间隙。深灰蓝呼应天空；单列竖排放在右上方空白纸面，末字停在撕纸边界上方，与右侧线条保持距离，左侧留出舒展空间。",
-          "layers": [
-            {
-              "text": "并肩看远方",
-              "font": "gf-mashanzheng",
-              "size": 0.074,
+              "text": "冬阳暖，风微凉\n与你并肩，远方不必抵达",
+              "font": "gf-longcang",
+              "size": 0.036,
               "weight": 400,
               "thickness": 0,
               "slant": 0,
-              "x": 0.73,
-              "y": 0.08,
+              "x": 0.72,
+              "y": 0.095,
               "rotation": 0,
               "direction": "vertical",
               "align": "left",
-              "tracking": 0.08,
-              "color": "#3F5A67",
+              "tracking": 0.06,
+              "lineHeight": 1.65,
+              "color": "#665544",
               "effect": "ink"
             }
           ],
           "provenance": {
             "model": "gpt-6-astra",
-            "createdAt": "2026-09-21T03:08:26.550560+00:00",
+            "createdAt": "2026-09-21T05:03:19.274768+00:00",
             "imageSHA256": "6fed0b52754787e98c751a128cc5ea5284de8d53c09688594d64c52a5917c2f1",
-            "previewSHA256": "d390d00ccb7e92d379d547031b30a148cf0908b30802cfc871d05ed884a9ad06"
+            "previewSHA256": "d390d00ccb7e92d379d547031b30a148cf0908b30802cfc871d05ed884a9ad06",
+            "copyMode": "compose",
+            "placement": "right",
+            "preference": "写一句原创短诗：冬日阳光好的日子，空气中流露着清凉，和爱的人并肩望向远方，很惬意。文字放右边的空白纸面，像自然写在纸上，含蓄、简洁，不要署名。"
+          }
+        },
+        {
+          "name": "共同的目光",
+          "reason": "凉风与暖光相对，用“我们的目光”含蓄表达相伴远望。拟在右上空白纸面横排两行，先读冷暖，再读远方；下方保留充足留白，让视线继续落向照片，避开建筑、人物与撕纸边。",
+          "layers": [
+            {
+              "text": "风是凉的，光是暖的\n远方，在我们的目光里",
+              "font": "gf-mashanzheng",
+              "size": 0.032,
+              "weight": 400,
+              "thickness": 0,
+              "slant": 0,
+              "x": 0.51,
+              "y": 0.17,
+              "rotation": 0,
+              "direction": "horizontal",
+              "align": "left",
+              "tracking": 0.04,
+              "lineHeight": 1.9,
+              "color": "#536469",
+              "effect": "ink"
+            }
+          ],
+          "provenance": {
+            "model": "gpt-6-astra",
+            "createdAt": "2026-09-21T05:03:19.274768+00:00",
+            "imageSHA256": "6fed0b52754787e98c751a128cc5ea5284de8d53c09688594d64c52a5917c2f1",
+            "previewSHA256": "d390d00ccb7e92d379d547031b30a148cf0908b30802cfc871d05ed884a9ad06",
+            "copyMode": "compose",
+            "placement": "right",
+            "preference": "写一句原创短诗：冬日阳光好的日子，空气中流露着清凉，和爱的人并肩望向远方，很惬意。文字放右边的空白纸面，像自然写在纸上，含蓄、简洁，不要署名。"
           }
         }
       ],
       "designDecision": {
-        "name": "横排·纸上留白",
-        "reason": "拟用600字重的思源宋体，兼顾标题分量与笔画通透感。暖灰褐搭配压印质感，贴合纸张肌理；横排置于上方中央留白，适当放宽字距，避开两侧线条、建筑与下方人物。",
+        "name": "远方不必抵达",
+        "reason": "以冬阳与微凉的风写体感，以“不必抵达”写并肩相伴的惬意。右下有窗框与人物，拟用相邻的右上纸面留白，避开撕纸边与黑色竖线。两列从右向左读，长列自然下垂。",
         "provenance": {
           "model": "gpt-6-astra",
-          "createdAt": "2026-09-21T03:08:26.550560+00:00",
+          "createdAt": "2026-09-21T05:03:19.274768+00:00",
           "imageSHA256": "6fed0b52754787e98c751a128cc5ea5284de8d53c09688594d64c52a5917c2f1",
-          "previewSHA256": "d390d00ccb7e92d379d547031b30a148cf0908b30802cfc871d05ed884a9ad06"
+          "previewSHA256": "d390d00ccb7e92d379d547031b30a148cf0908b30802cfc871d05ed884a9ad06",
+          "copyMode": "compose",
+          "placement": "right",
+          "preference": "写一句原创短诗：冬日阳光好的日子，空气中流露着清凉，和爱的人并肩望向远方，很惬意。文字放右边的空白纸面，像自然写在纸上，含蓄、简洁，不要署名。"
         },
-        "appliedAt": "2026-09-21T03:13:42.992Z"
+        "appliedAt": "2026-09-21T05:05:24.998Z"
       },
       "image": {
         "width": 971,
@@ -325,6 +340,11 @@
       "provenance": {
         "example": true,
         "styleSource": "Gathered Scenes v1.3; see THIRD_PARTY_NOTICES.md"
+      },
+      "aiSettings": {
+        "copyMode": "compose",
+        "placement": "right",
+        "preference": "写一句原创短诗：冬日阳光好的日子，空气中流露着清凉，和爱的人并肩望向远方，很惬意。文字放右边的空白纸面，像自然写在纸上，含蓄、简洁，不要署名。"
       }
     }
   ]

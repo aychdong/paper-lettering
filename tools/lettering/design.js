@@ -21,10 +21,11 @@ function fit(l,w,h){
 function layers(option,doc){
  if(!option||!Array.isArray(option.layers)||!option.layers.length||option.layers.length>4)throw new Error('AI 排版方案格式无效。');
  return option.layers.map(p=>{
-  if(!L.FONTS[p.font]||typeof p.text!=='string'||p.text.length>120||!/^#[\da-f]{6}$/i.test(p.color))throw new Error('AI 方案含无效字体、文字或颜色。');
+  if(!L.FONTS[p.font]||typeof p.text!=='string'||!p.text.trim()||p.text.length>120||!/^#[\da-f]{6}$/i.test(p.color))throw new Error('AI 方案含无效字体、文字或颜色。');
   for(const k of ['size','x','y','weight','thickness','slant','rotation','tracking'])if(!Number.isFinite(p[k]))throw new Error('AI 排版参数无效。');
+  if(p.lineHeight!==undefined&&(!Number.isFinite(p.lineHeight)||p.lineHeight<1||p.lineHeight>2.5))throw new Error('AI 行距无效。');
   const size=L.clamp(p.size,.012,.18)*doc.image.width,base=presets[p.effect==='faded'?'soft':p.effect];if(!base)throw new Error('未知印刷质感');
-  return fit(L.normalizeLayer({...base,text:p.text,font:p.font,size,weight:global.PaperFonts.info(p.font)?.weight_range?L.clamp(p.weight,...global.PaperFonts.info(p.font).weight_range):400,thickness:p.thickness,slant:p.slant,x:p.x*doc.image.width,y:p.y*doc.image.height,rotation:p.rotation,tracking:p.tracking*size,direction:p.direction,align:p.align,color:p.color,seed:71429},doc.image.width,doc.image.height),doc.image.width,doc.image.height);
+  return fit(L.normalizeLayer({...base,text:p.text,font:p.font,size,weight:global.PaperFonts.info(p.font)?.weight_range?L.clamp(p.weight,...global.PaperFonts.info(p.font).weight_range):400,thickness:p.thickness,slant:p.slant,x:p.x*doc.image.width,y:p.y*doc.image.height,rotation:p.rotation,tracking:p.tracking*size,lineHeight:p.lineHeight??1.4,direction:p.direction,align:p.align,color:p.color,seed:71429},doc.image.width,doc.image.height),doc.image.width,doc.image.height);
  });
 }
 global.PaperDesign={presets,layers,fit};

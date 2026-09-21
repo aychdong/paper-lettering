@@ -4,7 +4,7 @@ import argparse, datetime, hashlib, hmac, json, os, secrets, subprocess, sys, te
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from codex_client import Client,status
-from design_contract import SCHEMA,preview,prompt,validate
+from design_contract import SCHEMA,preview,prompt,validate_response,settings
 class Bridge(ThreadingHTTPServer):
     daemon_threads=True
     def __init__(self,html,port=0):
@@ -27,7 +27,7 @@ class Bridge(ThreadingHTTPServer):
                 self.phase(job,'正在连接现有 ChatGPT 登录')
                 with Client(temp) as client:result=client.advise(prompt(payload),image,SCHEMA,Path(temp),progress=lambda message:self.phase(job,message))
             self.phase(job,'正在检查方案并准备预览')
-            data=validate(result['data']);self.jobs[job]={'state':'complete','result':{'type':'paper-lettering-advice','version':1,'imageSHA256':payload.get('imageSHA256'),'previewSHA256':hashlib.sha256(raw).hexdigest(),'createdAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'model':result.get('model'),'colors':data['colors'],'designs':data['designs'],'usage':result.get('usage'),'toolEvents':result.get('toolEvents',[])}}
+            data=validate_response(result['data'],payload);self.jobs[job]={'state':'complete','result':{'type':'paper-lettering-advice','version':1,'copyMode':settings(payload)[1],'placement':settings(payload)[2],'imageSHA256':payload.get('imageSHA256'),'previewSHA256':hashlib.sha256(raw).hexdigest(),'createdAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'model':result.get('model'),'colors':data['colors'],'designs':data['designs'],'usage':result.get('usage'),'toolEvents':result.get('toolEvents',[])}}
         except Exception as e:self.jobs[job]={'state':'failed','error':str(e)[:1500]}
         finally:self.last_use=time.monotonic();self.busy.release()
 class Handler(BaseHTTPRequestHandler):

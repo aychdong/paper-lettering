@@ -12,3 +12,13 @@
 扩展提供方时保留 `status()` 和 `Client.advise(prompt, image_path, schema, cwd, progress)` 的结果约定：`{data, model, usage, toolEvents}`。必须通过同一 schema 验证，并保留真实模型标识、预览哈希及结果来源。现有实现只有 `codex_client.py`；尚无 API Key 配置或其他服务商支持。
 
 本工具给 Codex 的任务是看图后返回结构化文字建议。使用临时目录、只读环境和工具关闭配置，并拒绝服务端发起的工具/审批请求。模型输出需要验证；这不等于已经在所有 Codex 版本上验证了同样的隔离实现。
+
+## 0.7 创作策略
+
+`POST /advice` 新增 `copyMode: "compose" | "preserve"`、`placement: "auto" | "right" | "left" | "top" | "bottom"`，`preference` 最多 500 字。新界面默认 compose；旧客户端缺省 copyMode 时按 preserve 处理，避免静默改写。palette 请求不返回设计。
+
+compose 可以替换可见文案；preserve 的每个非空可见源层对应一个方案层，文字和标点一致，只允许空白与换行改变。超过四层或每层超过 120 字时会拒绝 preserve 请求。后台和界面均检查保留策略。
+
+方案层新增必填 `lineHeight`（1–2.5，字号倍数）；`text` 中的换行决定行/列。旧工程和历史方案缺省行距时继续使用 1.4。竖排从右至左分列。返回值携带 copyMode、placement；界面将创作要求随方案来源和每图 aiSettings 保存。
+
+结果必须通过结构、范围与文字策略检查才应用；格式合法仍不保证文案或视觉判断完全合适，始终提供预览、编辑和撤销。结构化输出边界参考 [OpenAI 官方说明](https://developers.openai.com/api/docs/guides/structured-outputs)。
