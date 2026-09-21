@@ -1,0 +1,7 @@
+* text=auto
+*.cmd text eol=crlf whitespace=cr-at-eol
+*.png binary
+*.ttf binary
+# Preserve upstream license bytes and their audited hashes.
+resources/fonts/licenses/* -text -whitespace
+licenses/* -text -whitespace

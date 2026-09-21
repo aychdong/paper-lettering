@@ -1,0 +1,331 @@
+{
+  "version": 3,
+  "id": "paper-lettering-portable-v6",
+  "draftAliases": [],
+  "title": "纸上文字 · 两张示例",
+  "selectedDocumentId": "p0002",
+  "documents": [
+    {
+      "id": "p0002",
+      "title": "示例 · 追着光跑",
+      "layers": [
+        {
+          "id": "ca36c115-ad9c-40a8-a920-eb9d353e5221",
+          "text": "追着光跑",
+          "x": 126.23,
+          "y": 186.185,
+          "font": "gf-notoserifsc",
+          "weight": 600,
+          "thickness": 0,
+          "slant": 0,
+          "outlineWidth": 0,
+          "outlineColor": "#f3ead6",
+          "hidden": false,
+          "locked": false,
+          "size": 87.39,
+          "tracking": 8.739,
+          "lineHeight": 1.4,
+          "align": "left",
+          "direction": "horizontal",
+          "rotation": 0,
+          "color": "#514A3D",
+          "opacity": 0.95,
+          "grain": 0.18,
+          "multiply": false,
+          "effect": "letterpress",
+          "pressure": 0.28,
+          "edgeWear": 0.1,
+          "stampBorder": false,
+          "effectStrength": 0.55,
+          "secondaryColor": "#ba694b",
+          "seed": 71429
+        }
+      ],
+      "repairs": [
+        {
+          "id": "p0002-repair-1",
+          "x": 59,
+          "y": 1418,
+          "w": 197,
+          "h": 65,
+          "sx": 59,
+          "sy": 1338,
+          "feather": 9,
+          "enabled": true
+        }
+      ],
+      "palette": [
+        "#5a5445",
+        "#857661",
+        "#c44936",
+        "#ad9270",
+        "#637264"
+      ],
+      "aiPalette": {
+        "type": "paper-lettering-palette",
+        "version": 1,
+        "model": "gpt-6-astra",
+        "createdAt": "2026-09-21T03:07:29.305186+00:00",
+        "imageSHA256": "86b8863b190973aed6cf1419b6a758545dcfbdfc766adaba2b4f7af2dabb30fa",
+        "previewSHA256": "798f9c2ae5bab7c8acbca4083a8eda068a4e3ffcd5711e58556257a555cb11b9",
+        "colors": [
+          {
+            "hex": "#514A3D",
+            "name": "暖墨褐",
+            "reason": "呼应照片中的灰褐与草地色调，在米白纸面上保持清晰对比，不抢人物与红色纸带的注意力。"
+          },
+          {
+            "hex": "#974B3B",
+            "name": "沉朱红",
+            "reason": "与红色纸带形成同色系呼应，降低鲜艳程度，让标题醒目而不过分跳脱。"
+          },
+          {
+            "hex": "#4F5546",
+            "name": "灰橄榄",
+            "reason": "邻近草地的自然色调，可作为暖墨褐的替换色；偏深的明度有利于米白纸面上的阅读。"
+          }
+        ]
+      },
+      "designSuggestions": [
+        {
+          "name": "横题·纸上留光",
+          "reason": "建议在上方偏左的完整留白中横排，采用 Noto 宋体 600 字重，以清楚的笔画对比建立分量。暖墨褐搭配压印质感，贴合旧纸氛围；适度字距保留呼吸感，与红色纸带、建筑及人物均保持距离。",
+          "layers": [
+            {
+              "text": "追着光跑",
+              "font": "gf-notoserifsc",
+              "size": 0.09,
+              "weight": 600,
+              "thickness": 0,
+              "slant": 0,
+              "x": 0.13,
+              "y": 0.115,
+              "rotation": 0,
+              "direction": "horizontal",
+              "align": "left",
+              "tracking": 0.1,
+              "color": "#514A3D",
+              "effect": "letterpress"
+            }
+          ],
+          "provenance": {
+            "model": "gpt-6-astra",
+            "createdAt": "2026-09-21T03:07:29.305186+00:00",
+            "imageSHA256": "86b8863b190973aed6cf1419b6a758545dcfbdfc766adaba2b4f7af2dabb30fa",
+            "previewSHA256": "798f9c2ae5bab7c8acbca4083a8eda068a4e3ffcd5711e58556257a555cb11b9"
+          }
+        },
+        {
+          "name": "竖题·循光而行",
+          "reason": "建议在右上纸面留白中单列竖排，马善政毛笔字体以自然笔势回应画面的动感，不额外增粗。沉朱红与左侧纸带呼应，墨迹质感融入纸面；末字落在建筑上方，并与右侧画框边缘保持充足距离。",
+          "layers": [
+            {
+              "text": "追着光跑",
+              "font": "gf-mashanzheng",
+              "size": 0.082,
+              "weight": 400,
+              "thickness": 0,
+              "slant": 0,
+              "x": 0.76,
+              "y": 0.078,
+              "rotation": 0,
+              "direction": "vertical",
+              "align": "left",
+              "tracking": 0.12,
+              "color": "#974B3B",
+              "effect": "ink"
+            }
+          ],
+          "provenance": {
+            "model": "gpt-6-astra",
+            "createdAt": "2026-09-21T03:07:29.305186+00:00",
+            "imageSHA256": "86b8863b190973aed6cf1419b6a758545dcfbdfc766adaba2b4f7af2dabb30fa",
+            "previewSHA256": "798f9c2ae5bab7c8acbca4083a8eda068a4e3ffcd5711e58556257a555cb11b9"
+          }
+        }
+      ],
+      "designDecision": {
+        "name": "横题·纸上留光",
+        "reason": "建议在上方偏左的完整留白中横排，采用 Noto 宋体 600 字重，以清楚的笔画对比建立分量。暖墨褐搭配压印质感，贴合旧纸氛围；适度字距保留呼吸感，与红色纸带、建筑及人物均保持距离。",
+        "provenance": {
+          "model": "gpt-6-astra",
+          "createdAt": "2026-09-21T03:07:29.305186+00:00",
+          "imageSHA256": "86b8863b190973aed6cf1419b6a758545dcfbdfc766adaba2b4f7af2dabb30fa",
+          "previewSHA256": "798f9c2ae5bab7c8acbca4083a8eda068a4e3ffcd5711e58556257a555cb11b9"
+        },
+        "appliedAt": "2026-09-21T03:13:42.991Z"
+      },
+      "image": {
+        "width": 971,
+        "height": 1619,
+        "sha256": "86b8863b190973aed6cf1419b6a758545dcfbdfc766adaba2b4f7af2dabb30fa",
+        "path": "p0002.png"
+      },
+      "provenance": {
+        "example": true,
+        "styleSource": "Gathered Scenes v1.3; see THIRD_PARTY_NOTICES.md"
+      }
+    },
+    {
+      "id": "p0003",
+      "title": "示例 · 并肩看远方",
+      "layers": [
+        {
+          "id": "606643de-cb5b-4792-84a2-76fafb000b25",
+          "text": "并肩看远方",
+          "x": 330.14000000000004,
+          "y": 307.61,
+          "font": "gf-notoserifsc",
+          "weight": 600,
+          "thickness": 0,
+          "slant": 0,
+          "outlineWidth": 0,
+          "outlineColor": "#f3ead6",
+          "hidden": false,
+          "locked": false,
+          "size": 79.622,
+          "tracking": 6.36976,
+          "lineHeight": 1.4,
+          "align": "left",
+          "direction": "horizontal",
+          "rotation": 0,
+          "color": "#5A5041",
+          "opacity": 0.95,
+          "grain": 0.18,
+          "multiply": false,
+          "effect": "letterpress",
+          "pressure": 0.28,
+          "edgeWear": 0.1,
+          "stampBorder": false,
+          "effectStrength": 0.55,
+          "secondaryColor": "#ba694b",
+          "seed": 71429
+        }
+      ],
+      "repairs": [
+        {
+          "id": "p0003-repair-1",
+          "x": 246,
+          "y": 1438,
+          "w": 237,
+          "h": 72,
+          "sx": 246,
+          "sy": 1530,
+          "feather": 10,
+          "enabled": true
+        }
+      ],
+      "palette": [
+        "#5a5041",
+        "#8e7552",
+        "#c79a50",
+        "#65786c",
+        "#7596aa"
+      ],
+      "aiPalette": {
+        "type": "paper-lettering-palette",
+        "version": 1,
+        "model": "gpt-6-astra",
+        "createdAt": "2026-09-21T03:08:26.550560+00:00",
+        "imageSHA256": "6fed0b52754787e98c751a128cc5ea5284de8d53c09688594d64c52a5917c2f1",
+        "previewSHA256": "d390d00ccb7e92d379d547031b30a148cf0908b30802cfc871d05ed884a9ad06",
+        "colors": [
+          {
+            "hex": "#5A5041",
+            "name": "暖灰褐",
+            "reason": "呼应纸面、铅笔线与照片中的石材色，温和沉稳，在浅色留白上保持清晰。"
+          },
+          {
+            "hex": "#3F5A67",
+            "name": "深灰蓝",
+            "reason": "呼应照片中的蓝天，与暖米色纸面形成克制的冷暖对照；降低明度，避免文字显得轻飘。"
+          },
+          {
+            "hex": "#5A5041",
+            "name": "暖灰褐",
+            "reason": "呼应纸面、铅笔线与照片中的石材色，温和沉稳，在浅色留白上保持清晰。"
+          }
+        ]
+      },
+      "designSuggestions": [
+        {
+          "name": "横排·纸上留白",
+          "reason": "拟用600字重的思源宋体，兼顾标题分量与笔画通透感。暖灰褐搭配压印质感，贴合纸张肌理；横排置于上方中央留白，适当放宽字距，避开两侧线条、建筑与下方人物。",
+          "layers": [
+            {
+              "text": "并肩看远方",
+              "font": "gf-notoserifsc",
+              "size": 0.082,
+              "weight": 600,
+              "thickness": 0,
+              "slant": 0,
+              "x": 0.34,
+              "y": 0.19,
+              "rotation": 0,
+              "direction": "horizontal",
+              "align": "left",
+              "tracking": 0.08,
+              "color": "#5A5041",
+              "effect": "letterpress"
+            }
+          ],
+          "provenance": {
+            "model": "gpt-6-astra",
+            "createdAt": "2026-09-21T03:08:26.550560+00:00",
+            "imageSHA256": "6fed0b52754787e98c751a128cc5ea5284de8d53c09688594d64c52a5917c2f1",
+            "previewSHA256": "d390d00ccb7e92d379d547031b30a148cf0908b30802cfc871d05ed884a9ad06"
+          }
+        },
+        {
+          "name": "竖排·远望题字",
+          "reason": "拟用马善政毛笔字体，以自然笔势和墨迹质感呈现题字感，不额外增粗，保留笔画间隙。深灰蓝呼应天空；单列竖排放在右上方空白纸面，末字停在撕纸边界上方，与右侧线条保持距离，左侧留出舒展空间。",
+          "layers": [
+            {
+              "text": "并肩看远方",
+              "font": "gf-mashanzheng",
+              "size": 0.074,
+              "weight": 400,
+              "thickness": 0,
+              "slant": 0,
+              "x": 0.73,
+              "y": 0.08,
+              "rotation": 0,
+              "direction": "vertical",
+              "align": "left",
+              "tracking": 0.08,
+              "color": "#3F5A67",
+              "effect": "ink"
+            }
+          ],
+          "provenance": {
+            "model": "gpt-6-astra",
+            "createdAt": "2026-09-21T03:08:26.550560+00:00",
+            "imageSHA256": "6fed0b52754787e98c751a128cc5ea5284de8d53c09688594d64c52a5917c2f1",
+            "previewSHA256": "d390d00ccb7e92d379d547031b30a148cf0908b30802cfc871d05ed884a9ad06"
+          }
+        }
+      ],
+      "designDecision": {
+        "name": "横排·纸上留白",
+        "reason": "拟用600字重的思源宋体，兼顾标题分量与笔画通透感。暖灰褐搭配压印质感，贴合纸张肌理；横排置于上方中央留白，适当放宽字距，避开两侧线条、建筑与下方人物。",
+        "provenance": {
+          "model": "gpt-6-astra",
+          "createdAt": "2026-09-21T03:08:26.550560+00:00",
+          "imageSHA256": "6fed0b52754787e98c751a128cc5ea5284de8d53c09688594d64c52a5917c2f1",
+          "previewSHA256": "d390d00ccb7e92d379d547031b30a148cf0908b30802cfc871d05ed884a9ad06"
+        },
+        "appliedAt": "2026-09-21T03:13:42.992Z"
+      },
+      "image": {
+        "width": 971,
+        "height": 1619,
+        "sha256": "6fed0b52754787e98c751a128cc5ea5284de8d53c09688594d64c52a5917c2f1",
+        "path": "p0003.png"
+      },
+      "provenance": {
+        "example": true,
+        "styleSource": "Gathered Scenes v1.3; see THIRD_PARTY_NOTICES.md"
+      }
+    }
+  ]
+}

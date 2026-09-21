@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src data: blob:; font-src 'self' data: blob:; connect-src http://127.0.0.1:*; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>纸上文字 · Photo Studio</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+ <div class="brand"><span class="brand-mark">字</span><div><h1>纸上文字</h1><p>让一句话，找到它在画面里的位置。</p></div></div>
+ <div class="top-actions"><span class="local-tag"><i></i> 本地编辑</span><button id="openImage" class="open-image"><span aria-hidden="true">＋</span> 打开图片</button><button id="openProject">打开可编辑工程</button><button id="saveProject">保存可编辑工程</button><button id="exportPNG" class="primary">导出成品 PNG <span>↗</span></button></div>
+</header>
+<main>
+ <aside class="library">
+  <div class="section-head"><h2>画面</h2><span id="docCount"></span></div>
+  <p class="library-onboarding">选一张示例试一试，或打开自己的图片。</p><div id="documents" class="documents"></div>
+  <button id="importImage" class="import-button">＋ 导入自己的图片</button>
+  <button id="loadExamples" class="text-button example-button">添加两张示例</button><p class="library-note">原片保留，底图在本机编辑。<br>改文字，不必重新生成画面。</p>
+  <details class="help"><summary>怎么用</summary><p>① 导入或选择画面<br>② 点「一键 AI 排版」，或直接手动改字<br>③ 在文字／颜色／质感页微调<br>④ 保存工程，再导出图片</p><p>「导入图片」开始编辑一张图片；「保存可编辑工程」保留底图、文字层和所用的内置字体；「打开可编辑工程」继续上次工作；「导出成品 PNG」得到合并后的图片。<br>双击「纸上文字.app」即可独立使用，不必打开 ChatGPT。</p></details>
+ </aside>
+ <section class="workspace" aria-label="画布工作区">
+  <div class="quick-layout"><div class="quick-layout-copy"><span class="quick-mark"><svg viewBox="0 0 24 24" class="ui-icon" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.6 6.4L21 12l-6.4 2.6L12 21l-2.6-6.4L3 12l6.4-2.6L12 3Z"/><path d="M20 3v4m-2-2h4"/></svg></span><div><strong>让 AI 帮你排好文字</strong><p id="quickLayoutStatus" role="status">自动选字体、颜色和位置，生成后直接微调。</p></div></div><div class="quick-layout-actions"><button id="quickLayout" title="发送去元数据预览，使用现有 AI 额度；结果可撤销" class="primary"><svg viewBox="0 0 24 24" class="ui-icon" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.6 6.4L21 12l-6.4 2.6L12 21l-2.6-6.4L3 12l6.4-2.6L12 3Z"/><path d="M20 3v4m-2-2h4"/></svg><span id="quickLayoutLabel">一键 AI 排版</span></button><button id="showDesigns" class="text-button">查看方案</button></div></div>
+  <div class="ai-feedback"><button id="connectionStatus" class="connection-status" data-state="checking" title="查看或重新检查 AI 连接"><i aria-hidden="true"></i><span id="connectionLabel">正在连接 AI…</span></button><span id="aiElapsed"></span><div id="aiActivity" class="ai-activity" role="progressbar" aria-label="AI 正在工作" hidden><span></span></div></div>
+  <div class="canvas-toolbar"><div><span id="artTitle">准备画面…</span><span id="dimensions"></span></div><div class="toolbar-actions"><button id="undo" title="撤销 ⌘Z" aria-label="撤销">↶</button><button id="redo" title="重做 ⇧⌘Z" aria-label="重做">↷</button><button id="preview" title="隐藏辅助框 · P" aria-pressed="false">预览成图 · P</button><button id="original" title="按住查看未经编辑的图片">按住看原图</button></div></div>
+  <div class="canvas-well" id="canvasWell"><div id="canvasWrap" class="canvas-wrap"><canvas id="canvas" aria-label="可拖动文字的图片画布"></canvas><canvas id="overlay" tabindex="0" aria-label="拖动文字；方向键微调位置"></canvas></div><div class="empty" id="empty">导入一张底图，写下你的第一句话。</div></div>
+  <div class="workspace-foot"><span id="hint">拖动文字调整位置 · 方向键微调 · 按 Shift 移动 10 像素</span><span id="saveStatus" role="status">正在准备</span></div>
+ </section>
+ <aside class="inspector" aria-label="文字编辑面板"><div class="inspector-tabs" role="tablist" aria-label="编辑工具"><button id="tab-text" role="tab" aria-controls="panel-text" aria-selected="true" tabindex="0" data-inspector-tab="text"><svg viewBox="0 0 24 24" class="ui-icon" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14M12 5v14M8 19h8M5 5v3M19 5v3"/></svg><span>文字</span></button><button id="tab-color" role="tab" aria-controls="panel-color" aria-selected="false" tabindex="-1" data-inspector-tab="color"><svg viewBox="0 0 24 24" class="ui-icon" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s-6 7-6 11a6 6 0 0 0 12 0c0-4-6-11-6-11Z"/><path d="M9 14a3 3 0 0 0 3 3"/></svg><span>颜色</span></button><button id="tab-material" role="tab" aria-controls="panel-material" aria-selected="false" tabindex="-1" data-inspector-tab="material"><svg viewBox="0 0 24 24" class="ui-icon" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="m8 7 2 2m4-2 2 2M8 12l2 2m4-2 2 2m-8 3 2 1m4-1 2 1"/></svg><span>质感</span></button><button id="tab-ai" role="tab" aria-controls="panel-ai" aria-selected="false" tabindex="-1" data-inspector-tab="ai"><svg viewBox="0 0 24 24" class="ui-icon" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.6 6.4L21 12l-6.4 2.6L12 21l-2.6-6.4L3 12l6.4-2.6L12 3Z"/><path d="M20 3v4m-2-2h4"/></svg><span>AI 排版</span></button></div><div class="inspector-context">  <div class="section-head"><h2>文字图层</h2><button id="addText" class="small-button">＋ 添加</button></div>
+  <p class="layer-order-hint">拖动调整顺序 · 上方图层覆盖下方</p><div id="layers" class="layer-list" role="list" aria-label="文字图层，从上到下排列"></div><span id="layerAnnouncement" class="sr-only" role="status"></span>
+  <div class="layer-switches"><button id="lockLayer">锁定</button><button id="hideLayer">隐藏</button></div>
+</div><div class="inspector-scroll" id="inspectorScroll"><section id="panel-text" class="inspector-panel" role="tabpanel" aria-labelledby="tab-text" tabindex="0"><div id="textControls" data-layer-controls>   <label class="field-label" for="text">写在画面上的话</label><textarea id="text" rows="3" maxlength="500" placeholder="写下一句话，也可以换行"></textarea>
+   <div class="row"><label class="grow">字体<select id="font"><option value="song">宋体 · 书页</option><option value="kai">楷体 · 手写感</option><option value="hei">黑体 · 清晰</option><option value="serif">衬线 · 西文</option></select></label><label class="compact">字号<input id="size" type="number" min="8" max="400" step="0.1"></label></div>
+   <label class="range-label">字体字重 <output id="weightValue"></output><input id="weight" type="range" min="100" max="900" step="10"></label><p id="weightNote" class="micro-note"></p>
+   <label class="range-label">笔画增粗 · 所有字体 <output id="thicknessValue"></output><input id="thickness" type="range" min="0" max="0.12" step="0.005"></label>
+<details class="spacing-more"><summary>字距、方向与位置</summary><div class="advanced-body">   <div class="row"><label class="grow">排版<select id="direction"><option value="horizontal">横排</option><option value="vertical">竖排 · 从右向左</option></select></label><label class="grow">对齐<select id="align"><option value="left">左对齐</option><option value="center">居中</option><option value="right">右对齐</option></select></label></div>
+   <label class="range-label">字距 <output id="trackingValue"></output><input id="tracking" type="range" min="-2" max="30" step="0.1"></label>
+   <label class="range-label">行距 <output id="lineHeightValue"></output><input id="lineHeight" type="range" min="1" max="2.5" step="0.05"></label>
+   <div class="row positions"><label>X<input id="posX" type="number" step="1"></label><label>Y<input id="posY" type="number" step="1"></label><label>角度<input id="rotation" type="number" min="-180" max="180" step="1"></label></div>
+<div class="align-buttons"><button data-canvas-align="left">靠左</button><button data-canvas-align="center">水平居中</button><button data-canvas-align="right">靠右</button><button data-canvas-align="top">靠上</button><button data-canvas-align="middle">垂直居中</button><button data-canvas-align="bottom">靠下</button></div></div></details>   <details class="type-more"><summary>倾斜与描边</summary>   <label class="range-label">模拟倾斜 <output id="slantValue"></output><input id="slant" type="range" min="-25" max="25" step="1"></label>
+<div class="row"><label class="grow">描边宽度<input id="outlineWidth" type="number" min="0" max="10" step="0.5"></label><label>描边色<input id="outlineColor" type="color"></label></div></details>
+<details class="font-more"><summary>扩展字库</summary>   <div class="font-actions"><button id="systemFonts">读取 Mac 字体</button><button id="importFont">导入字体文件</button></div><p id="fontStatus" class="micro-note">12 款中英文字体已内置，离线可用。系统字体需浏览器授权读取。</p>
+</details>   <div class="layer-actions"><button id="duplicateText">复制文字</button></div>
+</div><p class="layer-empty" data-layer-empty hidden>先添加一个文字层，再开始排字。</p>  <details id="repairDetails" class="repair-panel"><summary>底图上已经有字？</summary><div class="repair-content"><p>用附近的空白纸纹覆盖旧字，随时可撤销。适合纸面留白；照片上的字需要单独处理。</p><label class="check"><input id="repairEnabled" type="checkbox">启用旧字覆盖</label><div id="repairList"></div><div class="row"><button id="drawRepair">框选旧字</button><button id="pickPaper">选取纸纹</button></div><button id="deleteRepair" class="text-button">删除选中的覆盖区</button></div></details>
+</section><section id="panel-color" class="inspector-panel" role="tabpanel" aria-labelledby="tab-color" tabindex="0" hidden><div data-layer-controls>   <h3>文字颜色</h3>
+   <div class="ink-row"><input type="color" id="color" aria-label="文字颜色"><input id="colorHex" type="text" maxlength="7" aria-label="颜色十六进制值"><button id="pickColor">从画面取色</button></div>
+   <div id="swatches" class="swatches" aria-label="推荐颜色"></div>
+   <details class="color-panel" open><summary>配色建议</summary><p class="micro-note">本地分析 · 同类、邻近、互补与三角色</p><div id="colorSuggestions" class="color-grid"></div><p class="micro-note">参考对比度仅比较实色与文字下方取样，未计入透明度和缺墨；复杂背景请预览判断。</p><div class="section-head"><h3>AI 选色</h3><span id="aiBadge"></span></div><div id="aiSuggestions" class="color-grid"></div><p id="aiNote" class="micro-note"></p><button id="livePalette" class="ai-primary">让 AI 推荐配色</button><details><summary>离线文件交换</summary><div class="font-actions"><button id="requestAI">导出 AI 配色请求</button><button id="importPalette">导入 AI 建议</button></div><p class="micro-note">把请求文件交给 ChatGPT 的纸上文字 Skill，获得配色后导入。未启用 AI 连接时可用此方式。</p></details></details>
+</div><p class="layer-empty" data-layer-empty hidden>添加文字层后，可取色或获取配色建议。</p></section><section id="panel-material" class="inspector-panel" role="tabpanel" aria-labelledby="tab-material" tabindex="0" hidden><div data-layer-controls>   <h3 class="effect-heading">印在纸上的质感</h3><div class="presets"><button data-preset="ink">纸上油墨</button><button data-preset="soft">褪色铅字</button><button data-preset="stamp">旧式印章</button><button data-preset="clean">清晰印字</button><button data-preset="letterpress">凹版压印</button><button data-preset="screen">丝网漏印</button><button data-preset="pencil">铅笔拓写</button><button data-preset="bleed">宣纸洇墨</button><button data-preset="risograph">双色套印</button></div>
+   <canvas id="effectPreview" width="560" height="150" aria-label="放大的印刷质感预览"></canvas><p class="micro-note">放大看质感 · 实际效果以左侧画面为准</p>
+   <label class="range-label">质感强度 <output id="effectStrengthValue"></output><input id="effectStrength" type="range" min="0" max="1" step="0.01"></label><label class="range-label">套印副色 <input id="secondaryColor" type="color"></label>
+   <label class="range-label">墨色浓度 <output id="opacityValue"></output><input id="opacity" type="range" min="0.1" max="1" step="0.01"></label>
+   <label class="range-label">颗粒与纸纹 <output id="grainValue"></output><input id="grain" type="range" min="0" max="1" step="0.01"></label>
+   <label class="range-label">墨色浓淡起伏 <output id="pressureValue"></output><input id="pressure" type="range" min="0" max="1" step="0.01"></label>
+   <label class="range-label">边缘磨损 <output id="edgeWearValue"></output><input id="edgeWear" type="range" min="0" max="1" step="0.01"></label>
+   <label class="check"><input id="stampBorder" type="checkbox">添加印章边框（印章效果）</label>
+   <label class="check"><input id="multiply" type="checkbox">让底图纸色透入文字</label>
+</div><p class="layer-empty" data-layer-empty hidden>添加文字层后，选择纸面质感。</p></section><section id="panel-ai" class="inspector-panel" role="tabpanel" aria-labelledby="tab-ai" tabindex="0" hidden>  <section class="ai-design-panel"><div class="section-head"><h2>AI 排版助手</h2><button id="connectAI" class="small-button">重新连接</button></div><p id="aiConnection" class="micro-note" role="status">离线编辑可直接使用；AI 连接正在检查。</p><details class="ai-setup"><summary>第一次使用：连接自己的 ChatGPT</summary><ol><li>安装 Python 3.9+ 和 <a href="https://learn.chatgpt.com/docs/codex/cli" target="_blank" rel="noopener noreferrer">官方 Codex CLI</a>。</li><li>双击包内「连接自己的ChatGPT」，在官方页面登录自己的账号。也可在终端运行 <code>codex login</code>。</li><li>双击「启用AI助手」。看到上方绿色「AI 已连接」即可排版。</li></ol><p>已有本机 Codex 登录可直接使用。此版本只接入 Codex / ChatGPT，不提供任意 API 服务商设置；每人使用自己的额度。示例方案无需联网即可查看、应用。</p></details><textarea id="aiPreference" rows="2" maxlength="500" placeholder="例如：字更有分量，保留留白，用沉静的蓝绿色"></textarea><button id="liveDesign" class="ai-primary">生成两套方案供我选</button><p id="aiProgress" class="micro-note" role="status"></p><p class="micro-note">点击请求会发送当前画面的去元数据预览和文字，使用你的 ChatGPT/Codex 额度。这里先展示方案；主界面「一键 AI 排版」会直接初排，随时可撤销。</p><div id="designSuggestions"></div></section>
+</section></div><div class="inspector-footer">  <details class="export-panel"><summary>更多导出</summary><div><button id="exportBase">只导出无字底图</button><button id="exportText">只导出透明文字层</button><p>按底图实际像素导出，不裁切、不拉伸。保存工程会携带所用的内置/导入字体。系统字体只记录名称，换电脑可能替换。</p></div></details>
+</div></aside>
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+<input id="imageFile" type="file" accept="image/png,image/jpeg,image/webp" multiple hidden>
+<input id="projectFile" type="file" accept=".json,.paper.json,application/json" hidden>
+<input id="fontFile" type="file" accept=".ttf,.otf,.woff,.woff2" hidden>
+<input id="paletteFile" type="file" accept=".json,application/json" hidden>
+<script id="fontData" type="application/json">[]</script>
+<script id="starterData" type="application/json">{"version":1,"documents":[]}</script>
+<script src="engine.js"></script>
+<script src="transforms.js"></script>
+<script src="fonts.js"></script>
+<script src="color.js"></script>
+<script src="design.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

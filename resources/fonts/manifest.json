@@ -1,0 +1,314 @@
+{
+  "version": 1,
+  "repository": "https://github.com/google/fonts",
+  "commit": "e44c4b011a820c2cbe2fd2cfa8052037d7edb571",
+  "fonts": [
+    {
+      "id": "gf-notoserifsc",
+      "label": "Noto Serif SC · 宋体",
+      "category": "中文 · 阅读与刊物",
+      "css_family": "PaperFont_notoserifsc",
+      "license_id": "OFL-1.1",
+      "repository": "https://github.com/google/fonts",
+      "commit": "e44c4b011a820c2cbe2fd2cfa8052037d7edb571",
+      "font": {
+        "path": "files/notoserifsc.ttf",
+        "bytes": 25125512,
+        "sha256": "050080d9255a86808f2945bffac582b31ef32bc36411ce29563b4961670c66f9",
+        "git_blob_sha1": "eab063faf229160a52d3760f5555150e4eb9e5bf",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/notoserifsc/NotoSerifSC%5Bwght%5D.ttf"
+      },
+      "license": {
+        "path": "licenses/notoserifsc-OFL.txt",
+        "bytes": 4350,
+        "sha256": "5e0da210fb04058a8c0087985d2d456b931c2579811a49655721d3cf0c36b6d6",
+        "git_blob_sha1": "94d1bf7b52481343e2983fb7751e8b7abe1ea07b",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/notoserifsc/OFL.txt"
+      },
+      "weight_range": [
+        200.0,
+        900.0
+      ],
+      "default_weight": 200.0
+    },
+    {
+      "id": "gf-notosanssc",
+      "label": "Noto Sans SC · 黑体",
+      "category": "中文 · 简洁现代",
+      "css_family": "PaperFont_notosanssc",
+      "license_id": "OFL-1.1",
+      "repository": "https://github.com/google/fonts",
+      "commit": "e44c4b011a820c2cbe2fd2cfa8052037d7edb571",
+      "font": {
+        "path": "files/notosanssc.ttf",
+        "bytes": 17772300,
+        "sha256": "a3041811a78c361b1de50f953c805e0244951c21c5bd412f7232ef0d899af0da",
+        "git_blob_sha1": "fb0637bafbcd804fe32152370a1225990745b4bc",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/notosanssc/NotoSansSC%5Bwght%5D.ttf"
+      },
+      "license": {
+        "path": "licenses/notosanssc-OFL.txt",
+        "bytes": 4388,
+        "sha256": "1c05c68c34f9708415aada51f17e1b0092d2cea709bf4a94cd38114f9e73d7d9",
+        "git_blob_sha1": "1c9f43281b8f216c5461fe9ac729afbade7724e4",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/notosanssc/OFL.txt"
+      },
+      "weight_range": [
+        100.0,
+        900.0
+      ],
+      "default_weight": 100.0
+    },
+    {
+      "id": "gf-mashanzheng",
+      "label": "马善政毛笔",
+      "category": "中文 · 毛笔题字",
+      "css_family": "PaperFont_mashanzheng",
+      "license_id": "OFL-1.1",
+      "repository": "https://github.com/google/fonts",
+      "commit": "e44c4b011a820c2cbe2fd2cfa8052037d7edb571",
+      "font": {
+        "path": "files/mashanzheng.ttf",
+        "bytes": 5857936,
+        "sha256": "6d2546bb189c732a8ca29af9e22457b152387d158aa459e4ac2ce1e51788b7fb",
+        "git_blob_sha1": "11bbfb9867d70612158229d037e7a5f622bd0e38",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/mashanzheng/MaShanZheng-Regular.ttf"
+      },
+      "license": {
+        "path": "licenses/mashanzheng-OFL.txt",
+        "bytes": 4397,
+        "sha256": "d7bdb1cee215b689e23c2f95672a6084c790542170648267a55114103d756a08",
+        "git_blob_sha1": "9e252e1997092670936a7f1d38560973d919f6b0",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/mashanzheng/OFL.txt"
+      }
+    },
+    {
+      "id": "gf-longcang",
+      "label": "龙藏手书",
+      "category": "中文 · 自然手写",
+      "css_family": "PaperFont_longcang",
+      "license_id": "OFL-1.1",
+      "repository": "https://github.com/google/fonts",
+      "commit": "e44c4b011a820c2cbe2fd2cfa8052037d7edb571",
+      "font": {
+        "path": "files/longcang.ttf",
+        "bytes": 5162508,
+        "sha256": "e5bf2c3f24ef2327c6f136d8f73e2f9dfdf44896fdbeb35a9515f44777bb91bc",
+        "git_blob_sha1": "363bb08696fe4d3827bd36d3d2fbc028d1205161",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/longcang/LongCang-Regular.ttf"
+      },
+      "license": {
+        "path": "licenses/longcang-OFL.txt",
+        "bytes": 4390,
+        "sha256": "603546b7219a94bb59bf8294458194a5010119486354092b66a09a3fd61aeacc",
+        "git_blob_sha1": "06a1757ca2ae5ff689aac4b410fffa98cd73dad0",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/longcang/OFL.txt"
+      }
+    },
+    {
+      "id": "gf-zcoolxiaowei",
+      "label": "站酷小薇",
+      "category": "中文 · 人文衬线",
+      "css_family": "PaperFont_zcoolxiaowei",
+      "license_id": "OFL-1.1",
+      "repository": "https://github.com/google/fonts",
+      "commit": "e44c4b011a820c2cbe2fd2cfa8052037d7edb571",
+      "font": {
+        "path": "files/zcoolxiaowei.ttf",
+        "bytes": 6313808,
+        "sha256": "a42b620140f493db42f741351dfbf343c0936d58588ee8004b8b2a218d997ff1",
+        "git_blob_sha1": "2d8731a231f2e6625b32d96b87f84852e24f9d82",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/zcoolxiaowei/ZCOOLXiaoWei-Regular.ttf"
+      },
+      "license": {
+        "path": "licenses/zcoolxiaowei-OFL.txt",
+        "bytes": 4400,
+        "sha256": "a094514ca57cf8f9c5e8d8d1adab5d8cd3a377297ff016f9df2c05b3ecd77f0a",
+        "git_blob_sha1": "8e5184b269289a6adda77caa05defe3acc309651",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/zcoolxiaowei/OFL.txt"
+      }
+    },
+    {
+      "id": "gf-zcoolqingkehuangyou",
+      "label": "站酷庆科黄油",
+      "category": "中文 · 圆润标题",
+      "css_family": "PaperFont_zcoolqingkehuangyou",
+      "license_id": "OFL-1.1",
+      "repository": "https://github.com/google/fonts",
+      "commit": "e44c4b011a820c2cbe2fd2cfa8052037d7edb571",
+      "font": {
+        "path": "files/zcoolqingkehuangyou.ttf",
+        "bytes": 8328684,
+        "sha256": "54f0c0df4308cd74cd0f2fd3494ae054dbc4a1fd6fa7d71f4807eb4cdd8b4136",
+        "git_blob_sha1": "982a3b80143268592f573feb196791fbc2330e17",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/zcoolqingkehuangyou/ZCOOLQingKeHuangYou-Regular.ttf"
+      },
+      "license": {
+        "path": "licenses/zcoolqingkehuangyou-OFL.txt",
+        "bytes": 4419,
+        "sha256": "f1bce31b817dee01c1e4ef8bc45d8ecb95f01f4abbf0a985007cb3cd0fd8123d",
+        "git_blob_sha1": "bd3df5cf6f237a4afaea70106f8243da07cd8cd8",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/zcoolqingkehuangyou/OFL.txt"
+      }
+    },
+    {
+      "id": "gf-cormorantgaramond",
+      "label": "Cormorant Garamond",
+      "category": "English · 文学衬线",
+      "css_family": "PaperFont_cormorantgaramond",
+      "license_id": "OFL-1.1",
+      "repository": "https://github.com/google/fonts",
+      "commit": "e44c4b011a820c2cbe2fd2cfa8052037d7edb571",
+      "font": {
+        "path": "files/cormorantgaramond.ttf",
+        "bytes": 1195560,
+        "sha256": "b20b7d9626dd956b2c5e558692ad328b1f19e3275e2782db4fa07670d83f35e0",
+        "git_blob_sha1": "d992a83ce525c330fad3a19087746bcb2dc038ee",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/cormorantgaramond/CormorantGaramond%5Bwght%5D.ttf"
+      },
+      "license": {
+        "path": "licenses/cormorantgaramond-OFL.txt",
+        "bytes": 4387,
+        "sha256": "60700d351cac4650c51f3f9db318d2a420f8b45052dba2715eb5fec41f0f6956",
+        "git_blob_sha1": "507d70f4565352dbfcf2dfc9b42eb092b57c0be8",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/cormorantgaramond/OFL.txt"
+      },
+      "weight_range": [
+        300.0,
+        700.0
+      ],
+      "default_weight": 300.0
+    },
+    {
+      "id": "gf-lora",
+      "label": "Lora",
+      "category": "English · 书刊正文",
+      "css_family": "PaperFont_lora",
+      "license_id": "OFL-1.1",
+      "repository": "https://github.com/google/fonts",
+      "commit": "e44c4b011a820c2cbe2fd2cfa8052037d7edb571",
+      "font": {
+        "path": "files/lora.ttf",
+        "bytes": 212196,
+        "sha256": "822a6621ccbe8d97d20ac88c1c41f5615c9c2c202eaa75f272cd452aac6475a7",
+        "git_blob_sha1": "ee1914c3746140523de2940d267ec2215bd85d5b",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/lora/Lora%5Bwght%5D.ttf"
+      },
+      "license": {
+        "path": "licenses/lora-OFL.txt",
+        "bytes": 4423,
+        "sha256": "1d9a970809ac804b582a6ce7f0ebc4e7fefcbfd7ff6299cad35ee656a21be716",
+        "git_blob_sha1": "d0ce7fe062e60eaa92c4af3ee1bebe81c5141b4e",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/lora/OFL.txt"
+      },
+      "weight_range": [
+        400.0,
+        700.0
+      ],
+      "default_weight": 400.0
+    },
+    {
+      "id": "gf-manrope",
+      "label": "Manrope",
+      "category": "English · 几何无衬线",
+      "css_family": "PaperFont_manrope",
+      "license_id": "OFL-1.1",
+      "repository": "https://github.com/google/fonts",
+      "commit": "e44c4b011a820c2cbe2fd2cfa8052037d7edb571",
+      "font": {
+        "path": "files/manrope.ttf",
+        "bytes": 164700,
+        "sha256": "3ae11c49db0455a3cc33e37d380f20fdb8c7f8b41dc07625c177e3d87a9d6ae6",
+        "git_blob_sha1": "75274da58537d6123b14f2cd0c355ad4681fc2b3",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/manrope/Manrope%5Bwght%5D.ttf"
+      },
+      "license": {
+        "path": "licenses/manrope-OFL.txt",
+        "bytes": 4387,
+        "sha256": "58172e0c0fac2cda8a37b348164bb55e44b0e69051e557e92b1d3f6910141f7b",
+        "git_blob_sha1": "e271172a9ed0cddc895aabb6509f1c7d880b492d",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/manrope/OFL.txt"
+      },
+      "weight_range": [
+        200.0,
+        800.0
+      ],
+      "default_weight": 200.0
+    },
+    {
+      "id": "gf-caveat",
+      "label": "Caveat",
+      "category": "English · 手写笔记",
+      "css_family": "PaperFont_caveat",
+      "license_id": "OFL-1.1",
+      "repository": "https://github.com/google/fonts",
+      "commit": "e44c4b011a820c2cbe2fd2cfa8052037d7edb571",
+      "font": {
+        "path": "files/caveat.ttf",
+        "bytes": 403648,
+        "sha256": "0bdb6b660482d31531b3945849fba5916b3ef8695da7024a9e6b9ee3c4157988",
+        "git_blob_sha1": "f84acf2ce2d1b3329b194749530dbaec047e6df6",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/caveat/Caveat%5Bwght%5D.ttf"
+      },
+      "license": {
+        "path": "licenses/caveat-OFL.txt",
+        "bytes": 4385,
+        "sha256": "1f9d81d094273d82f3898a1ee8b598a717d050ecbf5ff7bede105b704880157b",
+        "git_blob_sha1": "6e5220c9576d98dfc684e550ddf0d87f68b3edc5",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/caveat/OFL.txt"
+      },
+      "weight_range": [
+        400.0,
+        700.0
+      ],
+      "default_weight": 400.0
+    },
+    {
+      "id": "gf-courierprime",
+      "label": "Courier Prime",
+      "category": "English · 打字机",
+      "css_family": "PaperFont_courierprime",
+      "license_id": "OFL-1.1",
+      "repository": "https://github.com/google/fonts",
+      "commit": "e44c4b011a820c2cbe2fd2cfa8052037d7edb571",
+      "font": {
+        "path": "files/courierprime.ttf",
+        "bytes": 71188,
+        "sha256": "72f793376f8e2841656bf21d77a5de010f2929bd6956a22ee848ad0c7eb978af",
+        "git_blob_sha1": "2a0f8bde9778bb8c7b3a0ca5d4b4fb041737ef1a",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/courierprime/CourierPrime-Regular.ttf"
+      },
+      "license": {
+        "path": "licenses/courierprime-OFL.txt",
+        "bytes": 4403,
+        "sha256": "9a755af092b494944c99f471be6fddd19b006a448fefdc4717e4ee0aa09a97b0",
+        "git_blob_sha1": "7cdc333cb7318c5ce83e53f1b86f23604dafa72c",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/courierprime/OFL.txt"
+      }
+    },
+    {
+      "id": "gf-bebasneue",
+      "label": "Bebas Neue",
+      "category": "English · 窄体标题",
+      "css_family": "PaperFont_bebasneue",
+      "license_id": "OFL-1.1",
+      "repository": "https://github.com/google/fonts",
+      "commit": "e44c4b011a820c2cbe2fd2cfa8052037d7edb571",
+      "font": {
+        "path": "files/bebasneue.ttf",
+        "bytes": 61400,
+        "sha256": "08e4623805102d819f58601e46e345648846075e363b2ceb23313c2d1c83ec73",
+        "git_blob_sha1": "c328c6e08b20a20a1de47d823e007ee73812a438",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/bebasneue/BebasNeue-Regular.ttf"
+      },
+      "license": {
+        "path": "licenses/bebasneue-OFL.txt",
+        "bytes": 4337,
+        "sha256": "72082f6cb4d04be2ecf7cc7d9e1e7d73787f0af8a5a278a47cade70c16b78341",
+        "git_blob_sha1": "da9571488f44176ef90d7f10c0f402c8be74db67",
+        "url": "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/bebasneue/OFL.txt"
+      }
+    }
+  ],
+  "note": "Unmodified original font binaries, verified against Git blob SHA-1 plus recorded SHA-256; OFL retained. Not installed into macOS."
+}
