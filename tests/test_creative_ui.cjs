@@ -1,4 +1,4 @@
-/* Browser acceptance using a recorded model response; no additional cloud uploads. */
+/* Legacy 0.7 /advice fixture acceptance. For the 0.8 staged API use test_creative_flow_ui.cjs. */
 const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),assert=require('assert/strict'),{pathToFileURL}=require('url');
 const [html,reply,out]=process.argv.slice(2).map(p=>path.resolve(p));fs.mkdirSync(out,{recursive:true});
 const response=JSON.parse(fs.readFileSync(reply)),checks=[],errors=[],requests=[];

@@ -1,5 +1,5 @@
 """Strict visual-advice data contract. Values never become executable code or file paths."""
-import base64, json, re, struct
+import base64, json, re, struct, zlib
 from collections import Counter
 EFFECTS=['clean','ink','faded','stamp','letterpress','screen','pencil','bleed','risograph']
 FONTS=['gf-notoserifsc','gf-notosanssc','gf-mashanzheng','gf-longcang','gf-zcoolxiaowei','gf-zcoolqingkehuangyou','gf-cormorantgaramond','gf-lora','gf-manrope','gf-caveat','gf-courierprime','gf-bebasneue']
@@ -33,11 +33,16 @@ def preview(request):
     w,h=struct.unpack('>II',raw[16:24])
     if not 1<=w<=1200 or not 1<=h<=1200:raise ValueError('预览最长边不得超过 1200 像素')
     # Reject metadata-bearing input rather than claiming the bridge strips it itself.
-    at=8
+    at=8;seen=[]
     while at+12<=len(raw):
         length=struct.unpack_from('>I',raw,at)[0];tag=raw[at+4:at+8]
+        if at+12+length>len(raw):raise ValueError('PNG 数据不完整')
+        content=raw[at+4:at+8+length]
+        if zlib.crc32(content)&0xffffffff!=struct.unpack_from('>I',raw,at+8+length)[0]:raise ValueError('PNG 校验失败')
         if tag in [b'eXIf',b'tEXt',b'zTXt',b'iTXt']:raise ValueError('请从编辑器发送已去除元数据的预览')
-        at+=12+length
+        seen.append(tag);at+=12+length
+        if tag==b'IEND':break
+    if at!=len(raw) or not seen or seen[0]!=b'IHDR' or seen[-1]!=b'IEND' or b'IDAT' not in seen:raise ValueError('PNG 结构不完整')
     return raw
 def settings(request):
     if not isinstance(request,dict):raise ValueError('请求必须为对象')

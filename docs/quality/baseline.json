@@ -1,0 +1,11 @@
+{
+  "version": "0.7.0",
+  "commit": "b4a084c27888b543c8ea83f8e4b8fcb0826b1f3c",
+  "candidate": "0.8.0-preview.1",
+  "quality_gate": "pending_human_blind_review",
+  "functional_validation": "passed_with_documented_limits; see VALIDATION.md",
+  "public_examples": [
+    "p0002",
+    "p0003"
+  ]
+}

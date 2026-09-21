@@ -1,0 +1,23 @@
+{
+  "name": "harfbuzzjs",
+  "version": "1.6.1",
+  "source": "https://github.com/harfbuzz/harfbuzzjs",
+  "gitHead": "8aa047b90387790b255b118cf45ad11691a38910",
+  "tarball": "https://registry.npmjs.org/harfbuzzjs/-/harfbuzzjs-1.6.1.tgz",
+  "integrity": "sha512-+JeJmO+HzXjDwpfCOdGSyM2bNP8WzJNFKl/8TKivbInMYDtfRIuPIDLtnBNmQzcJw6GptbhHY6o5gaH6deCMEw==",
+  "license": "MIT",
+  "files": {
+    "LICENSE": "5d09767b2cc476f08028b56d9384dc45061c5a3e90f9ad966e44addc8d26c8b1",
+    "harfbuzz.js": "ba43463df44851fd58211ef8c19aa7956965390857727ae867b70dc7b3682de1",
+    "README.md": "69545a1140a1f5b3227280aa5280d3d536131efcf595b8db1e7c2060ab9bf800",
+    "index.mjs": "04ece1914c8720ad96257728119c1bf24088ee4ef3ab2a2ca688c9a4895d4e7e",
+    "harfbuzz.wasm": "37777ced92a2ba10279c33e1dbacf08835ddcacc215b7fcb3131e558dd01ce71",
+    "HARFBUZZ-COPYING": "ba8f810f2455c2f08e2d56bb49b72f37fcf68f1f4fade38977cfd7372050ad64"
+  },
+  "native": {
+    "repository": "https://github.com/harfbuzz/harfbuzz",
+    "commit": "36cb489cb02ce4b92099669ba9f9bea348eff93f",
+    "runtimeVersion": "14.4.0",
+    "license": "HARFBUZZ-COPYING"
+  }
+}

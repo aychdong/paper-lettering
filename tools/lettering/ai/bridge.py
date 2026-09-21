@@ -4,11 +4,17 @@ import argparse, datetime, hashlib, hmac, json, os, secrets, subprocess, sys, te
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from codex_client import Client,status
+from creative import Job
+from creative_contract import request as creative_request
+from preferences import Store
 from design_contract import SCHEMA,preview,prompt,validate_response,settings
 class Bridge(ThreadingHTTPServer):
     daemon_threads=True
-    def __init__(self,html,port=0):
-        super().__init__(('127.0.0.1',port),Handler);self.token=secrets.token_urlsafe(32);self.html=Path(html).resolve();self.last_use=time.monotonic();self.jobs={};self.busy=threading.Lock()
+    def __init__(self,html,port=0,preferences_path=None):
+        super().__init__(('127.0.0.1',port),Handler);self.token=secrets.token_urlsafe(32);self.html=Path(html).resolve();self.last_use=time.monotonic();self.jobs={};self.busy=threading.Lock();self.preferences=Store(preferences_path)
+    def create(self,payload,job):
+        try:self.jobs[job].run()
+        finally:self.last_use=time.monotonic();self.busy.release()
     def url(self):return self.html.as_uri()+'#'+urllib.parse.urlencode({'bridge':'http://127.0.0.1:'+str(self.server_port),'token':self.token})
     def bootstrap(self,folder):
         # LaunchServices drops fragments from file URLs. Open a plain local file,
@@ -48,26 +54,41 @@ class Handler(BaseHTTPRequestHandler):
         if self.path=='/status':
             try:return self.reply(200,status())
             except Exception as e:return self.reply(200,{'installed':False,'loggedIn':False,'message':str(e)[:1000]})
+        if self.path=='/v1/preferences':
+            try:return self.reply(200,self.server.preferences.read())
+            except (ValueError,OSError) as e:return self.reply(400,{'error':str(e)})
         if self.path.startswith('/jobs/'):
-            job=self.path.rsplit('/',1)[-1];return self.reply(200,self.server.jobs.get(job,{'state':'missing'}))
+            job=self.path.rsplit('/',1)[-1];value=self.server.jobs.get(job,{'state':'missing'});return self.reply(200,value.snapshot() if isinstance(value,Job) else value)
         self.reply(404,{'error':'Unknown endpoint'})
     def do_POST(self):
         if not self.allowed():return self.reply(403,{'error':'Local capability required'})
-        if self.path!='/advice':return self.reply(404,{'error':'Unknown endpoint'})
+        if self.path not in ['/advice','/v1/creative','/v1/preferences'] and not self.path.startswith('/jobs/'):return self.reply(404,{'error':'Unknown endpoint'})
         if not self.headers.get('Content-Type','').startswith('application/json'):return self.reply(415,{'error':'JSON required'})
         try:
             size=int(self.headers.get('Content-Length','0'))
-            if not 0<size<=14_000_000:raise ValueError('Request is too large')
-            payload=json.loads(self.rfile.read(size));preview(payload);prompt(payload)
+            if not 0<size<=40_000_000:raise ValueError('Request is too large')
+            payload=json.loads(self.rfile.read(size))
+            if self.path=='/v1/preferences':return self.reply(200,self.server.preferences.write(payload))
+            if self.path.startswith('/jobs/'):
+                parts=self.path.split('/');value=self.server.jobs.get(parts[2]);action=parts[3] if len(parts)==4 else ''
+                if not isinstance(value,Job):return self.reply(404,{'error':'创作任务不存在'})
+                if action=='cancel':value.cancel();return self.reply(200,value.snapshot())
+                if action=='renders':value.submit(payload);return self.reply(202,{'accepted':True})
+                return self.reply(404,{'error':'Unknown endpoint'})
+            if self.path=='/v1/creative':creative_request(payload);creative=Job(payload,self.server.preferences.select(payload))
+            else:preview(payload);prompt(payload)
             if not self.server.busy.acquire(blocking=False):return self.reply(409,{'error':'已有 AI 请求正在处理，请稍候。'})
             # Keep a bounded in-memory history; projects receive explicit copies of chosen advice.
             if len(self.server.jobs)>=20:self.server.jobs.pop(next(iter(self.server.jobs)))
-            job=secrets.token_urlsafe(12);self.server.phase(job,'已收到请求，正在准备画面');threading.Thread(target=self.server.advise,args=(payload,job),daemon=True).start();self.reply(202,{'job':job})
-        except (ValueError,KeyError,TypeError) as e:self.reply(400,{'error':str(e)})
+            job=secrets.token_urlsafe(12)
+            if self.path=='/v1/creative':self.server.jobs[job]=creative;target=self.server.create
+            else:self.server.phase(job,'已收到请求，正在准备画面');target=self.server.advise
+            threading.Thread(target=target,args=(payload,job),daemon=True).start();self.reply(202,{'job':job})
+        except (ValueError,KeyError,TypeError,OSError,TimeoutError,RuntimeError) as e:self.reply(400,{'error':str(e)})
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--html',type=Path,required=True);p.add_argument('--open',action='store_true');p.add_argument('--port',type=int,default=0);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--html',type=Path,required=True);p.add_argument('--open',action='store_true');p.add_argument('--port',type=int,default=0);p.add_argument('--preferences-file',type=Path,help='Use an isolated explicit profile for evaluation');a=p.parse_args()
     if not a.html.is_file():raise SystemExit('Editor HTML not found')
-    server=Bridge(a.html,a.port)
+    server=Bridge(a.html,a.port,a.preferences_file)
     launch_dir=tempfile.TemporaryDirectory(prefix='paper-lettering-launch-') if a.open else None
     threading.Thread(target=server.serve_forever,daemon=True).start()
     if a.open:

@@ -22,7 +22,17 @@ def bundle(project, root):
     encoded = json.dumps(project, ensure_ascii=False).replace('<', '\\u003c').replace('\u2028', '\\u2028').replace('\u2029', '\\u2029')
     html = html.replace('{"version":1,"documents":[]}', encoded)
     html = html.replace('<script id="fontData" type="application/json">[]</script>', '<script id="fontData" type="application/json">' + json.dumps(fonts,ensure_ascii=False).replace('<','\\u003c') + '</script>')
-    for name in ['engine.js', 'transforms.js', 'fonts.js', 'color.js', 'design.js', 'app.js']:
+    vendor=SOURCE/'vendor/harfbuzz'
+    lock=read(vendor/'lock.json')
+    for name,digest in lock['files'].items():
+        if sha(vendor/name)!=digest:raise ValueError('HarfBuzz hash mismatch: '+name)
+    factory=(vendor/'harfbuzz.js').read_text().replace('export default createHarfBuzz;', '').replace('import.meta.url','document.baseURI')
+    api=(vendor/'index.mjs').read_text().replace('import createHarfBuzz from "./harfbuzz.js";', '')
+    api=api.replace('init(await createHarfBuzz());','init(await createHarfBuzz({wasmBinary:Uint8Array.from(atob("'+base64.b64encode((vendor/'harfbuzz.wasm').read_bytes()).decode()+'"),c=>c.charCodeAt(0))}));')
+    api=api.replace('export {','return {')
+    hb='<script>window.PaperHBReady=(async()=>{'+factory+'\n'+api+'})();</script>'
+    html=html.replace('<!-- HARFBUZZ -->',hb)
+    for name in ['engine.js', 'transforms.js', 'fonts.js', 'color.js', 'design.js', 'typography.js', 'quality.js', 'preferences.js', 'app.js']:
         text = (SOURCE / name).read_text(encoding="utf-8").replace('</script', '<\\/script')
         html = html.replace('<script src="'+name+'"></script>', '<script>\n' + text + '\n</script>')
     return html, fonts, font_manifest

@@ -100,9 +100,9 @@ function portableProject(){return {...L.copy(project),fonts:F.used(project)};}
 function setPreview(value){preview=value;drag=null;document.body.classList.toggle('previewing',preview);$('preview').textContent=preview?'返回编辑 · P':'预览成图 · P';$('preview').setAttribute('aria-pressed',String(preview));$('preview').classList.toggle('active',preview);setMode('select');schedule();}
 $('preview').onclick=()=>setPreview(!preview);
 function refreshFontOptions(){const current=$('font').value;$('font').replaceChildren();const groups=new Map();for(const f of F.list()){const category=f.category||'工程字体';if(!groups.has(category)){const group=element('optgroup');group.label=category;groups.set(category,group);$('font').append(group);}const option=element('option',f.label);option.value=f.id;groups.get(category).append(option);}$('font').value=current;}
-$('font').oninput=async()=>{const target=layer(),id=$('font').value,seq=++fontSequence;if(!target)return;try{$('fontStatus').textContent='正在载入字体…';await F.ensure(id);if(seq!==fontSequence||target!==layer())return;checkpoint('font',true);target.font=id;const range=F.info(id)?.weight_range;target.weight=range?L.clamp(target.weight,...range):400;changed();sync();$('fontStatus').textContent=F.list().find(f=>f.id===id)?.localFamily?'系统字体仅在这台电脑引用；便携工程建议用内置字体。':'字体已载入；保存工程会携带所用的内置/导入字体。';}catch(e){safeError(e);sync(true);}};
+$('font').oninput=async()=>{const target=layer(),id=$('font').value,seq=++fontSequence;if(!target)return;try{$('fontStatus').textContent='正在载入字体…';await F.ensure(id);if(seq!==fontSequence||target!==layer())return;checkpoint('font',true);target.font=id;if(target.renderer==='harfbuzz-1'&&(!F.info(id)?.dataURL||['woff','woff2'].includes(F.info(id)?.format)))target.renderer='legacy';const range=F.info(id)?.weight_range;target.weight=range?L.clamp(target.weight,...range):400;changed();sync();$('fontStatus').textContent=F.list().find(f=>f.id===id)?.localFamily?'系统字体仅在这台电脑引用；便携工程建议用内置字体。':'字体已载入；保存工程会携带所用的内置/导入字体。';}catch(e){safeError(e);sync(true);}};
 $('systemFonts').onclick=async()=>{try{const count=await F.systemFonts();refreshFontOptions();sync(true);$('fontStatus').textContent=`已读取 ${count} 个系统字体家族。只在本机引用，不复制 Apple 字体。`;}catch(e){$('fontStatus').textContent='未读取系统字体；可继续使用内置字库或导入字体文件。';toast(e.name==='NotAllowedError'?'未获得系统字体权限，内置字库仍可使用。':e.message);}};
-$('importFont').onclick=()=>$('fontFile').click();$('fontFile').onchange=async e=>{const file=e.target.files[0];e.target.value='';if(!file)return;try{const id=await F.importFile(file);refreshFontOptions();if(layer()){checkpoint('font',true);layer().font=id;changed();}sync(true);$('fontStatus').textContent='字体已导入。工程会包含字体文件；分享前请确认该字体许可。';}catch(e){safeError(e);}};
+$('importFont').onclick=()=>$('fontFile').click();$('fontFile').onchange=async e=>{const file=e.target.files[0];e.target.value='';if(!file)return;try{const id=await F.importFile(file);refreshFontOptions();if(layer()){checkpoint('font',true);layer().font=id;if(['woff','woff2'].includes(F.info(id)?.format))layer().renderer='legacy';changed();}sync(true);$('fontStatus').textContent='字体已导入。工程会包含字体文件；分享前请确认该字体许可。';}catch(e){safeError(e);}};
 $('stampBorder').onchange=()=>{if(!layer())return;checkpoint('stamp-border',true);layer().stampBorder=$('stampBorder').checked;if(layer().stampBorder)layer().effect='stamp';changed();sync();};
 function refreshAssistance(){clearTimeout(colorTimer);colorTimer=setTimeout(()=>{if(!doc()||!layer()){colorCache=null;$('colorSuggestions').replaceChildren();$('aiSuggestions').replaceChildren();return;}try{renderEffectPreview();colorCache=C.analyze(doc(),images.get(doc().id),layer());showColors($('colorSuggestions'),colorCache.suggestions);const ai=doc().aiPalette;$('aiBadge').textContent=ai?'已有建议':'等待建议';showColors($('aiSuggestions'),ai?.colors||[]);$('aiNote').textContent=ai?'AI 根据画面提出的候选颜色；悬停可看选择理由。':'连接后点击「让 AI 推荐配色」，建议会直接出现在这里。';}catch(e){safeError(e);}},220);}
 function showColors(container,colors){container.replaceChildren();for(const item of colors){const b=element('button',undefined,'color-card'),swatch=element('i');swatch.style.background=item.hex;const ratio=item.contrast??colorCache?.score(item.hex);b.title=`${item.hex} · ${item.reason||''} · 参考对比 ${ratio?.toFixed(1)||'—'}:1`;b.setAttribute('aria-label',item.name+' '+item.hex);b.append(swatch,element('span',item.name),element('small',ratio?`${ratio.toFixed(1)}:1`:'—'));b.onclick=()=>{if(!layer()||layer().locked)return;checkpoint('suggested-color',true);layer().color=item.hex;changed();sync();};container.append(b);}}
@@ -155,7 +155,7 @@ $('hideLayer').onclick=()=>{if(!layer()||layer().locked)return;checkpoint('hide'
 
 for(const b of document.querySelectorAll('[data-canvas-align]'))b.onclick=()=>{const l=layer(),d=doc();if(!l||l.locked)return;checkpoint('canvas-align',true);const m=L.metrics(l),points=[[0,0],[m.width,0],[m.width,m.height],[0,m.height]].map(([x,y])=>T.world(l,x,y)),xs=points.map(p=>p.x),ys=points.map(p=>p.y),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys),kind=b.dataset.canvasAlign,w=d.image.width,h=d.image.height;if(kind==='left')l.x+=w*.03-minX;if(kind==='center')l.x+=w/2-(minX+maxX)/2;if(kind==='right')l.x+=w*.97-maxX;if(kind==='top')l.y+=h*.03-minY;if(kind==='middle')l.y+=h/2-(minY+maxY)/2;if(kind==='bottom')l.y+=h*.97-maxY;changed();sync(true);};
 function aiButtons(){
- for(const id of ['livePalette','liveDesign'])$(id).disabled=!aiConnected||aiBusy||!doc();$('connectAI').disabled=aiBusy||connectionChecking;$('connectionStatus').disabled=aiBusy||connectionChecking;$('connectAI').textContent=connectionChecking?'正在连接…':'重新连接';
+ for(const id of ['livePalette','liveDesign','copyOnly','layoutOnly'])$(id).disabled=!aiConnected||aiBusy||!doc();$('connectAI').disabled=aiBusy||connectionChecking;$('connectionStatus').disabled=aiBusy||connectionChecking;$('connectAI').textContent=connectionChecking?'正在连接…':'重新连接';
  $('quickLayout').disabled=aiBusy||connectionChecking||!ready;$('quickLayout').setAttribute('aria-busy',String(aiBusy));$('quickLayoutLabel').textContent=aiBusy?'AI 正在工作…':connectionChecking?'正在连接…':!doc()?'导入图片开始':creativeSettings().copyMode==='compose'?'一键写文案并排版':'一键排版 · 保留原文';
  $('showDesigns').disabled=!doc();
 }
@@ -183,9 +183,9 @@ async function applyDesign(proposal,target,expected=layoutFingerprint(target)){
  const seq=++applySequence;
  await Promise.all(proposal.layers.map(l=>F.ensure(l.font)));
  if(seq!==applySequence||target!==doc()||!project.documents.includes(target))return false;
- if(layoutFingerprint(target)!==expected||target.layers.some(l=>l.locked))return false;
- const layers=D.layers(proposal,target);if(target.layers.filter(l=>l.hidden).length+layers.length>30)throw new Error('文字层合计超过 30 层，请先整理隐藏的备用层。');checkpoint('ai-design',true);target.layers=[...target.layers.filter(l=>l.hidden),...layers];
- target.designDecision={name:proposal.name,reason:proposal.reason,provenance:proposal.provenance||null,appliedAt:new Date().toISOString()};activeLayerId=layers[0].id;changed();sync(true);return true;
+ if(layoutFingerprint(target)!==expected||(!proposal.renderLayers&&target.layers.some(l=>l.locked)))return false;
+ const layers=D.layers(proposal,target);if(target.layers.filter(l=>l.hidden||l.locked).length+layers.length>30)throw new Error('文字层合计超过 30 层，请先整理隐藏的备用层。');checkpoint('ai-design',true);target.layers=[...target.layers.filter(l=>l.hidden),...layers,...target.layers.filter(l=>l.locked&&!l.hidden)];
+ target.designDecision={name:proposal.name,reason:proposal.reason,provenance:proposal.provenance||null,appliedAt:new Date().toISOString()};activeLayerId=layers[0]?.id||target.layers[0]?.id;changed();sync(true);return true;
 }
 async function askAI(kind,{applyFirst=false}={}){
  if(!doc()||aiBusy)return;
@@ -209,16 +209,56 @@ async function askAI(kind,{applyFirst=false}={}){
   }else{progress(kind==='design'?'方案已准备好。先看预览，再点击「应用此方案」。':'配色已准备好，点击色卡即可试用。');}
  }catch(e){progress(e.message);toast(e.message);}finally{aiBusy=false;endActivity();aiButtons();}
 }
-$('livePalette').onclick=()=>askAI('palette');$('liveDesign').onclick=()=>askAI('design');
+let creativeJob=null,creativeCancelled=false;
+$('cancelCreative').onclick=async()=>{creativeCancelled=true;progress('正在取消…');if(creativeJob)try{await api('/jobs/'+encodeURIComponent(creativeJob)+'/cancel',{});}catch(e){progress(e.message);}};
+async function askCreative({applyFirst=false,copyMode,action='all'}={}){
+ if(!doc()||aiBusy)return;
+ const target=doc(),snapshot=L.copy(target),original=layoutFingerprint(target),img=images.get(target.id),payload=adviceRequest(snapshot,'design');payload.version=1;payload.action=action;payload.copyMode=copyMode||payload.copyMode;payload.layers=snapshot.layers.filter(l=>!l.hidden).map(l=>({text:l.text,font:l.font,x:l.x,y:l.y,size:l.size,direction:l.direction,locked:l.locked===true}));
+ aiBusy=true;creativeCancelled=false;creativeJob=null;aiButtons();startActivity();$('cancelCreative').hidden=false;progress('准备看图与构思…');let drafts=[];
+ try{
+  payload.revision=await window.PaperQuality.digest(original);if(creativeCancelled)throw new Error('任务已取消');
+  const started=await api('/v1/creative',payload);creativeJob=started.job;let response;const deadline=Date.now()+720000;
+  while(Date.now()<deadline){
+   if(creativeCancelled)throw new Error('任务已取消，当前画布保持不变。');
+   const s=await api('/jobs/'+encodeURIComponent(creativeJob));if(s.phase)progress(s.phase+'…');
+   if(s.state==='failed'||s.state==='cancelled')throw new Error(s.error||'任务已取消');
+   if(s.state==='awaiting_render'){
+    const out=await window.PaperQuality.search(s.briefs,s.scene,snapshot,img,{placement:payload.placement,action,isCancelled:()=>creativeCancelled});drafts=out.candidates;
+    if(creativeCancelled)throw new Error('任务已取消');
+    await api('/jobs/'+encodeURIComponent(creativeJob)+'/renders',{revision:payload.revision,ticket:s.ticket,candidates:out.candidates});
+   }
+   if(s.state==='complete'){response=s.result;break;}
+   await new Promise(r=>setTimeout(r,1000));
+  }
+  if(!response)throw new Error('创作达到十二分钟上限；当前画布保持不变。');
+  if(response.revision!==payload.revision||response.imageSHA256!==payload.imageSHA256||!project.documents.includes(target))throw new Error('工程已更换，方案未应用。');
+  const suggestions=response.designs.map(design=>({...design,provenance:{...response.provenance,model:response.model,createdAt:response.createdAt,previewSHA256:response.previewSHA256,imageSHA256:response.imageSHA256,copyMode:payload.copyMode,placement:payload.placement}}));
+  if(payload.copyMode==='preserve'){const key=ls=>JSON.stringify(ls.map(l=>l.text.replace(/\n/g,'')).sort());for(const design of suggestions)if(key(design.layers)!==key(payload.layers.filter(l=>!l.locked&&l.text.trim())))throw new Error('方案改动了原文，未应用。');}
+  target.designSuggestions=suggestions;target.aiPalette=C.validatePalette({...response,type:'paper-lettering-palette'},target);changed();renderDesigns();
+  if(applyFirst&&await applyDesign(suggestions[0],target,original)){setInspectorTab('text');progress('初排完成 · 已看成图审稿，可撤销或继续微调。');toast('AI 审稿完成，推荐方案已应用');}
+  else progress('方案已准备好。'+(applyFirst?'画面有修改，已保留你的编辑，请手动选择。':'文案与版式已分别审阅，可查看并应用。'));
+ }catch(e){
+  if(creativeJob)try{await api('/jobs/'+encodeURIComponent(creativeJob)+'/cancel',{});}catch(_){}
+  if(drafts.length&&project.documents.includes(target)){target.designSuggestions=drafts.map(c=>({id:c.id,name:c.name,reason:c.reason,layers:c.layers,renderLayers:c.renderLayers,checks:c.checks,reviewed:false}));changed();renderDesigns();}
+  progress(e.message);toast(e.message);
+ }finally{creativeJob=null;aiBusy=false;$('cancelCreative').hidden=true;endActivity();aiButtons();}
+}
+async function initializePreferences(){try{await window.PaperPreferences.init(bridge?api:null);renderPreferences();}catch(e){$('preferencesStatus').textContent='偏好未载入：'+e.message;}}
+function renderPreferences(){const p=window.PaperPreferences.get();$('preferencesEnabled').checked=p.enabled;const box=$('preferenceEntries');box.replaceChildren();for(const e of p.entries.slice().reverse()){const row=element('div',undefined,'preference-row');row.append(element('p',(e.kind==='copy'?'文案':'版式')+' · '+(e.verdict==='like'?'喜欢':'不喜欢')+'：'+e.text),element('p',e.reason,'micro-note'));const remove=element('button','删除');remove.onclick=async()=>{try{const v=window.PaperPreferences.get();await window.PaperPreferences.save({...v,entries:v.entries.filter(x=>x.id!==e.id)});renderPreferences();}catch(e){$('preferencesStatus').textContent=e.message;}};row.append(remove);box.append(row);}if(!p.entries.length)box.append(element('p','还没有记录。只有你主动标记才会加入。','micro-note'));$('preferencesStatus').textContent='已记录 '+p.entries.length+' 条明确反馈';}
+function appendFeedback(card,proposal,d){const row=element('div',undefined,'feedback-actions');for(const [label,kind,verdict] of [['喜欢这句','copy','like'],['喜欢这个版式','layout','like'],['文案不合适','copy','dislike'],['版式不合适','layout','dislike']]){const b=element('button',label,'small-button');b.onclick=async()=>{let reason='';if(verdict==='dislike'){reason=window.prompt('哪里不合适？例如：太空泛、太煽情、遮住主体、字太淡。');if(reason===null)return;}try{await window.PaperPreferences.add(proposal,kind,verdict,reason,creativeSettings(d).preference);renderPreferences();toast('已记录明确反馈');}catch(e){toast('偏好未保存：'+e.message);}};row.append(b);}card.append(row);}
+$('preferencesEnabled').onchange=async()=>{try{await window.PaperPreferences.save({...window.PaperPreferences.get(),enabled:$('preferencesEnabled').checked});renderPreferences();}catch(e){$('preferencesStatus').textContent=e.message;}};
+$('exportPreferences').onclick=()=>download(new Blob([JSON.stringify(window.PaperPreferences.get(),null,2)],{type:'application/json'}),'纸上文字-明确偏好.json');
+$('importPreferences').onclick=()=>$('preferencesFile').click();$('preferencesFile').onchange=async e=>{const file=e.target.files[0];e.target.value='';if(!file)return;try{if(file.size>300000)throw new Error('偏好文件过大');await window.PaperPreferences.save(JSON.parse(await file.text()));renderPreferences();}catch(e){$('preferencesStatus').textContent=e.message;}};
+$('livePalette').onclick=()=>askAI('palette');$('liveDesign').onclick=()=>askCreative();
+$('copyOnly').onclick=()=>askCreative({action:'copy'});$('layoutOnly').onclick=()=>askCreative({copyMode:'preserve'});
 $('quickLayout').onclick=async()=>{
  if(!doc()){$('imageFile').click();return;}
- if(doc().layers.some(l=>l.locked)){setInspectorTab('text');progress('请先解锁文字层，再进行一键排版。');toast('请先解锁文字层');return;}
  if(!aiConnected){setInspectorTab('ai');await connectAI();if(!aiConnected){progress('AI 尚未连接。'+$('aiConnection').textContent);return;}}
- setInspectorTab('ai');await askAI('design',{applyFirst:true});
+ setInspectorTab('ai');await askCreative({applyFirst:true});
 };
 async function renderDesigns(){
  const seq=++designSequence,d=doc(),box=$('designSuggestions');box.replaceChildren();aiButtons();if(!d)return;
- for(const proposal of d.designSuggestions||[]){try{const layers=D.layers(proposal,d);await Promise.all(layers.map(l=>F.ensure(l.font)));if(seq!==designSequence||d!==doc())return;const fitted=D.layers(proposal,d),card=element('div',undefined,'design-card');card.append(element('strong',proposal.name||'排版方案'),element('p',proposal.reason||''));const thumb=L.canvas(240,240*d.image.height/d.image.width),art=L.render({...d,layers:fitted},images.get(d.id));thumb.getContext('2d').drawImage(art,0,0,thumb.width,thumb.height);card.append(element('p',proposal.layers.map(l=>l.text).join('\n\n'),'design-copy'));card.append(element('p',proposal.layers.map(l=>`${l.direction==='vertical'?'竖排':'横排'} · ${l.text.split('\n').length}${l.direction==='vertical'?' 列':' 行'} · ${Math.round(l.size*d.image.width)} px`).join(' / '),'design-spec'));card.append(thumb);const button=element('button','应用此方案');button.onclick=async()=>{try{if(await applyDesign(proposal,d)){toast('方案已应用，文字层可继续编辑；可用撤销恢复。');progress('方案已应用。切换文字、颜色或质感页继续微调。');}else toast('画面或文字已变动，或文字层已锁定，请检查后再应用。');}catch(e){safeError(e);}};card.append(button);box.append(card);}catch(e){const note=element('p','此方案无法载入：'+e.message,'micro-note');box.append(note);}}
+ for(const proposal of d.designSuggestions||[]){try{const layers=D.layers(proposal,d);await Promise.all(layers.map(l=>F.ensure(l.font)));if(seq!==designSequence||d!==doc())return;const fitted=D.layers(proposal,d),card=element('div',undefined,'design-card');card.append(element('strong',proposal.name||'排版方案'),element('p',proposal.reason||''));const thumb=L.canvas(240,240*d.image.height/d.image.width),art=L.render({...d,layers:[...fitted,...d.layers.filter(l=>l.locked&&!l.hidden)]},images.get(d.id));thumb.getContext('2d').drawImage(art,0,0,thumb.width,thumb.height);card.append(element('p',proposal.layers.map(l=>l.text).join('\n\n'),'design-copy'));card.append(element('p',fitted.map(l=>`${l.direction==='vertical'?'竖排':'横排'} · ${(l.typesetting?.lines||l.text.split('\n')).length}${l.direction==='vertical'?' 列':' 行'} · ${Math.round(l.size)} px`).join(' / '),'design-spec'));card.append(thumb);const button=element('button','应用此方案');button.onclick=async()=>{try{if(await applyDesign(proposal,d)){toast('方案已应用，文字层可继续编辑；可用撤销恢复。');progress('方案已应用。切换文字、颜色或质感页继续微调。');}else toast('画面或文字已变动，或文字层已锁定，请检查后再应用。');}catch(e){safeError(e);}};if(proposal.reviewed===false){card.append(element('p','未完成审稿的草案 · 不会自动应用','micro-note'));}card.append(button);appendFeedback(card,proposal,d);box.append(card);}catch(e){const note=element('p','此方案无法载入：'+e.message,'micro-note');box.append(note);}}
 }
 
 $('loadExamples').onclick=async()=>{
@@ -227,10 +267,11 @@ $('loadExamples').onclick=async()=>{
  selectDoc(first);changed();toast('示例已就绪，可改字、试配色或一键排版。');
  }catch(e){safeError(e);}
 };
+await window.PaperTypography.ready;
 refreshFontOptions();
 new ResizeObserver(()=>{fit();drawOverlay();}).observe($('canvasWell'));
 try{try{db=await openDB();}catch(e){console.warn('Browser draft store unavailable',e);}let stored=null;try{stored=db?await getDraft():null;if(!stored&&db)for(const alias of starter.draftAliases||[]){stored=await getDraft('draft:'+alias);if(stored){stored.id=starter.id;toast('已接续上一版草稿，旧版草稿仍保留。');break;}}}catch(e){console.warn(e);}if(stored?.documents?.length===0&&starter.documents.length)stored=null;try{await loadProject(stored||starter);}catch(e){if(!stored)throw e;await loadProject(starter);toast('旧草稿无法读取，已载入初始工程。');}await document.fonts.ready;ready=true;schedule();$('saveStatus').textContent=stored?'已恢复本机草稿':db?'可以开始编辑':'请用「保存工程」留存';}catch(e){safeError(e);$('saveStatus').textContent='加载失败';}
 // Small read-only hooks support reproducible local rendering and browser checks.
-connectAI();
+connectAI().then(()=>initializePreferences()).catch(()=>initializePreferences());
 window.paperStudio={get ready(){return ready;},getProject:()=>L.copy(project),getSelected:()=>L.copy(doc()),getMode:()=>mode,getPreview:()=>preview,getInspectorTab:()=>inspectorTab};
 })();

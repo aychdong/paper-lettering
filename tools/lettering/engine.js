@@ -1,7 +1,7 @@
 /* Local, deterministic lettering. No network, no generative processing. */
 (function (global) {
 'use strict';
-const VERSION = 3;
+const VERSION = 4;
 const FONTS = {song:'"Songti SC", "STSong", "Noto Serif CJK SC", serif',kai:'"Kaiti SC", "STKaiti", "KaiTi", serif',hei:'"PingFang SC", "Heiti SC", "Microsoft YaHei", sans-serif',serif:'Georgia, "Times New Roman", "Songti SC", serif'};
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const copy=x=>JSON.parse(JSON.stringify(x));
@@ -9,12 +9,12 @@ const uid=()=>global.crypto?.randomUUID?.() || 'id-'+Date.now()+'-'+Math.random(
 const canvas=(w,h)=>{const c=document.createElement('canvas');c.width=Math.max(1,Math.ceil(w));c.height=Math.max(1,Math.ceil(h));return c;};
 const num=(v,fallback,a,b)=>Number.isFinite(Number(v)) ? clamp(Number(v),a,b) : fallback;
 const chars=s=>global.Intl?.Segmenter ? [...new Intl.Segmenter('zh',{granularity:'grapheme'}).segment(s)].map(x=>x.segment) : Array.from(s);
-function layer(overrides={}) {return {id:uid(),text:'写下一句话',x:80,y:100,font:'song',weight:400,thickness:0,slant:0,outlineWidth:0,outlineColor:'#f3ead6',hidden:false,locked:false,size:30,tracking:3,lineHeight:1.4,align:'left',direction:'horizontal',rotation:0,color:'#514e42',opacity:.88,grain:.28,multiply:true,effect:'ink',pressure:.55,edgeWear:.2,stampBorder:false,effectStrength:.5,secondaryColor:'#ba694b',seed:71429,...overrides};}
+function layer(overrides={}) {return {renderer:'legacy',typesetting:null,id:uid(),text:'写下一句话',x:80,y:100,font:'song',weight:400,thickness:0,slant:0,outlineWidth:0,outlineColor:'#f3ead6',hidden:false,locked:false,size:30,tracking:3,lineHeight:1.4,align:'left',direction:'horizontal',rotation:0,color:'#514e42',opacity:.88,grain:.28,multiply:true,effect:'ink',pressure:.55,edgeWear:.2,stampBorder:false,effectStrength:.5,secondaryColor:'#ba694b',seed:71429,...overrides};}
 function normalizeLayer(x,w,h) {
- return layer({id:typeof x.id==='string'?x.id:uid(),text:String(x.text??'').slice(0,500),x:num(x.x,50,-w,w*2),y:num(x.y,50,-h,h*2),font:FONTS[x.font]?x.font:'song',weight:num(x.weight,400,100,900),thickness:num(x.thickness,0,0,.12),slant:num(x.slant,0,-25,25),outlineWidth:num(x.outlineWidth,0,0,10),outlineColor:/^#[0-9a-f]{6}$/i.test(x.outlineColor)?x.outlineColor:'#f3ead6',hidden:x.hidden===true,locked:x.locked===true,size:num(x.size,30,8,400),tracking:num(x.tracking,3,-2,30),lineHeight:num(x.lineHeight,1.4,1,2.5),align:['left','center','right'].includes(x.align)?x.align:'left',direction:x.direction==='vertical'?'vertical':'horizontal',rotation:num(x.rotation,0,-180,180),color:/^#[0-9a-f]{6}$/i.test(x.color)?x.color:'#514e42',opacity:num(x.opacity,.88,.1,1),grain:num(x.grain,.28,0,1),multiply:x.multiply!==false,effect:['ink','faded','stamp','clean','legacy','letterpress','screen','pencil','bleed','risograph'].includes(x.effect)?x.effect:'legacy',pressure:num(x.pressure,.55,0,1),edgeWear:num(x.edgeWear,.2,0,1),stampBorder:x.stampBorder===true,effectStrength:num(x.effectStrength,.5,0,1),secondaryColor:/^#[0-9a-f]{6}$/i.test(x.secondaryColor)?x.secondaryColor:'#ba694b',seed:num(x.seed,71429,0,2147483647)});
+ return layer({renderer:x.renderer==='harfbuzz-1'?'harfbuzz-1':'legacy',typesetting:x.typesetting&&typeof x.typesetting==='object'?{source:String(x.typesetting.source||'').slice(0,500),lines:Array.isArray(x.typesetting.lines)?x.typesetting.lines.slice(0,120).map(v=>String(v).slice(0,500)):[],poetic:x.typesetting.poetic===true}:null,id:typeof x.id==='string'?x.id:uid(),text:String(x.text??'').slice(0,500),x:num(x.x,50,-w,w*2),y:num(x.y,50,-h,h*2),font:FONTS[x.font]?x.font:'song',weight:num(x.weight,400,100,900),thickness:num(x.thickness,0,0,.12),slant:num(x.slant,0,-25,25),outlineWidth:num(x.outlineWidth,0,0,10),outlineColor:/^#[0-9a-f]{6}$/i.test(x.outlineColor)?x.outlineColor:'#f3ead6',hidden:x.hidden===true,locked:x.locked===true,size:num(x.size,30,8,400),tracking:num(x.tracking,3,-2,30),lineHeight:num(x.lineHeight,1.4,1,2.5),align:['left','center','right'].includes(x.align)?x.align:'left',direction:x.direction==='vertical'?'vertical':'horizontal',rotation:num(x.rotation,0,-180,180),color:/^#[0-9a-f]{6}$/i.test(x.color)?x.color:'#514e42',opacity:num(x.opacity,.88,.1,1),grain:num(x.grain,.28,0,1),multiply:x.multiply!==false,effect:['ink','faded','stamp','clean','legacy','letterpress','screen','pencil','bleed','risograph'].includes(x.effect)?x.effect:'legacy',pressure:num(x.pressure,.55,0,1),edgeWear:num(x.edgeWear,.2,0,1),stampBorder:x.stampBorder===true,effectStrength:num(x.effectStrength,.5,0,1),secondaryColor:/^#[0-9a-f]{6}$/i.test(x.secondaryColor)?x.secondaryColor:'#ba694b',seed:num(x.seed,71429,0,2147483647)});
 }
 function normalizeProject(p) {
- if(!p || ![1,2,VERSION].includes(p.version) || !Array.isArray(p.documents) || p.documents.length>40) throw new Error('不是支持的文字工程，或画面超过 40 张。');
+ if(!p || ![1,2,3,VERSION].includes(p.version) || !Array.isArray(p.documents) || p.documents.length>40) throw new Error('不是支持的文字工程，或画面超过 40 张。');
  let pixels=0;
  const documents=p.documents.map((d,i)=>{
   if(!d.image || typeof d.image.dataURL!=='string' || !/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(d.image.dataURL)) throw new Error('工程中的底图必须是内嵌 PNG、JPEG 或 WebP。');
@@ -45,6 +45,7 @@ function paperPatch(ctx,source,r){
 }
 function fontCSS(l){return `${l.weight||400} ${l.size}px ${FONTS[l.font]}`;}
 function metrics(l){
+ if(l.renderer==='harfbuzz-1')return global.PaperTypography.layout(l);
  const ctx=canvas(1,1).getContext('2d');ctx.font=fontCSS(l);
  const lines=l.text.split('\n').map(chars);const widths=lines.map(c=>Math.max(0,c.reduce((sum,ch)=>sum+ctx.measureText(ch).width,0)+Math.max(0,c.length-1)*l.tracking));
  const vertical=l.direction==='vertical';
@@ -88,7 +89,7 @@ function textBitmap(l,base){
  if(bw*bh>20000000||bw>16000||bh>16000)throw new Error('这段文字太大，请减少字号或换行。');
  const out=canvas(bw,bh),ctx=out.getContext('2d',{willReadFrequently:true});
  ctx.font=fontCSS(l);ctx.textBaseline='top';ctx.fillStyle=l.color;ctx.save();ctx.translate(pad+Math.max(0,m.shear*m.height),pad);ctx.transform(1,0,-m.shear,1,0,0);
- m.lines.forEach((line,i)=>{let x=m.vertical?(m.lines.length-1-i)*l.size*l.lineHeight: l.align==='center'?(m.rawWidth-m.widths[i])/2:l.align==='right'?m.rawWidth-m.widths[i]:0;let y=m.vertical?0:i*l.size*l.lineHeight;
+ if(l.renderer==='harfbuzz-1')global.PaperTypography.draw(ctx,l,m);else m.lines.forEach((line,i)=>{let x=m.vertical?(m.lines.length-1-i)*l.size*l.lineHeight: l.align==='center'?(m.rawWidth-m.widths[i])/2:l.align==='right'?m.rawWidth-m.widths[i]:0;let y=m.vertical?0:i*l.size*l.lineHeight;
   for(const ch of line){ctx.lineJoin='round';if(l.outlineWidth>0){ctx.strokeStyle=l.outlineColor;ctx.lineWidth=l.outlineWidth*2+(l.thickness||0)*l.size;ctx.strokeText(ch,x,y);}if(l.thickness>0){ctx.strokeStyle=l.color;ctx.lineWidth=l.thickness*l.size;ctx.strokeText(ch,x,y);}ctx.fillText(ch,x,y);if(m.vertical)y+=l.size+l.tracking;else x+=ctx.measureText(ch).width+l.tracking;}
  });
  ctx.restore();
@@ -112,5 +113,5 @@ function render(doc,img,mode='all'){
 function hit(l,x,y,pad=12){const a=-l.rotation*Math.PI/180,dx=x-l.x,dy=y-l.y,px=dx*Math.cos(a)-dy*Math.sin(a),py=dx*Math.sin(a)+dy*Math.cos(a),m=metrics(l);return px>=-pad&&py>=-pad&&px<=m.width+pad&&py<=m.height+pad;}
 function hex(r,g,b){return '#'+[r,g,b].map(n=>Math.round(n).toString(16).padStart(2,'0')).join('');}
 function sampledColor(img,x,y){const c=canvas(img.naturalWidth,img.naturalHeight),ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0);const sx=clamp(Math.round(x)-1,0,c.width-3),sy=clamp(Math.round(y)-1,0,c.height-3);const p=ctx.getImageData(sx,sy,Math.min(3,c.width),Math.min(3,c.height)).data;let rgb=[0,0,0],n=p.length/4;for(let i=0;i<p.length;i+=4)for(let k=0;k<3;k++)rgb[k]+=p[i+k];return hex(...rgb.map(v=>v/n));}
-global.Lettering={VERSION,FONTS,clamp,copy,uid,canvas,layer,normalizeProject,loadImage,fontCSS,normalizeLayer,metrics,render,hit,sampledColor};
+global.Lettering={VERSION,FONTS,clamp,copy,uid,canvas,layer,normalizeProject,loadImage,fontCSS,normalizeLayer,metrics,textBitmap,render,hit,sampledColor};
 })(window);

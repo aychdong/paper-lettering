@@ -1,7 +1,8 @@
 {
-  "version": 3,
-  "id": "paper-lettering-portable-v7",
+  "version": 4,
+  "id": "paper-lettering-portable-v8-preview",
   "draftAliases": [
+    "paper-lettering-portable-v7",
     "paper-lettering-portable-v6"
   ],
   "title": "纸上文字 · 两张示例",
@@ -12,35 +13,43 @@
       "title": "示例 · 追着光跑",
       "layers": [
         {
-          "id": "ca36c115-ad9c-40a8-a920-eb9d353e5221",
-          "text": "追着光跑",
-          "x": 126.23,
-          "y": 186.185,
-          "font": "gf-notoserifsc",
-          "weight": 600,
+          "renderer": "harfbuzz-1",
+          "typesetting": {
+            "source": "小短腿站得稳，脑袋仰得老高。",
+            "lines": [
+              "小短腿站得稳，脑袋仰得老高。"
+            ],
+            "poetic": false
+          },
+          "text": "小短腿站得稳，脑袋仰得老高。",
+          "x": 33.985000000000014,
+          "y": 33.985000000000014,
+          "font": "gf-notosanssc",
+          "weight": 500,
           "thickness": 0,
           "slant": 0,
           "outlineWidth": 0,
           "outlineColor": "#f3ead6",
           "hidden": false,
           "locked": false,
-          "size": 87.39,
-          "tracking": 8.739,
-          "lineHeight": 1.4,
-          "align": "left",
+          "size": 38.84,
+          "tracking": 0.5826,
+          "lineHeight": 1.3,
+          "align": "center",
           "direction": "horizontal",
           "rotation": 0,
-          "color": "#514A3D",
-          "opacity": 0.95,
-          "grain": 0.18,
+          "color": "#4A4036",
+          "opacity": 1,
+          "grain": 0,
           "multiply": false,
-          "effect": "letterpress",
-          "pressure": 0.28,
-          "edgeWear": 0.1,
+          "effect": "clean",
+          "pressure": 0,
+          "edgeWear": 0,
           "stampBorder": false,
-          "effectStrength": 0.55,
+          "effectStrength": 0.5,
           "secondaryColor": "#ba694b",
-          "seed": 71429
+          "seed": 71429,
+          "id": "example-p0002-0"
         }
       ],
       "repairs": [
@@ -66,96 +75,262 @@
       "aiPalette": {
         "type": "paper-lettering-palette",
         "version": 1,
-        "model": "gpt-6-astra",
-        "createdAt": "2026-09-21T03:07:29.305186+00:00",
         "imageSHA256": "86b8863b190973aed6cf1419b6a758545dcfbdfc766adaba2b4f7af2dabb30fa",
-        "previewSHA256": "798f9c2ae5bab7c8acbca4083a8eda068a4e3ffcd5711e58556257a555cb11b9",
         "colors": [
           {
-            "hex": "#514A3D",
-            "name": "暖墨褐",
-            "reason": "呼应照片中的灰褐与草地色调，在米白纸面上保持清晰对比，不抢人物与红色纸带的注意力。"
+            "hex": "#4A4036",
+            "name": "暖深棕",
+            "reason": "作为主文字色，与纸张和草地协调，在米白留白上保持清晰对比。"
           },
           {
-            "hex": "#974B3B",
-            "name": "沉朱红",
-            "reason": "与红色纸带形成同色系呼应，降低鲜艳程度，让标题醒目而不过分跳脱。"
+            "hex": "#B74330",
+            "name": "砖红",
+            "reason": "呼应红色纸带，仅用于少量关键词，避免抢过小狗与人物。"
           },
           {
-            "hex": "#4F5546",
-            "name": "灰橄榄",
-            "reason": "邻近草地的自然色调，可作为暖墨褐的替换色；偏深的明度有利于米白纸面上的阅读。"
+            "hex": "#626047",
+            "name": "深橄榄灰",
+            "reason": "呼应草地与树影，适合轻松克制的短句；仅建议用于浅色纸面。"
           }
-        ]
+        ],
+        "model": "gpt-6-astra",
+        "createdAt": "2026-09-21T06:49:38.742990+00:00"
       },
       "designSuggestions": [
         {
-          "name": "横题·纸上留光",
-          "reason": "建议在上方偏左的完整留白中横排，采用 Noto 宋体 600 字重，以清楚的笔画对比建立分量。暖墨褐搭配压印质感，贴合旧纸氛围；适度字距保留呼吸感，与红色纸带、建筑及人物均保持距离。",
+          "id": "proposal-c1",
+          "name": "亲切白描 · 单行短题",
           "layers": [
             {
-              "text": "追着光跑",
-              "font": "gf-notoserifsc",
-              "size": 0.09,
-              "weight": 600,
+              "text": "小短腿站得稳，脑袋仰得老高。",
+              "font": "gf-notosanssc",
+              "size": 0.04,
+              "weight": 500,
               "thickness": 0,
               "slant": 0,
-              "x": 0.13,
-              "y": 0.115,
+              "x": 0.03500000000000002,
+              "y": 0.02099135268684374,
               "rotation": 0,
               "direction": "horizontal",
-              "align": "left",
-              "tracking": 0.1,
-              "color": "#514A3D",
-              "effect": "letterpress"
+              "align": "center",
+              "tracking": 0.015,
+              "lineHeight": 1.3,
+              "color": "#4A4036",
+              "effect": "clean"
             }
           ],
+          "renderLayers": [
+            {
+              "renderer": "harfbuzz-1",
+              "typesetting": {
+                "source": "小短腿站得稳，脑袋仰得老高。",
+                "lines": [
+                  "小短腿站得稳，脑袋仰得老高。"
+                ],
+                "poetic": false
+              },
+              "text": "小短腿站得稳，脑袋仰得老高。",
+              "x": 33.985000000000014,
+              "y": 33.985000000000014,
+              "font": "gf-notosanssc",
+              "weight": 500,
+              "thickness": 0,
+              "slant": 0,
+              "outlineWidth": 0,
+              "outlineColor": "#f3ead6",
+              "hidden": false,
+              "locked": false,
+              "size": 38.84,
+              "tracking": 0.5826,
+              "lineHeight": 1.3,
+              "align": "center",
+              "direction": "horizontal",
+              "rotation": 0,
+              "color": "#4A4036",
+              "opacity": 1,
+              "grain": 0,
+              "multiply": false,
+              "effect": "clean",
+              "pressure": 0,
+              "edgeWear": 0,
+              "stampBorder": false,
+              "effectStrength": 0.5,
+              "secondaryColor": "#ba694b",
+              "seed": 71429
+            }
+          ],
+          "checks": {
+            "errors": [],
+            "warnings": [
+              "主体位置不确定，使用扩大保护区域"
+            ],
+            "rects": [
+              {
+                "x": 33.985000000000014,
+                "y": 33.985000000000014,
+                "w": 526.0878,
+                "h": 37.674800000000005
+              }
+            ],
+            "ink": [
+              {
+                "median": 8.370030676187962,
+                "p10": 7.930020465746021,
+                "visibleFraction": 1,
+                "corePixels": 5380
+              }
+            ],
+            "variant": 1,
+            "renderer": "hb-1.6.1-zhCN-1",
+            "fontVersions": [
+              {
+                "id": "gf-notosanssc",
+                "sha256": "a3041811a78c361b1de50f953c805e0244951c21c5bd412f7232ef0d899af0da"
+              }
+            ],
+            "visibilityPolicy": "core-ink-v1; heuristic, not WCAG certification"
+          },
+          "previewSHA256": "3f146e7dc237826129595cbe1c850d298e4352e31d44a9350cf14c7d3905c5c3",
+          "parametersSHA256": "f3bb70ed4f45c9d10361923f7cbedbeb1cdb2813d232855d7f84a93e084a2d11",
+          "reason": "短腿站立与仰头的动作对照具体、顺口，最贴合本次要求。顶部单行笔画清晰，未遮挡主体，首选。",
+          "reviewed": true,
           "provenance": {
             "model": "gpt-6-astra",
-            "createdAt": "2026-09-21T03:07:29.305186+00:00",
+            "createdAt": "2026-09-21T06:49:38.742990+00:00",
             "imageSHA256": "86b8863b190973aed6cf1419b6a758545dcfbdfc766adaba2b4f7af2dabb30fa",
-            "previewSHA256": "798f9c2ae5bab7c8acbca4083a8eda068a4e3ffcd5711e58556257a555cb11b9"
+            "previewSHA256": "65727e028466caf1c7d9aae1880944f3baec53b4168d780b198d08eac6046b67",
+            "pipeline": "creative-1",
+            "promptVersion": "2026-09-quality-1",
+            "ruleVersion": "zhCN-photo-1",
+            "reviewed": true,
+            "qualityStatus": "preview-human-evaluation-pending"
           }
         },
         {
-          "name": "竖题·循光而行",
-          "reason": "建议在右上纸面留白中单列竖排，马善政毛笔字体以自然笔势回应画面的动感，不额外增粗。沉朱红与左侧纸带呼应，墨迹质感融入纸面；末字落在建筑上方，并与右侧画框边缘保持充足距离。",
+          "id": "proposal-c4",
+          "name": "生活观察 · 两行书页",
           "layers": [
             {
-              "text": "追着光跑",
-              "font": "gf-mashanzheng",
-              "size": 0.082,
-              "weight": 400,
+              "text": "一大一小都穿白，\n小的那个还翘着尾巴。",
+              "font": "gf-notoserifsc",
+              "size": 0.038,
+              "weight": 500,
               "thickness": 0,
               "slant": 0,
-              "x": 0.76,
-              "y": 0.078,
+              "x": 0.03500000000000002,
+              "y": 0.02099135268684374,
               "rotation": 0,
-              "direction": "vertical",
+              "direction": "horizontal",
               "align": "left",
-              "tracking": 0.12,
-              "color": "#974B3B",
-              "effect": "ink"
+              "tracking": 0.02,
+              "lineHeight": 1.48,
+              "color": "#4A4036",
+              "effect": "letterpress"
             }
           ],
+          "renderLayers": [
+            {
+              "renderer": "harfbuzz-1",
+              "typesetting": {
+                "source": "一大一小都穿白，\n小的那个还翘着尾巴。",
+                "lines": [
+                  "一大一小都穿白，",
+                  "小的那个还翘着尾巴。"
+                ],
+                "poetic": false
+              },
+              "text": "一大一小都穿白，\n小的那个还翘着尾巴。",
+              "x": 33.985000000000014,
+              "y": 33.985000000000014,
+              "font": "gf-notoserifsc",
+              "weight": 500,
+              "thickness": 0,
+              "slant": 0,
+              "outlineWidth": 0,
+              "outlineColor": "#f3ead6",
+              "hidden": false,
+              "locked": false,
+              "size": 36.897999999999996,
+              "tracking": 0.73796,
+              "lineHeight": 1.48,
+              "align": "left",
+              "direction": "horizontal",
+              "rotation": 0,
+              "color": "#4A4036",
+              "opacity": 0.95,
+              "grain": 0.18,
+              "multiply": false,
+              "effect": "letterpress",
+              "pressure": 0.28,
+              "edgeWear": 0.1,
+              "stampBorder": false,
+              "effectStrength": 0.55,
+              "secondaryColor": "#ba694b",
+              "seed": 71429
+            }
+          ],
+          "checks": {
+            "errors": [],
+            "warnings": [
+              "主体位置不确定，使用扩大保护区域"
+            ],
+            "rects": [
+              {
+                "x": 33.985000000000014,
+                "y": 33.985000000000014,
+                "w": 350.64169399999986,
+                "h": 89.21936399999998
+              }
+            ],
+            "ink": [
+              {
+                "median": 4.704435141753063,
+                "p10": 3.713818280923165,
+                "visibleFraction": 1,
+                "corePixels": 2907
+              }
+            ],
+            "variant": 1,
+            "renderer": "hb-1.6.1-zhCN-1",
+            "fontVersions": [
+              {
+                "id": "gf-notoserifsc",
+                "sha256": "050080d9255a86808f2945bffac582b31ef32bc36411ce29563b4961670c66f9"
+              }
+            ],
+            "visibilityPolicy": "core-ink-v1; heuristic, not WCAG certification"
+          },
+          "previewSHA256": "09075c7d2676531829ac0f2fb80034c1a96d7c337735a4d19bb0ab09bab9a2f5",
+          "parametersSHA256": "e81845c91949c342a1825bdfcdb120ec929dd80485bab25ef2d2b573876b05a9",
+          "reason": "白衣与翘尾巴均有画面依据，大小呼应轻松自然，但重点略偏向穿着。两行断句完整，纸面上的细笔画仍清楚，未遮挡主体。",
+          "reviewed": true,
           "provenance": {
             "model": "gpt-6-astra",
-            "createdAt": "2026-09-21T03:07:29.305186+00:00",
+            "createdAt": "2026-09-21T06:49:38.742990+00:00",
             "imageSHA256": "86b8863b190973aed6cf1419b6a758545dcfbdfc766adaba2b4f7af2dabb30fa",
-            "previewSHA256": "798f9c2ae5bab7c8acbca4083a8eda068a4e3ffcd5711e58556257a555cb11b9"
+            "previewSHA256": "65727e028466caf1c7d9aae1880944f3baec53b4168d780b198d08eac6046b67",
+            "pipeline": "creative-1",
+            "promptVersion": "2026-09-quality-1",
+            "ruleVersion": "zhCN-photo-1",
+            "reviewed": true,
+            "qualityStatus": "preview-human-evaluation-pending"
           }
         }
       ],
       "designDecision": {
-        "name": "横题·纸上留光",
-        "reason": "建议在上方偏左的完整留白中横排，采用 Noto 宋体 600 字重，以清楚的笔画对比建立分量。暖墨褐搭配压印质感，贴合旧纸氛围；适度字距保留呼吸感，与红色纸带、建筑及人物均保持距离。",
+        "name": "亲切白描 · 单行短题",
+        "reason": "短腿站立与仰头的动作对照具体、顺口，最贴合本次要求。顶部单行笔画清晰，未遮挡主体，首选。",
         "provenance": {
           "model": "gpt-6-astra",
-          "createdAt": "2026-09-21T03:07:29.305186+00:00",
+          "createdAt": "2026-09-21T06:49:38.742990+00:00",
           "imageSHA256": "86b8863b190973aed6cf1419b6a758545dcfbdfc766adaba2b4f7af2dabb30fa",
-          "previewSHA256": "798f9c2ae5bab7c8acbca4083a8eda068a4e3ffcd5711e58556257a555cb11b9"
-        },
-        "appliedAt": "2026-09-21T03:13:42.991Z"
+          "previewSHA256": "65727e028466caf1c7d9aae1880944f3baec53b4168d780b198d08eac6046b67",
+          "pipeline": "creative-1",
+          "promptVersion": "2026-09-quality-1",
+          "ruleVersion": "zhCN-photo-1",
+          "reviewed": true,
+          "qualityStatus": "preview-human-evaluation-pending"
+        }
       },
       "image": {
         "width": 971,
@@ -165,7 +340,8 @@
       },
       "provenance": {
         "example": true,
-        "styleSource": "Gathered Scenes v1.3; see THIRD_PARTY_NOTICES.md"
+        "styleSource": "Gathered Scenes v1.3; see THIRD_PARTY_NOTICES.md",
+        "creativeVersion": "0.8.0-preview.1"
       }
     },
     {
@@ -173,35 +349,44 @@
       "title": "示例 · 并肩看远方",
       "layers": [
         {
-          "id": "6bd77e6b-7b0a-4af9-af25-5d842ba8125a",
-          "text": "冬阳暖，风微凉\n与你并肩，远方不必抵达",
-          "x": 699.12,
-          "y": 153.805,
-          "font": "gf-longcang",
-          "weight": 400,
+          "text": "天有点凉，\n和你坐着晒会儿太阳。",
+          "x": 524.34,
+          "y": 291.42,
+          "font": "gf-notoserifsc",
+          "weight": 500,
           "thickness": 0,
           "slant": 0,
           "outlineWidth": 0,
           "outlineColor": "#f3ead6",
           "hidden": false,
           "locked": false,
-          "size": 34.955999999999996,
-          "tracking": 2.0973599999999997,
+          "size": 27.9648,
+          "tracking": 0.559296,
           "lineHeight": 1.65,
           "align": "left",
-          "direction": "vertical",
+          "direction": "horizontal",
           "rotation": 0,
-          "color": "#665544",
-          "opacity": 0.98,
-          "grain": 0.38,
-          "multiply": true,
-          "effect": "ink",
-          "pressure": 0.62,
-          "edgeWear": 0.18,
+          "color": "#4B4035",
+          "opacity": 0.95,
+          "grain": 0.18,
+          "multiply": false,
+          "effect": "letterpress",
+          "pressure": 0.28,
+          "edgeWear": 0.1,
           "stampBorder": false,
-          "effectStrength": 0.5,
+          "effectStrength": 0.55,
           "secondaryColor": "#ba694b",
-          "seed": 71429
+          "seed": 71429,
+          "renderer": "harfbuzz-1",
+          "typesetting": {
+            "source": "天有点凉，\n和你坐着晒会儿太阳。",
+            "lines": [
+              "天有点凉，",
+              "和你坐着晒会儿太阳。"
+            ],
+            "poetic": false
+          },
+          "id": "example-p0003-0"
         }
       ],
       "repairs": [
@@ -227,109 +412,367 @@
       "aiPalette": {
         "type": "paper-lettering-palette",
         "version": 1,
-        "copyMode": "compose",
-        "placement": "right",
         "imageSHA256": "6fed0b52754787e98c751a128cc5ea5284de8d53c09688594d64c52a5917c2f1",
-        "previewSHA256": "d390d00ccb7e92d379d547031b30a148cf0908b30802cfc871d05ed884a9ad06",
-        "createdAt": "2026-09-21T05:03:19.274768+00:00",
-        "model": "gpt-6-astra",
         "colors": [
           {
-            "hex": "#665544",
-            "name": "暖墨褐",
-            "reason": "呼应冬阳与照片中的木石暖色，在米白纸面上温润清晰。"
+            "hex": "#4B4035",
+            "name": "暖深褐",
+            "reason": "呼应石框阴影与深色细线，在米白纸面上清晰而不生硬，建议作为首选文字色。"
           },
           {
-            "hex": "#536469",
-            "name": "清凉青灰",
-            "reason": "呼应天空的冷意，与暖纸形成柔和对照，保持可读性。"
+            "hex": "#405866",
+            "name": "灰蓝墨",
+            "reason": "呼应照片蓝天，同时保留足够深度，适合清爽克制的文案。"
           },
           {
-            "hex": "#665544",
-            "name": "暖墨褐",
-            "reason": "适合自然手写质感。"
+            "hex": "#70533A",
+            "name": "栗褐",
+            "reason": "连接左侧赭黄笔触与浅黄草地，比直接使用浅黄色更适合纸面阅读。"
           }
-        ]
+        ],
+        "model": "gpt-6-astra",
+        "createdAt": "2026-09-21T06:33:35.494032+00:00"
       },
       "designSuggestions": [
         {
-          "name": "远方不必抵达",
-          "reason": "以冬阳与微凉的风写体感，以“不必抵达”写并肩相伴的惬意。右下有窗框与人物，拟用相邻的右上纸面留白，避开撕纸边与黑色竖线。两列从右向左读，长列自然下垂。",
+          "id": "brief-c1",
+          "name": "首选｜微凉与日晒",
           "layers": [
             {
-              "text": "冬阳暖，风微凉\n与你并肩，远方不必抵达",
-              "font": "gf-longcang",
-              "size": 0.036,
-              "weight": 400,
+              "text": "天有点凉，\n和你坐着晒会儿太阳。",
+              "font": "gf-notoserifsc",
+              "size": 0.0288,
+              "weight": 500,
               "thickness": 0,
               "slant": 0,
-              "x": 0.72,
-              "y": 0.095,
+              "x": 0.54,
+              "y": 0.18000000000000002,
               "rotation": 0,
-              "direction": "vertical",
+              "direction": "horizontal",
               "align": "left",
-              "tracking": 0.06,
+              "tracking": 0.02,
               "lineHeight": 1.65,
-              "color": "#665544",
-              "effect": "ink"
+              "color": "#4B4035",
+              "effect": "letterpress"
             }
           ],
+          "renderLayers": [
+            {
+              "text": "天有点凉，\n和你坐着晒会儿太阳。",
+              "x": 524.34,
+              "y": 291.42,
+              "font": "gf-notoserifsc",
+              "weight": 500,
+              "thickness": 0,
+              "slant": 0,
+              "outlineWidth": 0,
+              "outlineColor": "#f3ead6",
+              "hidden": false,
+              "locked": false,
+              "size": 27.9648,
+              "tracking": 0.559296,
+              "lineHeight": 1.65,
+              "align": "left",
+              "direction": "horizontal",
+              "rotation": 0,
+              "color": "#4B4035",
+              "opacity": 0.95,
+              "grain": 0.18,
+              "multiply": false,
+              "effect": "letterpress",
+              "pressure": 0.28,
+              "edgeWear": 0.1,
+              "stampBorder": false,
+              "effectStrength": 0.55,
+              "secondaryColor": "#ba694b",
+              "seed": 71429,
+              "renderer": "harfbuzz-1",
+              "typesetting": {
+                "source": "天有点凉，\n和你坐着晒会儿太阳。",
+                "lines": [
+                  "天有点凉，",
+                  "和你坐着晒会儿太阳。"
+                ],
+                "poetic": false
+              }
+            }
+          ],
+          "checks": {
+            "errors": [],
+            "warnings": [],
+            "rects": [
+              {
+                "x": 524.34,
+                "y": 291.42,
+                "w": 265.7494944,
+                "h": 72.14918399999999
+              }
+            ],
+            "ink": [
+              {
+                "median": 4.396009042164601,
+                "p10": 3.6245675155961257,
+                "visibleFraction": 1,
+                "corePixels": 621
+              }
+            ],
+            "variant": 0,
+            "renderer": "hb-1.6.1-zhCN-1",
+            "fontVersions": [
+              {
+                "id": "gf-notoserifsc",
+                "sha256": "050080d9255a86808f2945bffac582b31ef32bc36411ce29563b4961670c66f9"
+              }
+            ],
+            "visibilityPolicy": "core-ink-v1; heuristic, not WCAG certification"
+          },
+          "previewSHA256": "56e83743992c81b99b3dafec2a3c6d4e778e3e1220c6490f3091b8c27fe06409",
+          "parametersSHA256": "6c6aedca21f8dbad05e78a69399fd0e2ae9580cad248acc376774b204ac34dcb",
+          "reason": "微凉承接用户感受，坐着晒太阳贴合画面，陪伴表达最自然。两行左齐置于右侧纸面，断句完整；压印后的笔画仍可辨，与人物、建筑和边缘保持留白。",
+          "reviewed": true,
           "provenance": {
             "model": "gpt-6-astra",
-            "createdAt": "2026-09-21T05:03:19.274768+00:00",
+            "createdAt": "2026-09-21T06:33:35.494032+00:00",
             "imageSHA256": "6fed0b52754787e98c751a128cc5ea5284de8d53c09688594d64c52a5917c2f1",
-            "previewSHA256": "d390d00ccb7e92d379d547031b30a148cf0908b30802cfc871d05ed884a9ad06",
-            "copyMode": "compose",
-            "placement": "right",
-            "preference": "写一句原创短诗：冬日阳光好的日子，空气中流露着清凉，和爱的人并肩望向远方，很惬意。文字放右边的空白纸面，像自然写在纸上，含蓄、简洁，不要署名。"
+            "previewSHA256": "4f7ab8bf98a6a4fced0c74f79f895dd3ef52b46d420c16bd0e8eea0acb7fe58b",
+            "pipeline": "creative-1",
+            "promptVersion": "2026-09-quality-1",
+            "ruleVersion": "zhCN-photo-1",
+            "reviewed": true,
+            "qualityStatus": "preview-human-evaluation-pending"
           }
         },
         {
-          "name": "共同的目光",
-          "reason": "凉风与暖光相对，用“我们的目光”含蓄表达相伴远望。拟在右上空白纸面横排两行，先读冷暖，再读远方；下方保留充足留白，让视线继续落向照片，避开建筑、人物与撕纸边。",
+          "id": "brief-c3",
+          "name": "次选｜近与远的双列",
           "layers": [
             {
-              "text": "风是凉的，光是暖的\n远方，在我们的目光里",
-              "font": "gf-mashanzheng",
+              "text": "坐得很近\n一起看得很远",
+              "font": "gf-zcoolxiaowei",
               "size": 0.032,
               "weight": 400,
               "thickness": 0,
               "slant": 0,
-              "x": 0.51,
-              "y": 0.17,
+              "x": 0.742,
+              "y": 0.17599999999999996,
+              "rotation": 0,
+              "direction": "vertical",
+              "align": "left",
+              "tracking": 0.02,
+              "lineHeight": 1.75,
+              "color": "#4B4035",
+              "effect": "clean"
+            }
+          ],
+          "renderLayers": [
+            {
+              "text": "坐得很近\n一起看得很远",
+              "x": 720.482,
+              "y": 284.94399999999996,
+              "font": "gf-zcoolxiaowei",
+              "weight": 400,
+              "thickness": 0,
+              "slant": 0,
+              "outlineWidth": 0,
+              "outlineColor": "#f3ead6",
+              "hidden": false,
+              "locked": false,
+              "size": 31.072,
+              "tracking": 0.62144,
+              "lineHeight": 1.75,
+              "align": "left",
+              "direction": "vertical",
+              "rotation": 0,
+              "color": "#4B4035",
+              "opacity": 1,
+              "grain": 0,
+              "multiply": false,
+              "effect": "clean",
+              "pressure": 0,
+              "edgeWear": 0,
+              "stampBorder": false,
+              "effectStrength": 0.5,
+              "secondaryColor": "#ba694b",
+              "seed": 71429,
+              "renderer": "harfbuzz-1",
+              "typesetting": {
+                "source": "坐得很近\n一起看得很远",
+                "lines": [
+                  "坐得很近",
+                  "一起看得很远"
+                ],
+                "poetic": true
+              }
+            }
+          ],
+          "checks": {
+            "errors": [],
+            "warnings": [],
+            "rects": [
+              {
+                "x": 720.482,
+                "y": 284.94399999999996,
+                "w": 82.09222399999999,
+                "h": 186.494144
+              }
+            ],
+            "ink": [
+              {
+                "median": 7.40653855358987,
+                "p10": 6.222864909704213,
+                "visibleFraction": 1,
+                "corePixels": 776
+              }
+            ],
+            "variant": 0,
+            "renderer": "hb-1.6.1-zhCN-1",
+            "fontVersions": [
+              {
+                "id": "gf-zcoolxiaowei",
+                "sha256": "a42b620140f493db42f741351dfbf343c0936d58588ee8004b8b2a218d997ff1"
+              }
+            ],
+            "visibilityPolicy": "core-ink-v1; heuristic, not WCAG certification"
+          },
+          "previewSHA256": "7cbaa927c7419801e58836720af26ef3a10eab118f43a8e837329d4827943ac1",
+          "parametersSHA256": "91b18af1760032f44a5ac314bdeff6cefbfcd8851a524cca96935cfc7490c4ca",
+          "reason": "近坐与远望呼应双人及开阔远景，含蓄贴切，但对仗感稍强。竖排阅读顺序从右到左，列距清楚，呼应窗框竖线而不覆盖建筑；字迹清晰，边距充足。",
+          "reviewed": true,
+          "provenance": {
+            "model": "gpt-6-astra",
+            "createdAt": "2026-09-21T06:33:35.494032+00:00",
+            "imageSHA256": "6fed0b52754787e98c751a128cc5ea5284de8d53c09688594d64c52a5917c2f1",
+            "previewSHA256": "4f7ab8bf98a6a4fced0c74f79f895dd3ef52b46d420c16bd0e8eea0acb7fe58b",
+            "pipeline": "creative-1",
+            "promptVersion": "2026-09-quality-1",
+            "ruleVersion": "zhCN-photo-1",
+            "reviewed": true,
+            "qualityStatus": "preview-human-evaluation-pending"
+          }
+        },
+        {
+          "id": "brief-c5",
+          "name": "第三选｜冬日敞亮短题",
+          "layers": [
+            {
+              "text": "从这里望出去，\n冬天也很敞亮。",
+              "font": "gf-mashanzheng",
+              "size": 0.035,
+              "weight": 400,
+              "thickness": 0,
+              "slant": 0,
+              "x": 0.56,
+              "y": 0.20600000000000002,
               "rotation": 0,
               "direction": "horizontal",
               "align": "left",
-              "tracking": 0.04,
-              "lineHeight": 1.9,
-              "color": "#536469",
-              "effect": "ink"
+              "tracking": 0.025,
+              "lineHeight": 1.4,
+              "color": "#405866",
+              "effect": "clean"
             }
           ],
+          "renderLayers": [
+            {
+              "text": "从这里望出去，\n冬天也很敞亮。",
+              "x": 543.7600000000001,
+              "y": 333.514,
+              "font": "gf-mashanzheng",
+              "weight": 400,
+              "thickness": 0,
+              "slant": 0,
+              "outlineWidth": 0,
+              "outlineColor": "#f3ead6",
+              "hidden": false,
+              "locked": false,
+              "size": 33.98500000000001,
+              "tracking": 0.8496250000000002,
+              "lineHeight": 1.4,
+              "align": "left",
+              "direction": "horizontal",
+              "rotation": 0,
+              "color": "#405866",
+              "opacity": 1,
+              "grain": 0,
+              "multiply": false,
+              "effect": "clean",
+              "pressure": 0,
+              "edgeWear": 0,
+              "stampBorder": false,
+              "effectStrength": 0.5,
+              "secondaryColor": "#ba694b",
+              "seed": 71429,
+              "renderer": "harfbuzz-1",
+              "typesetting": {
+                "source": "从这里望出去，\n冬天也很敞亮。",
+                "lines": [
+                  "从这里望出去，",
+                  "冬天也很敞亮。"
+                ],
+                "poetic": true
+              }
+            }
+          ],
+          "checks": {
+            "errors": [],
+            "warnings": [],
+            "rects": [
+              {
+                "x": 543.7600000000001,
+                "y": 333.514,
+                "w": 227.83544000000006,
+                "h": 78.50535000000002
+              }
+            ],
+            "ink": [
+              {
+                "median": 5.790778908562032,
+                "p10": 4.6957914388949344,
+                "visibleFraction": 1,
+                "corePixels": 1566
+              }
+            ],
+            "variant": 0,
+            "renderer": "hb-1.6.1-zhCN-1",
+            "fontVersions": [
+              {
+                "id": "gf-mashanzheng",
+                "sha256": "6d2546bb189c732a8ca29af9e22457b152387d158aa459e4ac2ce1e51788b7fb"
+              }
+            ],
+            "visibilityPolicy": "core-ink-v1; heuristic, not WCAG certification"
+          },
+          "previewSHA256": "dc4a3f89a9c5d64faf9a433e771f47dd4792bad310fc58617e76c82be82605f5",
+          "parametersSHA256": "32e9368cc48802337f645205b95cc9d3fdb980ebb63ccf79e047c96e6aae7171",
+          "reason": "“望出去”扣住框景，“敞亮”回应冬日光线，但两人相伴的意味弱于前两案。横排按完整意群断行，蓝灰字呼应天空，笔画清楚，右侧纸面落位不遮挡主体。",
+          "reviewed": true,
           "provenance": {
             "model": "gpt-6-astra",
-            "createdAt": "2026-09-21T05:03:19.274768+00:00",
+            "createdAt": "2026-09-21T06:33:35.494032+00:00",
             "imageSHA256": "6fed0b52754787e98c751a128cc5ea5284de8d53c09688594d64c52a5917c2f1",
-            "previewSHA256": "d390d00ccb7e92d379d547031b30a148cf0908b30802cfc871d05ed884a9ad06",
-            "copyMode": "compose",
-            "placement": "right",
-            "preference": "写一句原创短诗：冬日阳光好的日子，空气中流露着清凉，和爱的人并肩望向远方，很惬意。文字放右边的空白纸面，像自然写在纸上，含蓄、简洁，不要署名。"
+            "previewSHA256": "4f7ab8bf98a6a4fced0c74f79f895dd3ef52b46d420c16bd0e8eea0acb7fe58b",
+            "pipeline": "creative-1",
+            "promptVersion": "2026-09-quality-1",
+            "ruleVersion": "zhCN-photo-1",
+            "reviewed": true,
+            "qualityStatus": "preview-human-evaluation-pending"
           }
         }
       ],
       "designDecision": {
-        "name": "远方不必抵达",
-        "reason": "以冬阳与微凉的风写体感，以“不必抵达”写并肩相伴的惬意。右下有窗框与人物，拟用相邻的右上纸面留白，避开撕纸边与黑色竖线。两列从右向左读，长列自然下垂。",
+        "name": "首选｜微凉与日晒",
+        "reason": "微凉承接用户感受，坐着晒太阳贴合画面，陪伴表达最自然。两行左齐置于右侧纸面，断句完整；压印后的笔画仍可辨，与人物、建筑和边缘保持留白。",
         "provenance": {
           "model": "gpt-6-astra",
-          "createdAt": "2026-09-21T05:03:19.274768+00:00",
+          "createdAt": "2026-09-21T06:33:35.494032+00:00",
           "imageSHA256": "6fed0b52754787e98c751a128cc5ea5284de8d53c09688594d64c52a5917c2f1",
-          "previewSHA256": "d390d00ccb7e92d379d547031b30a148cf0908b30802cfc871d05ed884a9ad06",
-          "copyMode": "compose",
-          "placement": "right",
-          "preference": "写一句原创短诗：冬日阳光好的日子，空气中流露着清凉，和爱的人并肩望向远方，很惬意。文字放右边的空白纸面，像自然写在纸上，含蓄、简洁，不要署名。"
-        },
-        "appliedAt": "2026-09-21T05:05:24.998Z"
+          "previewSHA256": "4f7ab8bf98a6a4fced0c74f79f895dd3ef52b46d420c16bd0e8eea0acb7fe58b",
+          "pipeline": "creative-1",
+          "promptVersion": "2026-09-quality-1",
+          "ruleVersion": "zhCN-photo-1",
+          "reviewed": true,
+          "qualityStatus": "preview-human-evaluation-pending"
+        }
       },
       "image": {
         "width": 971,
@@ -339,7 +782,8 @@
       },
       "provenance": {
         "example": true,
-        "styleSource": "Gathered Scenes v1.3; see THIRD_PARTY_NOTICES.md"
+        "styleSource": "Gathered Scenes v1.3; see THIRD_PARTY_NOTICES.md",
+        "creativeVersion": "0.8.0-preview.1"
       },
       "aiSettings": {
         "copyMode": "compose",

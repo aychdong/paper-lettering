@@ -1,0 +1,254 @@
+{
+  "version": 1,
+  "baselineCommit": "b4a084c27888b543c8ea83f8e4b8fcb0826b1f3c",
+  "limits": "24 fixed tasks, not 24 independent photographs. Real-photo coverage is limited to the two authorized examples; landscape/architecture/texture fixtures are synthetic. Holdout prompts must not be used for tuning.",
+  "qualityGate": {
+    "holdoutCases": 12,
+    "copyWins": 8,
+    "layoutWins": 8,
+    "criticalRegressions": 0,
+    "status": "pending_human_review"
+  },
+  "cases": [
+    {
+      "id": "dev-01-couple-quiet",
+      "split": "dev",
+      "image": "p0003",
+      "seed": 11,
+      "preference": "冬日阳光很好，空气微凉，两个人一起看看远方。写一句自然含蓄的原创短句，放在右侧纸面。",
+      "placement": "right",
+      "copyMode": "compose",
+      "text": "写下一句话"
+    },
+    {
+      "id": "dev-02-pet-action",
+      "split": "dev",
+      "image": "p0002",
+      "seed": 12,
+      "preference": "根据狗的神态与动作，写一句轻松自然、有具体画面感的中文短句。",
+      "placement": "auto",
+      "copyMode": "compose",
+      "text": "写下一句话"
+    },
+    {
+      "id": "dev-03-couple-document",
+      "split": "dev",
+      "image": "p0003",
+      "seed": 13,
+      "preference": "用纪实短题记录这次并肩坐着的片刻，不要抒情套话。",
+      "placement": "auto",
+      "copyMode": "compose",
+      "text": "写下一句话"
+    },
+    {
+      "id": "dev-04-pet-humor",
+      "split": "dev",
+      "image": "p0002",
+      "seed": 14,
+      "preference": "用克制、轻松的口吻，写一句狗的内心独白，不编造具体身份。",
+      "placement": "auto",
+      "copyMode": "compose",
+      "text": "写下一句话"
+    },
+    {
+      "id": "dev-05-couple-short",
+      "split": "dev",
+      "image": "p0003",
+      "seed": 15,
+      "preference": "最多十二个汉字，写出冬日阳光与凉风的反差，自然朴素。",
+      "placement": "right",
+      "copyMode": "compose",
+      "text": "写下一句话"
+    },
+    {
+      "id": "dev-06-pet-poem",
+      "split": "dev",
+      "image": "p0002",
+      "seed": 16,
+      "preference": "写两行短诗，具体呼应眼前的狗与光线，避免泛泛的时光远方。",
+      "placement": "auto",
+      "copyMode": "compose",
+      "text": "写下一句话"
+    },
+    {
+      "id": "dev-07-couple-preserve",
+      "split": "dev",
+      "image": "p0003",
+      "seed": 17,
+      "preference": "保留给定文案，做好横竖排与标点。",
+      "placement": "auto",
+      "copyMode": "preserve",
+      "text": "冬日，与你。"
+    },
+    {
+      "id": "dev-08-pet-preserve",
+      "split": "dev",
+      "image": "p0002",
+      "seed": 18,
+      "preference": "保留给定文字，兼顾主体与最终纸上油墨可读性。",
+      "placement": "auto",
+      "copyMode": "preserve",
+      "text": "冬日，与你。"
+    },
+    {
+      "id": "dev-09-landscape",
+      "split": "dev",
+      "image": "synthetic-landscape",
+      "seed": 19,
+      "preference": "为这张几何风景写一个简洁标题，文字呼应远近层次。",
+      "placement": "auto",
+      "copyMode": "compose",
+      "text": "写下一句话"
+    },
+    {
+      "id": "dev-10-architecture",
+      "split": "dev",
+      "image": "synthetic-architecture",
+      "seed": 20,
+      "preference": "为这张建筑构图写克制短题，文字不压住建筑主体。",
+      "placement": "auto",
+      "copyMode": "compose",
+      "text": "写下一句话"
+    },
+    {
+      "id": "dev-11-busy-paper",
+      "split": "dev",
+      "image": "synthetic-busy",
+      "seed": 21,
+      "preference": "为这张肌理纸面写短句，优先可读性，不能让纸感吞掉笔画。",
+      "placement": "auto",
+      "copyMode": "compose",
+      "text": "写下一句话"
+    },
+    {
+      "id": "dev-12-mixed-type",
+      "split": "dev",
+      "image": "synthetic-paper",
+      "seed": 22,
+      "preference": "只排版，保留文字、空格与标点；中西混排自然。",
+      "placement": "auto",
+      "copyMode": "preserve",
+      "text": "你好，ChatGPT！\n2026年，与你看世界。"
+    },
+    {
+      "id": "holdout-01-couple-quiet",
+      "split": "holdout",
+      "image": "p0003",
+      "seed": 79,
+      "preference": "冬日阳光很好，空气微凉，两个人一起看看远方。写一句自然含蓄的原创短句，放在右侧纸面。 以不同于常见标题的方式表达，不使用感叹号。",
+      "placement": "right",
+      "copyMode": "compose",
+      "text": "写下一句话"
+    },
+    {
+      "id": "holdout-02-pet-action",
+      "split": "holdout",
+      "image": "p0002",
+      "seed": 80,
+      "preference": "根据狗的神态与动作，写一句轻松自然、有具体画面感的中文短句。 以不同于常见标题的方式表达，不使用感叹号。",
+      "placement": "auto",
+      "copyMode": "compose",
+      "text": "写下一句话"
+    },
+    {
+      "id": "holdout-03-couple-document",
+      "split": "holdout",
+      "image": "p0003",
+      "seed": 81,
+      "preference": "用纪实短题记录这次并肩坐着的片刻，不要抒情套话。 以不同于常见标题的方式表达，不使用感叹号。",
+      "placement": "auto",
+      "copyMode": "compose",
+      "text": "写下一句话"
+    },
+    {
+      "id": "holdout-04-pet-humor",
+      "split": "holdout",
+      "image": "p0002",
+      "seed": 82,
+      "preference": "用克制、轻松的口吻，写一句狗的内心独白，不编造具体身份。 以不同于常见标题的方式表达，不使用感叹号。",
+      "placement": "auto",
+      "copyMode": "compose",
+      "text": "写下一句话"
+    },
+    {
+      "id": "holdout-05-couple-short",
+      "split": "holdout",
+      "image": "p0003",
+      "seed": 83,
+      "preference": "最多十二个汉字，写出冬日阳光与凉风的反差，自然朴素。 以不同于常见标题的方式表达，不使用感叹号。",
+      "placement": "right",
+      "copyMode": "compose",
+      "text": "写下一句话"
+    },
+    {
+      "id": "holdout-06-pet-poem",
+      "split": "holdout",
+      "image": "p0002",
+      "seed": 84,
+      "preference": "写两行短诗，具体呼应眼前的狗与光线，避免泛泛的时光远方。 以不同于常见标题的方式表达，不使用感叹号。",
+      "placement": "auto",
+      "copyMode": "compose",
+      "text": "写下一句话"
+    },
+    {
+      "id": "holdout-07-couple-preserve",
+      "split": "holdout",
+      "image": "p0003",
+      "seed": 85,
+      "preference": "保留给定文案，做好横竖排与标点。",
+      "placement": "auto",
+      "copyMode": "preserve",
+      "text": "冬日，与你。"
+    },
+    {
+      "id": "holdout-08-pet-preserve",
+      "split": "holdout",
+      "image": "p0002",
+      "seed": 86,
+      "preference": "保留给定文字，兼顾主体与最终纸上油墨可读性。",
+      "placement": "auto",
+      "copyMode": "preserve",
+      "text": "冬日，与你。"
+    },
+    {
+      "id": "holdout-09-landscape",
+      "split": "holdout",
+      "image": "synthetic-landscape",
+      "seed": 87,
+      "preference": "为这张几何风景写一个简洁标题，文字呼应远近层次。 以不同于常见标题的方式表达，不使用感叹号。",
+      "placement": "auto",
+      "copyMode": "compose",
+      "text": "写下一句话"
+    },
+    {
+      "id": "holdout-10-architecture",
+      "split": "holdout",
+      "image": "synthetic-architecture",
+      "seed": 88,
+      "preference": "为这张建筑构图写克制短题，文字不压住建筑主体。 以不同于常见标题的方式表达，不使用感叹号。",
+      "placement": "auto",
+      "copyMode": "compose",
+      "text": "写下一句话"
+    },
+    {
+      "id": "holdout-11-busy-paper",
+      "split": "holdout",
+      "image": "synthetic-busy",
+      "seed": 89,
+      "preference": "为这张肌理纸面写短句，优先可读性，不能让纸感吞掉笔画。 以不同于常见标题的方式表达，不使用感叹号。",
+      "placement": "auto",
+      "copyMode": "compose",
+      "text": "写下一句话"
+    },
+    {
+      "id": "holdout-12-mixed-type",
+      "split": "holdout",
+      "image": "synthetic-paper",
+      "seed": 90,
+      "preference": "只排版，保留文字、空格与标点；中西混排自然。",
+      "placement": "auto",
+      "copyMode": "preserve",
+      "text": "你好，ChatGPT！\n2026年，与你看世界。"
+    }
+  ]
+}

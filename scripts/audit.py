@@ -10,7 +10,7 @@ def main():
         if not p.is_file() or any(x in p.relative_to(ROOT).parts for x in ['.git','dist','__pycache__']):continue
         count+=1;rel=str(p.relative_to(ROOT))
         if p.name in ['auth.json','.env','config.toml'] or p.suffix in ['.pem','.key']:errors.append('Forbidden private file: '+rel)
-        if p.suffix in ['.md','.json','.py','.js','.html','.css','.swift','.command','.cmd','.proposed']:
+        if p.suffix in ['.md','.json','.py','.js','.cjs','.mjs','.html','.css','.swift','.command','.cmd','.proposed']:
             text=p.read_text(encoding='utf-8')
             if re.search(r'/'+r'Users'+r'/[^/\s]+/|/'+r'home'+r'/[^/\s]+/|[A-Z]:\\Users\\[^\\\s]+',text):errors.append('Personal absolute path: '+rel)
             if re.search(r'sk-[A-Za-z0-9_-]{24,}|gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}',text):errors.append('Possible credential: '+rel)
@@ -25,12 +25,16 @@ def main():
             length=struct.unpack_from('>I',raw,at)[0];tag=raw[at+4:at+8]
             if tag in [b'eXIf',b'tEXt',b'zTXt',b'iTXt']:errors.append('Example metadata: '+d['id'])
             at+=12+length
-        if len(d.get('designSuggestions',[]))!=2 or not d.get('designDecision'):errors.append('Missing editable AI layouts: '+d['id'])
+        if not 1<=len(d.get('designSuggestions',[]))<=3 or not d.get('designDecision'):errors.append('Missing editable AI layouts: '+d['id'])
     fonts=json.loads((ROOT/'resources/fonts/manifest.json').read_text(encoding='utf-8'))
     for font in fonts['fonts']:
         for key in ['font','license']:
             record=font[key];p=ROOT/'resources/fonts'/record['path']
             if sha(p)!=record['sha256']:errors.append('Font or license hash: '+font['id'])
+    vendor=ROOT/'tools/lettering/vendor/harfbuzz'
+    lock=json.loads((vendor/'lock.json').read_text())
+    for name,digest in lock['files'].items():
+        if sha(vendor/name)!=digest:errors.append('HarfBuzz hash: '+name)
     result={'status':'passed' if not errors else 'failed','source_files':count,'examples':len(project['documents']),'fonts':len(fonts['fonts']),'errors':errors,'scope':'Local source and asset checks only; this audit does not publish or grant rights'}
     print(json.dumps(result,ensure_ascii=False,indent=2))
     if errors:raise SystemExit(1)

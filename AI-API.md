@@ -22,3 +22,7 @@ compose 可以替换可见文案；preserve 的每个非空可见源层对应一
 方案层新增必填 `lineHeight`（1–2.5，字号倍数）；`text` 中的换行决定行/列。旧工程和历史方案缺省行距时继续使用 1.4。竖排从右至左分列。返回值携带 copyMode、placement；界面将创作要求随方案来源和每图 aiSettings 保存。
 
 结果必须通过结构、范围与文字策略检查才应用；格式合法仍不保证文案或视觉判断完全合适，始终提供预览、编辑和撤销。结构化输出边界参考 [OpenAI 官方说明](https://developers.openai.com/api/docs/guides/structured-outputs)。
+
+## 0.8 预览创作协议
+
+新增 `/v1/creative`、`/jobs/{id}/renders`、`/jobs/{id}/cancel` 与 `/v1/preferences`。旧 `/advice` 保持兼容；新接口的阶段、摘要、取消与工程兼容见 [创作流程实现](docs/quality/IMPLEMENTATION.md)。偏好接口同样受每次启动的回环能力令牌保护。

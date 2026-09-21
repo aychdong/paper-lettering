@@ -1,0 +1,9 @@
+(function(g){
+'use strict';let value={version:1,enabled:true,entries:[]},remote=null;const key='paper-lettering:explicit-preferences-v1';
+function clean(v){if(v?.version!==1||typeof v.enabled!=='boolean'||!Array.isArray(v.entries)||v.entries.length>100)throw new Error('偏好文件格式无效');const ids=new Set();for(const e of v.entries){if(!['copy','layout'].includes(e.kind)||!['like','dislike'].includes(e.verdict)||typeof e.id!=='string'||ids.has(e.id)||e.id.length>80)throw new Error('偏好必须来自明确反馈');ids.add(e.id);for(const [k,n] of [['text',500],['reason',300],['context',500],['createdAt',60]])if(typeof e[k]!=='string'||e[k].length>n)throw new Error('偏好内容无效');if(!Array.isArray(e.layout)||e.layout.length>4)throw new Error('偏好排版无效');}return JSON.parse(JSON.stringify(v));}
+async function init(api){remote=api||null;if(remote)value=clean(await remote('/v1/preferences'));else{try{value=clean(JSON.parse(localStorage.getItem(key))||value);}catch(e){/* Empty or unavailable browser storage: do not pretend it persisted. */}}return get();}
+const get=()=>JSON.parse(JSON.stringify(value));
+async function save(next){next=clean(next);if(remote)value=clean(await remote('/v1/preferences',next));else{localStorage.setItem(key,JSON.stringify(next));value=next;}return get();}
+async function add(proposal,kind,verdict,reason,context){const entry={id:crypto.randomUUID(),kind,verdict,reason:reason.slice(0,300),context:context.slice(0,500),text:proposal.layers.map(l=>l.text).join('\n').slice(0,500),createdAt:new Date().toISOString(),layout:kind==='layout'?proposal.layers.map(l=>Object.fromEntries(['font','size','weight','direction','color','effect','x','y','rotation','lineHeight'].map(k=>[k,l[k]]))):[]};return save({...value,entries:[...value.entries.slice(-99),entry]});}
+g.PaperPreferences={init,get,save,add,clean};
+})(window);

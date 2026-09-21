@@ -21,7 +21,7 @@
     return loaded.get(id);
   }
   function list(){return [...defaults.map(([id,label])=>({id,label,category:'系统默认'})),...records.values()];}
-  function used(project){const ids=new Set(project.documents.flatMap(d=>d.layers.map(l=>l.font)));return [...ids].map(id=>records.get(id)).filter(Boolean).map(r=>({...r}));}
+  function used(project){const ids=new Set(project.documents.flatMap(d=>d.layers.flatMap(l=>[l.font,...(l.renderer==='harfbuzz-1'?['gf-notoserifsc']:[])]))); return [...ids].map(id=>records.get(id)).filter(Boolean).map(r=>({...r}));}
   function importRecords(list){if(!Array.isArray(list)||list.length>80)throw new Error('字体清单无效。');for(const r of list)register(r);}
   async function systemFonts(){
     if(!global.queryLocalFonts)throw new Error('当前浏览器不能枚举系统字体。请在桌面 Chrome 中使用，或导入字体文件。');
@@ -35,7 +35,7 @@
     const id='custom-'+hex.slice(0,16),family='Paper_'+id;
     const face=new FontFace(family,data);await face.load();document.fonts.add(face);
     const bytes=new Uint8Array(data);let binary='';for(let i=0;i<bytes.length;i+=32768)binary+=String.fromCharCode(...bytes.subarray(i,i+32768));
-    register({id,label:file.name.replace(/\.[^.]+$/,''),category:'自己导入',css_family:family,dataURL:'data:font/ttf;base64,'+btoa(binary),sha256:hex,license:'User-supplied local font; license not independently verified.'});loaded.set(id,Promise.resolve(face));return id;
+    register({id,format:file.name.split('.').pop().toLowerCase(),label:file.name.replace(/\.[^.]+$/,''),category:'自己导入',css_family:family,dataURL:'data:font/ttf;base64,'+btoa(binary),sha256:hex,license:'User-supplied local font; license not independently verified.'});loaded.set(id,Promise.resolve(face));return id;
   }
   global.PaperFonts={register,ensure,list,used,importRecords,systemFonts,importFile,info:id=>records.get(id)||null};
   const el=document.getElementById('fontData');if(el)importRecords(JSON.parse(el.textContent));

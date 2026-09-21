@@ -19,6 +19,7 @@ function fit(l,w,h){
  l.x+=Math.max(0,margin-minX)-Math.max(0,maxX-(w-margin));l.y+=Math.max(0,margin-minY)-Math.max(0,maxY-(h-margin));return l;
 }
 function layers(option,doc){
+ if(option?.renderLayers){if(!Array.isArray(option.renderLayers)||!option.renderLayers.length||option.renderLayers.length>4)throw new Error('渲染方案无效');return option.renderLayers.map(l=>L.normalizeLayer({...l,id:L.uid()},doc.image.width,doc.image.height));}
  if(!option||!Array.isArray(option.layers)||!option.layers.length||option.layers.length>4)throw new Error('AI 排版方案格式无效。');
  return option.layers.map(p=>{
   if(!L.FONTS[p.font]||typeof p.text!=='string'||!p.text.trim()||p.text.length>120||!/^#[\da-f]{6}$/i.test(p.color))throw new Error('AI 方案含无效字体、文字或颜色。');
