@@ -4,7 +4,7 @@
 
 An offline typography editor for photos and paper collages, with editable Chinese and English text, print textures, and optional AI layout through your own ChatGPT/Codex account.
 
-[下载 v0.6.0 试用版](https://github.com/aychdong/paper-lettering/releases/tag/v0.6.0) · [使用指南](使用指南.md) · [连接自己的 ChatGPT](AI-CONNECTION.md) · [许可范围](THIRD_PARTY_NOTICES.md)
+[下载 v0.6.1 试用版](https://github.com/aychdong/paper-lettering/releases/tag/v0.6.1) · [使用指南](使用指南.md) · [连接自己的 ChatGPT](AI-CONNECTION.md) · [许可范围](THIRD_PARTY_NOTICES.md)
 
 ![纸上文字编辑器：两张示例、可直接拖动的文字与四个编辑标签页](docs/workspace.png)
 
@@ -12,8 +12,8 @@ An offline typography editor for photos and paper collages, with editable Chines
 
 ## 三步开始
 
-1. 从 [Releases](https://github.com/aychdong/paper-lettering/releases/tag/v0.6.0) 下载 **Paper-Lettering-0.6.zip**，解压完整文件夹。
-2. 用近期 Chrome / Edge 打开 **纸上文字.html**。首次进入已有两张排好文字的示例，可以直接尝试。
+1. 从 [Releases](https://github.com/aychdong/paper-lettering/releases/tag/v0.6.1) 下载 **Paper-Lettering-0.6.1.zip**，解压完整文件夹。
+2. 先打开 **开始使用.html**。点击其中的「打开离线编辑器」，或用近期 Chrome / Edge 打开 **纸上文字.html**。首次进入已有两张排好文字的示例。
 3. 顶部点 **打开图片** 导入自己的作品；完成后用 **保存可编辑工程** 留存参数，或 **导出成品 PNG**。
 
 保存的 `.paper.json` 包含底图、独立文字层、参数和用到的字体；PNG 是合并后的成品。浏览器自动草稿只是方便继续编辑，请保存工程作为备份。
@@ -37,6 +37,12 @@ An offline typography editor for photos and paper collages, with editable Chines
 - **并肩看远方**：保留人物与空间关系，在纸面留白上安放标题。
 
 每张都已应用一套真实 AI 推荐，并保存另一套版式、配色和中文理由。**查看、切换和编辑这些已有方案不需要 AI 账号，也不联网。** 示例仅按个人非商业范围提供，详情见下方许可说明。
+
+## Mac 首次打开 AI 脚本时的安全提示
+
+从浏览器下载并解压后，双击 `.command` 可能出现“Apple 无法验证是否包含恶意软件”。当前 AI 启动脚本未签名、公证，之前的本地运行检查没有覆盖下载隔离；这条提示不表示已经进入 ChatGPT 登录。
+
+已确认文件来自本仓库且未被改动时，按 [Apple 官方说明](https://support.apple.com/zh-cn/102445)：先点「完成」，打开 **系统设置 → 隐私与安全性 → 仍要打开**，核对文件名后确认。「连接自己的ChatGPT.command」与「启用AI助手.command」可能分别需要一次确认。0.6.1 补充了指引，**没有消除 Gatekeeper 提示，也未获得 Apple 公证**。详见 [Mac 首次使用](AI-CONNECTION.md#mac-首次使用)。
 
 ## 可选：用自己的 ChatGPT 连接 AI
 
@@ -64,7 +70,7 @@ An offline typography editor for photos and paper collages, with editable Chines
 | Windows / Linux | 提供 HTML 和 Python 入口，尚未实机验证 |
 | 新账号首次登录 | 使用官方 Codex 流程；调用逻辑有测试，未进行新账号端到端登录测试 |
 
-这是 **0.6.0 试用版**，不是商店公证安装包。离线编辑不需要 Python；AI 连接需要 Python、Codex、网络及账号可用额度。安装组件请使用各自官方渠道。
+这是 **0.6.1 试用版**，AI 启动脚本尚未经过 Developer ID 签名和 Apple 公证。离线编辑不需要 Python；AI 连接需要 Python、Codex、网络及账号可用额度。安装组件请使用各自官方渠道。
 
 已有图片中的像素文字不能自动变回真实字体层；本工具支持在合适的空白纸面上做可撤销覆盖。以后生成作品时，推荐先生成无字底图，再用独立文字层排版。文字质感是视觉近似；系统字体跨设备可能替换，内置/导入且使用的字体会随工程保存。
 
