@@ -1,7 +1,7 @@
 """Bounded scene -> editor -> browser render -> visual review -> one repair workflow."""
 import datetime,hashlib,json,secrets,tempfile,threading,time
 from pathlib import Path
-from creative_contract import request,prompt,SCENE,EDITOR,REVIEW,scene_check,editor_check,review_check,VERSION,PROMPT_VERSION,RULES
+from creative_contract import request,prompt,stage_schema,scene_check,editor_check,review_check,VERSION,PROMPT_VERSION,RULES
 from design_contract import preview,validate,DESIGN
 from codex_client import Client
 
@@ -73,17 +73,17 @@ class Job:
             with tempfile.TemporaryDirectory(prefix='paper-creative-') as folder:
                 temp=Path(folder);raw=preview(self.payload);image=temp/'base.png';image.write_bytes(raw);self.uploads.append({'kind':'base','bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()})
                 with self.factory(folder) as client:
-                    scene=scene_check(self.call(client,'scene',SCENE,{},[image],temp),self.payload)
-                    editor=editor_check(self.call(client,'editor',EDITOR,scene,[],temp),self.payload,scene)
+                    scene=scene_check(self.call(client,'scene',stage_schema('scene',self.payload),{},[image],temp),self.payload)
+                    editor=editor_check(self.call(client,'editor',stage_schema('editor',self.payload),scene,[],temp),self.payload,scene)
                     rendered=self.render(editor['briefs'],scene,False)
                     if not rendered:raise ValueError('本地检查未找到合格版面。请减少文字、调整位置或放宽创作要求。')
-                    review=review_check(self.call(client,'review',REVIEW,self.review_context(rendered),self.images(rendered,temp),temp),self.payload,rendered)
+                    review=review_check(self.call(client,'review',stage_schema('review',self.payload),self.review_context(rendered),self.images(rendered,temp),temp),self.payload,rendered)
                     repairs={r['id']:r for r in review['reviews'] if r['repair']}
                     if repairs:
                         briefs=[dict(id=c['id'],sourceId=c['id'],name=c['name'],reason=repairs[c['id']]['reason'] if c['id'] in repairs else c['reason'],layers=repairs[c['id']]['repair'] if c['id'] in repairs else c['layers'],phrases=[],poetic='yes',retain=c if c['id'] not in repairs else None) for c in rendered]
                         rendered=self.render(briefs,scene,True)
                         if not rendered:raise ValueError('修订后没有合格版面；当前作品保持不变。')
-                        review=review_check(self.call(client,'verify',REVIEW,self.review_context(rendered),self.images(rendered,temp),temp),self.payload,rendered,True)
+                        review=review_check(self.call(client,'verify',stage_schema('verify',self.payload),self.review_context(rendered),self.images(rendered,temp),temp),self.payload,rendered,True)
                     passed={r['id']:r for r in review['reviews'] if r['copyVerdict']=='pass' and r['layoutVerdict']=='pass' and not r['repair']}
                     by_id={c['id']:c for c in rendered};designs=[]
                     for ident in review['ranking']:

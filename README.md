@@ -4,6 +4,8 @@
 
 An offline typography editor for photos and paper collages, with editable Chinese and English text, print textures, and optional AI copywriting and layout through your own ChatGPT/Codex account.
 
+当前源码为 **0.8.0-preview.1 预览版**，真人质量验收尚未通过。下面的下载链接仍指向已发布的 0.7；本地预览可按文末构建步骤生成。
+
 [已发布 v0.7.0](https://github.com/aychdong/paper-lettering/releases/tag/v0.7.0) · [使用指南](使用指南.md) · [连接自己的 ChatGPT](AI-CONNECTION.md) · [许可范围](THIRD_PARTY_NOTICES.md)
 
 ![纸上文字编辑器：两张示例、可直接拖动的文字与四个编辑标签页](docs/workspace.png)

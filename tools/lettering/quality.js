@@ -19,14 +19,16 @@ function check(d,img,layers,scene){const errors=[],warnings=[],rects=layers.map(
  return {errors:[...new Set(errors)],warnings:[...new Set(warnings)],rects,ink,art};
 }
 function density(base,box){const c=L.canvas(48,48),ctx=c.getContext('2d');ctx.drawImage(base,Math.max(0,box.x),Math.max(0,box.y),Math.max(1,box.w),Math.max(1,box.h),0,0,48,48);const p=ctx.getImageData(0,0,48,48).data;let n=0;for(let y=1;y<48;y++)for(let x=1;x<48;x++){const i=(y*48+x)*4;for(let k=0;k<3;k++)n+=Math.abs(p[i+k]-p[i-4+k])+Math.abs(p[i+k]-p[i-48*4+k]);}return n/(47*47*6*255);}
-async function search(briefs,scene,d,img,{placement='auto',action='all',isCancelled=()=>false}={}){
+async function search(briefs,scene,d,img,{placement='auto',action='all',copyMode=d.aiSettings?.copyMode||'compose',isCancelled=()=>false}={}){
  await T.ready;const allFonts=new Set(['gf-notoserifsc',...briefs.flatMap(b=>b.layers.map(l=>l.font))]);await Promise.all([...allFonts].map(id=>F.ensure(id)));const base=L.render(d,img,'base'),results=[];const diagnostics=[];
  for(const brief of briefs){if(brief.retain){results.push(brief.retain);continue;}let best=null;
  for(let variant=0;variant<(action==='copy'?1:4);variant++){
   await new Promise(r=>setTimeout(r,0));if(isCancelled())throw new Error('任务已取消');
-  const layers=brief.layers.map((p,i)=>{let l=materialLayer(p,d);if(action==='copy'){const old=d.layers.filter(l=>!l.hidden&&!l.locked)[i];if(!old)return null;l={...L.copy(old),id:L.uid(),text:p.text,renderer:old.renderer||'legacy'};}
+  const originals=d.layers.filter(l=>!l.hidden&&!l.locked&&l.text.trim()).map(l=>l.text);
+  const layers=brief.layers.map((p,i)=>{let l=materialLayer(p,d);if(action==='copy'){const old=d.layers.filter(l=>!l.hidden&&!l.locked&&l.text.trim())[i];if(!old)return null;l={...L.copy(old),id:L.uid(),text:p.text,renderer:old.renderer||'legacy'};}if(copyMode==='preserve'){const at=originals.findIndex(text=>text.replace(/\n/g,'')===p.text.replace(/\n/g,''));if(at<0)return null;l.text=originals.splice(at,1)[0];}
    const vertical=l.direction==='vertical',limit=vertical?Math.floor(d.image.height*.36/(l.size+l.tracking)):Math.floor(d.image.width*(variant===2?.42:.65)/(l.size+l.tracking));
-   const parts=variant===0?l.text.split('\n'):T.breaks(l.text,limit,brief.phrases||[]);l.typesetting={source:l.text,lines:parts,poetic:brief.poetic==='yes'};
+   const visualText=copyMode==='preserve'&&l.text.includes('\n')&&!p.text.includes('\n')?l.text:p.text;
+   const parts=variant===0?visualText.split('\n'):T.breaks(visualText,limit,brief.phrases||[]);l.typesetting={source:l.text,lines:parts,poetic:brief.poetic==='yes'};
    return l;});if(layers.some(x=>!x))continue;
   if(action!=='copy'&&variant){const boxes=layers.map(bounds),x=Math.min(...boxes.map(b=>b.x)),y=Math.min(...boxes.map(b=>b.y)),width=Math.max(...boxes.map(b=>b.x+b.w))-x,height=Math.max(...boxes.map(b=>b.y+b.h))-y,w=d.image.width,h=d.image.height,edge=Math.max(20,w*.035);let tx,ty;
    const position=placement==='auto'?['','top','left','bottom'][variant]:placement;

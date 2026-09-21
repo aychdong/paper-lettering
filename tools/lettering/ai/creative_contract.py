@@ -1,10 +1,10 @@
 """Versioned creative stages; model output remains inert, bounded data."""
-import json,re,hashlib
+import json,re,hashlib,copy
 from pathlib import Path
 from collections import Counter
 from design_contract import obj,num,string,COLOR,LAYER,validate,settings,preview,FONTS
 RULES=json.loads(Path(__file__).with_name('rules.json').read_text(encoding='utf-8'))
-VERSION='creative-1';PROMPT_VERSION='2026-09-quality-2'
+VERSION='creative-1';PROMPT_VERSION='2026-09-quality-3'
 def arr(item,lo=0,hi=12):return {'type':'array','items':item,'minItems':lo,'maxItems':hi}
 def enum(*values):return {'type':'string','enum':list(values)}
 REGION=obj({'role':enum('protect','preferred'),'label':string(80),'x':num(0,1),'y':num(0,1),'w':num(.001,1),'h':num(.001,1),'confidence':num(0,1)})
@@ -15,6 +15,29 @@ EDITOR=obj({'briefs':arr(BRIEF,3,3)})
 REVIEW=obj({'ranking':arr(string(40),0,3),'reviews':arr(obj({'id':string(40),'copyVerdict':enum('pass','fail'),'layoutVerdict':enum('pass','fail'),'reason':string(600),'repair':arr(LAYER,0,4)}),1,3)})
 def text_key(values):return Counter(s.replace('\n','') for s in values if s.strip())
 def original(payload):return [l['text'] for l in payload.get('layers',[]) if not l.get('locked') and not l.get('hidden') and l['text'].strip()]
+def literal_texts(payload):
+    # Codex strict output grammars reject control characters inside enum literals.
+    # Visual line breaks are kept separately; all other source characters stay exact.
+    values=list(dict.fromkeys(t.replace('\n','') for t in original(payload)))
+    return values if all(all(ord(c)>=32 for c in t) for t in values) else None
+def scene_schema(payload):
+    schema=copy.deepcopy(SCENE)
+    if payload.get('copyMode')=='preserve':
+        texts=original(payload)
+        values=literal_texts(payload)
+        schema['properties']['candidates']['items']['properties']['texts']=arr({'type':'string','enum':values} if values else string(120),len(texts),len(texts))
+    return schema
+def stage_schema(stage,payload):
+    if stage=='scene':return scene_schema(payload)
+    schema=copy.deepcopy(EDITOR if stage=='editor' else REVIEW)
+    if payload.get('copyMode')=='preserve':
+        texts=original(payload)
+        layers=(schema['properties']['briefs']['items']['properties']['layers'] if stage=='editor' else schema['properties']['reviews']['items']['properties']['repair'])
+        layers['maxItems']=len(texts)
+        if stage=='editor':layers['minItems']=len(texts)
+        values=literal_texts(payload)
+        if values:layers['items']['properties']['text']['enum']=values
+    return schema
 def check_texts(values,payload,expected=None):
     if any(not s.strip() for s in values):raise ValueError('空白文案不能进入排版')
     if payload.get('action')=='copy' and len(values)!=len(original(payload)):raise ValueError('只改文案必须保留原有可编辑图层数量')

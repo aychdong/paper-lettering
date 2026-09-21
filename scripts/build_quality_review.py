@@ -25,7 +25,7 @@ const data=DATA,storage='paper-blind-v2:'+data.evaluationId;let votes={};try{vot
 const save=()=>localStorage.setItem(storage,JSON.stringify(votes)),root=document.getElementById('cases');
 document.getElementById('status').textContent=`已准备 ${data.items.length}/12 对；${data.pending.length} 对尚无完整配对结果。`;
 for(const item of data.items){
- const card=document.createElement('article'),title=document.createElement('h2'),brief=document.createElement('p');title.textContent=item.id;brief.textContent=item.brief;card.append(title,brief);
+ const card=document.createElement('article'),title=document.createElement('h2'),brief=document.createElement('p');title.textContent=`第 ${data.items.indexOf(item)+1} 组`;brief.textContent=item.brief;card.append(title,brief);
  if(item.preserve){const note=document.createElement('p');note.textContent='这是保留原文的排版案例。文字内容相同时，文案请选择平手；版式仍单独比较。';card.append(note);}
  const grid=document.createElement('div');grid.className='choices';for(const name of ['A','B']){const col=document.createElement('div'),h=document.createElement('h3'),im=document.createElement('img'),text=document.createElement('pre');h.textContent=name;im.src=item.choices[name].image;im.alt=name+'方案';text.textContent=item.choices[name].text;col.append(h,im,text);grid.append(col)}card.append(grid);
  const fields=[['copy','更喜欢哪句文案',[['A','A'],['B','B'],['tie','平手'],['neither','都不满意']]],['layout','更喜欢哪个版式',[['A','A'],['B','B'],['tie','平手'],['neither','都不满意']]],['critical','缺字、遮挡、出界等关键问题出现在',[['none','都没有'],['A','A'],['B','B'],['both','都有']]]];

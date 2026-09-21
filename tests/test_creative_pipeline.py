@@ -2,7 +2,7 @@ import base64,copy,hashlib,json,struct,sys,tempfile,threading,time,unittest,zlib
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools/lettering/ai'))
 from creative import Job
-from creative_contract import scene_check,editor_check,review_check,prompt,request
+from creative_contract import stage_schema,scene_schema,scene_check,editor_check,review_check,prompt,request
 from preferences import Store,clean
 
 def png():
@@ -62,6 +62,7 @@ class PipelineTests(unittest.TestCase):
         with self.assertRaises(ValueError):scene_check(v,p)
         for c in v['candidates']:c['texts']=['冬日 \n与你']
         scene_check(v,p)
+        self.assertEqual(scene_schema(p)['properties']['candidates']['items']['properties']['texts']['items']['enum'],['冬日 与你'])
     def test_compose_allows_semantic_layer_split(self):
         e=editor();e['briefs'][0]['layers']=[dict(LAYER,text='冬日'),dict(LAYER,text='与你')]
         editor_check(e,payload(),scene())
@@ -86,6 +87,13 @@ class PipelineTests(unittest.TestCase):
             if s['state']=='awaiting_render':j.submit(dict(ticket=s['ticket'],revision='revision-a',candidates=renders(s['briefs'])))
             time.sleep(.005)
         self.assertEqual(len(j.snapshot()['result']['designs']),2)
+    def test_preserve_schema_supports_multiline_source_without_control_literals(self):
+        p=payload()|dict(copyMode='preserve',layers=[dict(text='你好，ChatGPT！\n2026年，与你看世界。')])
+        for stage in ['scene','editor','review']:
+            s=stage_schema(stage,p)
+            item=s['properties']['candidates']['items']['properties']['texts']['items'] if stage=='scene' else (s['properties']['briefs']['items']['properties']['layers']['items']['properties']['text'] if stage=='editor' else s['properties']['reviews']['items']['properties']['repair']['items']['properties']['text'])
+            self.assertEqual(item['enum'],['你好，ChatGPT！2026年，与你看世界。'])
+        self.assertIn('\n',p['layers'][0]['text'])
     def test_region_roles_cannot_be_inferred_from_free_text(self):
         s=scene();s['regions']=[dict(role='preferred',label='建议留白区',x=.1,y=.1,w=.3,h=.2,confidence=.9)];scene_check(s,payload())
         del s['regions'][0]['role']
