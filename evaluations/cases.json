@@ -1,13 +1,19 @@
 {
   "version": 1,
   "baselineCommit": "b4a084c27888b543c8ea83f8e4b8fcb0826b1f3c",
-  "limits": "24 fixed tasks, not 24 independent photographs. Real-photo coverage is limited to the two authorized examples; landscape/architecture/texture fixtures are synthetic. Holdout prompts must not be used for tuning.",
+  "limits": "24 fixed regression tasks, not 24 independent photographs. The original 12 holdout tasks have now been explicitly rated and revealed; keep them for feedback/regression only. Future release quality claims require a new unseen comparison set.",
   "qualityGate": {
     "holdoutCases": 12,
     "copyWins": 8,
     "layoutWins": 8,
     "criticalRegressions": 0,
-    "status": "pending_human_review"
+    "status": "not_met_first_human_round",
+    "firstHumanRound": {
+      "reviewed": 12,
+      "copyWins": 5,
+      "layoutWins": 2,
+      "criticalCreativeCases": 0
+    }
   },
   "cases": [
     {
@@ -250,5 +256,6 @@
       "copyMode": "preserve",
       "text": "你好，ChatGPT！\n2026年，与你看世界。"
     }
-  ]
+  ],
+  "reviewPurpose": "feedback-regression"
 }

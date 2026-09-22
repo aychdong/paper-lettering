@@ -21,7 +21,7 @@
     return loaded.get(id);
   }
   function list(){return [...defaults.map(([id,label])=>({id,label,category:'系统默认'})),...records.values()];}
-  function used(project){const ids=new Set(project.documents.flatMap(d=>d.layers.flatMap(l=>[l.font,...(l.renderer==='harfbuzz-1'?['gf-notoserifsc']:[])]))); return [...ids].map(id=>records.get(id)).filter(Boolean).map(r=>({...r}));}
+  function used(project){const ids=new Set(project.documents.flatMap(d=>d.layers.flatMap(l=>[l.font,...(['harfbuzz-1','harfbuzz-2'].includes(l.renderer)?['gf-notoserifsc']:[])]))); return [...ids].map(id=>records.get(id)).filter(Boolean).map(r=>({...r}));}
   function importRecords(list){if(!Array.isArray(list)||list.length>80)throw new Error('字体清单无效。');for(const r of list)register(r);}
   async function systemFonts(){
     if(!global.queryLocalFonts)throw new Error('当前浏览器不能枚举系统字体。请在桌面 Chrome 中使用，或导入字体文件。');

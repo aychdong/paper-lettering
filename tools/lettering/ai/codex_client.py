@@ -24,7 +24,7 @@ class Client:
             self.events.put({'terminated':True})
         threading.Thread(target=reader,daemon=True).start()
         try:
-            self.call('initialize',{'clientInfo':{'name':'paper_lettering','title':'纸上文字','version':'0.8.0-preview.1'},'capabilities':{'experimentalApi':True}})
+            self.call('initialize',{'clientInfo':{'name':'paper_lettering','title':'纸上文字','version':'0.8.0-preview.2'},'capabilities':{'experimentalApi':True}})
             self.send({'method':'initialized','params':{}})
         except Exception:
             self.close();raise

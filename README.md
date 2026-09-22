@@ -4,7 +4,7 @@
 
 An offline typography editor for photos and paper collages, with editable Chinese and English text, print textures, and optional AI copywriting and layout through your own ChatGPT/Codex account.
 
-当前源码为 **0.8.0-preview.1 预览版**，真人质量验收尚未通过。下面的下载链接仍指向已发布的 0.7；本地预览可按文末构建步骤生成。
+当前源码为 **0.8.0-preview.2 预览版**，真人质量验收尚未通过。下面的下载链接仍指向已发布的 0.7；本地预览可按文末构建步骤生成。
 
 [已发布 v0.7.0](https://github.com/aychdong/paper-lettering/releases/tag/v0.7.0) · [使用指南](使用指南.md) · [连接自己的 ChatGPT](AI-CONNECTION.md) · [许可范围](THIRD_PARTY_NOTICES.md)
 
@@ -80,13 +80,13 @@ An offline typography editor for photos and paper collages, with editable Chines
 | Windows / Linux | 提供 HTML 和 Python 入口，尚未实机验证 |
 | 新账号首次登录 | 使用官方 Codex 流程；调用逻辑有测试，未进行新账号端到端登录测试 |
 
-这是 **0.8.0-preview.1 预览版**，AI 启动脚本尚未经过 Developer ID 签名和 Apple 公证。离线编辑不需要 Python；AI 连接需要 Python、Codex、网络及账号可用额度。安装组件请使用各自官方渠道。
+这是 **0.8.0-preview.2 预览版**，AI 启动脚本尚未经过 Developer ID 签名和 Apple 公证。离线编辑不需要 Python；AI 连接需要 Python、Codex、网络及账号可用额度。安装组件请使用各自官方渠道。
 
 已有图片中的像素文字不能自动变回真实字体层；本工具支持在合适的空白纸面上做可撤销覆盖。以后生成作品时，推荐先生成无字底图，再用独立文字层排版。文字质感是视觉近似；系统字体跨设备可能替换，内置/导入且使用的字体会随工程保存。
 
 ## 0.8 创作预览（源码构建）
 
-新增六条文案构思、独立编辑、真实排字检查、成图审稿与一次修订，保留现有 ChatGPT 登录。支持正确竖排字形、可变字重、明确偏好及取消。旧工程继续按原方式渲染。功能验收与审美盲评分开，质量门槛未通过前保持预览状态，详见 [实现与评测](docs/quality/IMPLEMENTATION.md)及[验证记录](docs/quality/VALIDATION.md)。
+新增六条文案构思、独立编辑、真实排字检查、成图审稿与一次修订，保留现有 ChatGPT 登录。支持正确竖排字形、可变字重、明确偏好及取消。旧工程继续按原方式渲染。功能验收与审美盲评分开，质量门槛未通过前保持预览状态，详见 [实现与评测](docs/quality/IMPLEMENTATION.md)及[验证记录](docs/quality/VALIDATION-preview-2.md)。
 
 ## 从源码构建
 

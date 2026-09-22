@@ -11,7 +11,7 @@ const num=(v,fallback,a,b)=>Number.isFinite(Number(v)) ? clamp(Number(v),a,b) : 
 const chars=s=>global.Intl?.Segmenter ? [...new Intl.Segmenter('zh',{granularity:'grapheme'}).segment(s)].map(x=>x.segment) : Array.from(s);
 function layer(overrides={}) {return {renderer:'legacy',typesetting:null,id:uid(),text:'写下一句话',x:80,y:100,font:'song',weight:400,thickness:0,slant:0,outlineWidth:0,outlineColor:'#f3ead6',hidden:false,locked:false,size:30,tracking:3,lineHeight:1.4,align:'left',direction:'horizontal',rotation:0,color:'#514e42',opacity:.88,grain:.28,multiply:true,effect:'ink',pressure:.55,edgeWear:.2,stampBorder:false,effectStrength:.5,secondaryColor:'#ba694b',seed:71429,...overrides};}
 function normalizeLayer(x,w,h) {
- return layer({renderer:x.renderer==='harfbuzz-1'?'harfbuzz-1':'legacy',typesetting:x.typesetting&&typeof x.typesetting==='object'?{source:String(x.typesetting.source||'').slice(0,500),lines:Array.isArray(x.typesetting.lines)?x.typesetting.lines.slice(0,120).map(v=>String(v).slice(0,500)):[],poetic:x.typesetting.poetic===true}:null,id:typeof x.id==='string'?x.id:uid(),text:String(x.text??'').slice(0,500),x:num(x.x,50,-w,w*2),y:num(x.y,50,-h,h*2),font:FONTS[x.font]?x.font:'song',weight:num(x.weight,400,100,900),thickness:num(x.thickness,0,0,.12),slant:num(x.slant,0,-25,25),outlineWidth:num(x.outlineWidth,0,0,10),outlineColor:/^#[0-9a-f]{6}$/i.test(x.outlineColor)?x.outlineColor:'#f3ead6',hidden:x.hidden===true,locked:x.locked===true,size:num(x.size,30,8,400),tracking:num(x.tracking,3,-2,30),lineHeight:num(x.lineHeight,1.4,1,2.5),align:['left','center','right'].includes(x.align)?x.align:'left',direction:x.direction==='vertical'?'vertical':'horizontal',rotation:num(x.rotation,0,-180,180),color:/^#[0-9a-f]{6}$/i.test(x.color)?x.color:'#514e42',opacity:num(x.opacity,.88,.1,1),grain:num(x.grain,.28,0,1),multiply:x.multiply!==false,effect:['ink','faded','stamp','clean','legacy','letterpress','screen','pencil','bleed','risograph'].includes(x.effect)?x.effect:'legacy',pressure:num(x.pressure,.55,0,1),edgeWear:num(x.edgeWear,.2,0,1),stampBorder:x.stampBorder===true,effectStrength:num(x.effectStrength,.5,0,1),secondaryColor:/^#[0-9a-f]{6}$/i.test(x.secondaryColor)?x.secondaryColor:'#ba694b',seed:num(x.seed,71429,0,2147483647)});
+ return layer({renderer:['harfbuzz-1','harfbuzz-2'].includes(x.renderer)?x.renderer:'legacy',typesetting:x.typesetting&&typeof x.typesetting==='object'?{source:String(x.typesetting.source||'').slice(0,500),lines:Array.isArray(x.typesetting.lines)?x.typesetting.lines.slice(0,120).map(v=>String(v).slice(0,500)):[],poetic:x.typesetting.poetic===true}:null,id:typeof x.id==='string'?x.id:uid(),text:String(x.text??'').slice(0,500),x:num(x.x,50,-w,w*2),y:num(x.y,50,-h,h*2),font:FONTS[x.font]?x.font:'song',weight:num(x.weight,400,100,900),thickness:num(x.thickness,0,0,.12),slant:num(x.slant,0,-25,25),outlineWidth:num(x.outlineWidth,0,0,10),outlineColor:/^#[0-9a-f]{6}$/i.test(x.outlineColor)?x.outlineColor:'#f3ead6',hidden:x.hidden===true,locked:x.locked===true,size:num(x.size,30,8,400),tracking:num(x.tracking,3,-2,30),lineHeight:num(x.lineHeight,1.4,1,2.5),align:['left','center','right'].includes(x.align)?x.align:'left',direction:x.direction==='vertical'?'vertical':'horizontal',rotation:num(x.rotation,0,-180,180),color:/^#[0-9a-f]{6}$/i.test(x.color)?x.color:'#514e42',opacity:num(x.opacity,.88,.1,1),grain:num(x.grain,.28,0,1),multiply:x.multiply!==false,effect:['ink','faded','stamp','clean','legacy','letterpress','screen','pencil','bleed','risograph'].includes(x.effect)?x.effect:'legacy',pressure:num(x.pressure,.55,0,1),edgeWear:num(x.edgeWear,.2,0,1),stampBorder:x.stampBorder===true,effectStrength:num(x.effectStrength,.5,0,1),secondaryColor:/^#[0-9a-f]{6}$/i.test(x.secondaryColor)?x.secondaryColor:'#ba694b',seed:num(x.seed,71429,0,2147483647)});
 }
 function normalizeProject(p) {
  if(!p || ![1,2,3,VERSION].includes(p.version) || !Array.isArray(p.documents) || p.documents.length>40) throw new Error('不是支持的文字工程，或画面超过 40 张。');
@@ -45,7 +45,7 @@ function paperPatch(ctx,source,r){
 }
 function fontCSS(l){return `${l.weight||400} ${l.size}px ${FONTS[l.font]}`;}
 function metrics(l){
- if(l.renderer==='harfbuzz-1')return global.PaperTypography.layout(l);
+ if(['harfbuzz-1','harfbuzz-2'].includes(l.renderer))return global.PaperTypography.layout(l);
  const ctx=canvas(1,1).getContext('2d');ctx.font=fontCSS(l);
  const lines=l.text.split('\n').map(chars);const widths=lines.map(c=>Math.max(0,c.reduce((sum,ch)=>sum+ctx.measureText(ch).width,0)+Math.max(0,c.length-1)*l.tracking));
  const vertical=l.direction==='vertical';
@@ -70,6 +70,7 @@ function applyInk(ctx,out,l){
   if(l.effect==='screen'){const spacing=Math.max(3,Math.round(l.size*.04)),mesh=(x%spacing===0||y%spacing===0);density=(.92-l.grain*.2*fiber)*(mesh?1-strength*.62:1);}
   if(l.effect==='pencil'){const hatch=(x+2*y)%5<2,streak=smoothNoise(x/18,y/1.8,l.seed+19);density=(.3+.7*streak)*(hatch?1:1-strength*.8)*(1-pressure*(1-broad)*.4);}
   if(l.effect==='letterpress')density=Math.max(.3,density);
+  if(l.renderer==='harfbuzz-2'&&['ink','letterpress','screen'].includes(l.effect)){const thin=(alpha[i-1]<150&&alpha[i+1]<150)||(alpha[i-out.width]<150&&alpha[i+out.width]<150);if(thin)density=Math.max(.58,density);}
   a[k+3]=Math.round(alpha[i]*clamp(density,.02,1));
  }
  ctx.putImageData(data,0,0);
@@ -89,7 +90,7 @@ function textBitmap(l,base){
  if(bw*bh>20000000||bw>16000||bh>16000)throw new Error('这段文字太大，请减少字号或换行。');
  const out=canvas(bw,bh),ctx=out.getContext('2d',{willReadFrequently:true});
  ctx.font=fontCSS(l);ctx.textBaseline='top';ctx.fillStyle=l.color;ctx.save();ctx.translate(pad+Math.max(0,m.shear*m.height),pad);ctx.transform(1,0,-m.shear,1,0,0);
- if(l.renderer==='harfbuzz-1')global.PaperTypography.draw(ctx,l,m);else m.lines.forEach((line,i)=>{let x=m.vertical?(m.lines.length-1-i)*l.size*l.lineHeight: l.align==='center'?(m.rawWidth-m.widths[i])/2:l.align==='right'?m.rawWidth-m.widths[i]:0;let y=m.vertical?0:i*l.size*l.lineHeight;
+ if(['harfbuzz-1','harfbuzz-2'].includes(l.renderer))global.PaperTypography.draw(ctx,l,m);else m.lines.forEach((line,i)=>{let x=m.vertical?(m.lines.length-1-i)*l.size*l.lineHeight: l.align==='center'?(m.rawWidth-m.widths[i])/2:l.align==='right'?m.rawWidth-m.widths[i]:0;let y=m.vertical?0:i*l.size*l.lineHeight;
   for(const ch of line){ctx.lineJoin='round';if(l.outlineWidth>0){ctx.strokeStyle=l.outlineColor;ctx.lineWidth=l.outlineWidth*2+(l.thickness||0)*l.size;ctx.strokeText(ch,x,y);}if(l.thickness>0){ctx.strokeStyle=l.color;ctx.lineWidth=l.thickness*l.size;ctx.strokeText(ch,x,y);}ctx.fillText(ch,x,y);if(m.vertical)y+=l.size+l.tracking;else x+=ctx.measureText(ch).width+l.tracking;}
  });
  ctx.restore();

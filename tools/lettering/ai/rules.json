@@ -1,22 +1,147 @@
 {
-  "version": "zhCN-photo-1",
+  "version": "zhCN-photo-2",
   "locale": "zh-CN",
   "sources": [
-    {"id":"clreq","url":"https://www.w3.org/TR/2026/DNOTE-clreq-20260901/","status":"W3C Group Note Draft, work in progress","use":"Selected Chinese typography requirements; not full conformance"},
-    {"id":"lupton-type","title":"Thinking with Type — Ellen Lupton","use":"Reading direction, hierarchy, type relationships; original implementation notes, no reproduced book text"},
-    {"id":"grid","title":"Grid Systems in Graphic Design — Josef Müller-Brockmann","use":"Alignment and proportional structure; original design heuristics"},
-    {"id":"systems","title":"Typographic Systems of Design — Kimberly Elam","use":"Alternative compositional systems; original design heuristics"},
-    {"id":"basics","title":"Graphic Design: The New Basics — Ellen Lupton and Jennifer Cole Phillips","use":"Scale, rhythm, contrast and visual relationships; original design heuristics"},
-    {"id":"canvas","url":"https://github.com/anthropics/skills/tree/main/skills/canvas-design","use":"Methodology reference only; no third-party skill code or prompts copied"},
-    {"id":"autocorrect","url":"https://github.com/huacnlee/autocorrect","use":"Development lint reference only, not a runtime formatter"}
+    {
+      "id": "clreq",
+      "url": "https://www.w3.org/TR/2026/DNOTE-clreq-20260901/",
+      "status": "W3C Group Note Draft, work in progress",
+      "use": "Selected Chinese typography requirements; not full conformance"
+    },
+    {
+      "id": "lupton-type",
+      "title": "Thinking with Type — Ellen Lupton",
+      "use": "Reading direction, hierarchy, type relationships; original implementation notes, no reproduced book text"
+    },
+    {
+      "id": "grid",
+      "title": "Grid Systems in Graphic Design — Josef Müller-Brockmann",
+      "use": "Alignment and proportional structure; original design heuristics"
+    },
+    {
+      "id": "systems",
+      "title": "Typographic Systems of Design — Kimberly Elam",
+      "use": "Alternative compositional systems; original design heuristics"
+    },
+    {
+      "id": "basics",
+      "title": "Graphic Design: The New Basics — Ellen Lupton and Jennifer Cole Phillips",
+      "use": "Scale, rhythm, contrast and visual relationships; original design heuristics"
+    },
+    {
+      "id": "canvas",
+      "url": "https://github.com/anthropics/skills/tree/main/skills/canvas-design",
+      "use": "Methodology reference only; no third-party skill code or prompts copied"
+    },
+    {
+      "id": "autocorrect",
+      "url": "https://github.com/huacnlee/autocorrect",
+      "use": "Development lint reference only, not a runtime formatter"
+    }
   ],
   "cards": [
-    {"id":"grounded-copy","stages":["scene","editor","review"],"applies":"所有照片文案","rule":"分清可见事实与用户表达的感受。先写具体观察，再尝试含蓄联想。依照片选择纪实、亲切、幽默或抒情，不默认写诗。","bad":"每张照片都写：时光温柔，奔赴远方。","good":"狗正在追光奔跑时，可用动作与光线组织短句；静坐画面则保留停顿。","check":"离开这张照片仍可原封不动套用的句子，应说明其具体关联或重写。不得虚构地名、日期、身份及古诗出处。"},
-    {"id":"copy-editor","stages":["editor","review"],"applies":"候选文案比较","rule":"分别判断内容是否贴切、语气是否自然、节奏是否顺畅、是否多余。对照候选给具体理由，不以辞藻多为好。","bad":"堆叠温柔、岁月、远方来制造情绪。","good":"删去不增加含义的形容词，保留动作、感官或留白。原创短诗不署名古人。","check":"文案不通过时不能靠版式总分补偿；同一意思的换词不算不同候选。"},
-    {"id":"zh-line","stages":["editor","review"],"applies":"zh-CN 横竖排","rule":"闭合标点不置行首，起始标点不置行尾；数字与单位、西文单词、成对省略号及专名不拆开。诗句按语义断行，孤字提示可有意豁免。","bad":"第二行从逗号开始，或将 ChatGPT 拆成 Chat 和 GPT。","good":"在完整意群间换行；保留用户的原始字词与标点。","check":"执行禁则与保护词检查；光学间距只作用于排字，不往原文插入空格。","source":"clreq"},
-    {"id":"vertical","stages":["editor","review"],"applies":"竖排及中西混排","rule":"列从右往左；使用字体竖排字形与正确的标点位置。西文连续串按排字引擎侧转，短数字可纵中横。","bad":"把所有横排字符逐个向下堆叠。","good":"在适合竖排的狭长留白安排短句，给相邻列足够间距。","check":"同时审阅整张成图与文字细节。","source":"clreq"},
-    {"id":"composition","stages":["editor","review"],"applies":"照片与纸面拼贴","rule":"先确定主体、阅读顺序与视觉重心，再选择边缘、轴线、网格或与主体呼应的构图。依据留白形状选择横竖排。","bad":"任何图片都在右上角放一列淡色小字。","good":"文字方向呼应画面线条，但不压住脸、眼睛、动物、建筑主体或已有文字。","check":"说明本图的对齐依据、文字与主体关系；不把固定边距比例当成美感定律。","source":"systems"},
-    {"id":"readability","stages":["editor","review"],"applies":"字体、颜色、纸面材质","rule":"先确保真实成图可读，再微调纸感。复杂背景优先降低字的复杂度、提高实笔画对比、换位置或加字重。","bad":"颜色编码对比足够，但油墨透明度和磨损让字消失。","good":"在缩略图判断层级，在文字细节判断笔画完整度。","check":"使用最终混合与质感后的笔画检查；不宣称单一对比数字等于海报无障碍认证。","source":"lupton-type"},
-    {"id":"restraint","stages":["editor","review"],"applies":"三套设计比较","rule":"保持字体、色彩、质感的内部一致性，允许不同照片有不同语气。三个候选应有不同叙述或构图逻辑。","bad":"三套方案只改一个颜色或把坐标平移几像素。","good":"在合适时比较纪实短题、含蓄短句、轻松口吻，并分别选择版式。","check":"用具体差异和适用原因排序；偏好是软约束，不强迫所有照片套入同一风格。","source":"basics"}
+    {
+      "id": "grounded-copy",
+      "stages": [
+        "scene",
+        "editor",
+        "review"
+      ],
+      "applies": "所有照片文案",
+      "rule": "分清可见事实与用户表达的感受。先写具体观察，再尝试含蓄联想。依照片选择纪实、亲切、幽默或抒情，不默认写诗。",
+      "bad": "每张照片都写：时光温柔，奔赴远方。",
+      "good": "先确认目光、手势或动作指向的对象，再用可见关系承载情绪；光线可以补充体感，不替代正在发生的动作。",
+      "check": "离开这张照片仍可原封不动套用的句子，应说明其具体关联或重写。不得虚构地名、日期、身份及古诗出处。"
+    },
+    {
+      "id": "copy-editor",
+      "stages": [
+        "editor",
+        "review"
+      ],
+      "applies": "候选文案比较",
+      "rule": "分别判断内容是否贴切、语气是否自然、节奏是否顺畅、是否多余。对照候选给具体理由，不以辞藻多为好。 具体也可能只是逐物点名；保留句子中的关系、转折、动作或观察发现，别把生动处编辑成平直说明。",
+      "bad": "堆叠温柔、岁月、远方来制造情绪。",
+      "good": "删去不增加含义的形容词，保留动作、感官或留白。原创短诗不署名古人。",
+      "check": "文案不通过时不能靠版式总分补偿；同一意思的换词不算不同候选。"
+    },
+    {
+      "id": "zh-line",
+      "stages": [
+        "editor",
+        "review"
+      ],
+      "applies": "zh-CN 横竖排",
+      "rule": "闭合标点不置行首，起始标点不置行尾；数字与单位、西文单词、成对省略号及专名不拆开。诗句按语义断行，孤字提示可有意豁免。",
+      "bad": "第二行从逗号开始，或将 ChatGPT 拆成 Chat 和 GPT。",
+      "good": "在完整意群间换行；保留用户的原始字词与标点。",
+      "check": "执行禁则与保护词检查；光学间距只作用于排字，不往原文插入空格。",
+      "source": "clreq"
+    },
+    {
+      "id": "vertical",
+      "stages": [
+        "editor",
+        "review"
+      ],
+      "applies": "竖排及中西混排",
+      "rule": "列从右往左；使用字体竖排字形与正确的标点位置。西文连续串按排字引擎侧转，短数字可纵中横。",
+      "bad": "把所有横排字符逐个向下堆叠。",
+      "good": "在适合竖排的狭长留白安排短句，给相邻列足够间距。",
+      "check": "同时审阅整张成图与文字细节。",
+      "source": "clreq"
+    },
+    {
+      "id": "composition",
+      "stages": [
+        "editor",
+        "review"
+      ],
+      "applies": "照片与纸面拼贴",
+      "rule": "先确定主体、阅读顺序与视觉重心，再选择边缘、轴线、网格或与主体呼应的构图。依据留白形状选择横竖排。 把对齐依据写成可执行的参考线和文字边缘；重复形体可逐个对应文字，不能只在理由中声称呼应。",
+      "bad": "任何图片都在右上角放一列淡色小字。",
+      "good": "文字方向呼应画面线条，但不压住脸、眼睛、动物、建筑主体或已有文字。",
+      "check": "说明本图的对齐依据、文字与主体关系；不把固定边距比例当成美感定律。 正文短句应像画面的一部分，避免无缘由地悬放或抬升为醒目标题。",
+      "source": "systems"
+    },
+    {
+      "id": "readability",
+      "stages": [
+        "editor",
+        "review"
+      ],
+      "applies": "字体、颜色、纸面材质",
+      "rule": "先确保真实成图可读，再微调纸感。复杂背景优先降低字的复杂度、提高实笔画对比、换位置或加字重。",
+      "bad": "颜色编码对比足够，但油墨透明度和磨损让字消失。",
+      "good": "在缩略图判断层级，在文字细节判断笔画完整度。",
+      "check": "使用最终混合与质感后的笔画检查；不宣称单一对比数字等于海报无障碍认证。 分别看每个字，不能用整层平均对比掩盖一个字的断笔；静态手写字体无法用 weight 变粗，应换字体或少量增加 thickness。",
+      "source": "lupton-type"
+    },
+    {
+      "id": "restraint",
+      "stages": [
+        "editor",
+        "review"
+      ],
+      "applies": "三套设计比较",
+      "rule": "保持字体、色彩、质感的内部一致性，允许不同照片有不同语气。三个候选应有不同叙述或构图逻辑。",
+      "bad": "三套方案只改一个颜色或把坐标平移几像素。",
+      "good": "在合适时比较纪实短题、含蓄短句、轻松口吻，并分别选择版式。",
+      "check": "用具体差异和适用原因排序；偏好是软约束，不强迫所有照片套入同一风格。 用户要求横竖比较时应提供各自真实成图；不得三套全部同向。",
+      "source": "basics"
+    },
+    {
+      "id": "punctuation-spacing",
+      "stages": [
+        "editor",
+        "review"
+      ],
+      "applies": "中文短句及中西混排",
+      "rule": "简体中文横排点号贴近前字，字距不要将标点孤立。中西文光学间距只加在汉字与字母/数字之间，不叠加在已有标点或空格后。保留原文模式不通过改字码修补外观。",
+      "bad": "逗号居中悬空，逗号后又加入中西文间距；整句清楚但一两个细笔画消失。",
+      "good": "检查真实字体的点号形状与位置，必要时回退字形；先修可读性，再保留适量纸感。",
+      "check": "核对原文字码、逐字笔画和放大的标点细节；不把字体外观误诊为用户输入了西文符号。",
+      "source": "clreq"
+    }
   ]
 }

@@ -100,6 +100,21 @@ class PipelineTests(unittest.TestCase):
         with self.assertRaises(ValueError):scene_check(s,payload())
     def test_rule_cards_are_injected(self):
         text=prompt('editor',payload(),scene());self.assertIn('闭合标点',text);self.assertIn('不默认写诗',text)
+    def test_scene_anchors_and_direction_intent_reach_browser(self):
+        s=scene()|dict(anchors=[dict(id='edge',axis='x',coordinate=.7,start=.1,end=.8,label='纸边',confidence=.9)],directionIntent='compare');scene_check(s,payload())
+        e=editor()
+        for b in e['briefs']:b['alignments']=[dict(layer=0,anchorId='edge',edge='end',offset=-.02)]
+        with self.assertRaises(ValueError):editor_check(e,payload(),s)
+        e['briefs'][0]['layers'][0]['direction']='horizontal';editor_check(e,payload(),s)
+        e['briefs'][0]['alignments'][0]['anchorId']='invented'
+        with self.assertRaises(ValueError):editor_check(e,payload(),s)
+    def test_five_corresponding_labels_are_valid_without_rewriting_copy(self):
+        s=scene()
+        for c in s['candidates']:c['texts']=['浅深浅深浅']
+        e=editor()
+        for b in e['briefs']:b['layers']=[dict(LAYER,text=t) for t in '浅深浅深浅']
+        editor_check(e,payload(),s)
+        job=Job(payload(),[]);job.update(state='awaiting_render',ticket='valid',briefs=e['briefs']);job.submit(dict(ticket='valid',revision='revision-a',candidates=renders(e['briefs'])))
     def test_png_metadata_corruption_and_trailing_bytes_rejected(self):
         from design_contract import preview
         import base64

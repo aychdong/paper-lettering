@@ -1,7 +1,7 @@
-import copy,sys,unittest
+import copy,sys,unittest,tempfile,hashlib
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
-from build_quality_review import score
+from build_quality_review import score,verify_images
 class BlindReviewTests(unittest.TestCase):
     def setUp(self):
         self.key=dict(version=2,evaluationId='frozen',cases={str(i):{'A':'baseline','B':'creative'} for i in range(12)})
@@ -16,4 +16,21 @@ class BlindReviewTests(unittest.TestCase):
     def test_votes_for_other_images_are_rejected(self):
         self.votes['evaluationId']='other'
         with self.assertRaises(ValueError):score(self.votes,self.key)
+    def test_breakdown_distinguishes_losses_ties_and_neither(self):
+        self.votes['votes']['0']['copy']='A';self.votes['votes']['1']['copy']='tie';self.votes['votes']['2']['copy']='neither'
+        self.assertEqual(score(self.votes,self.key)['breakdown']['copy'],dict(creative=9,baseline=1,tie=1,neither=1,pending=0))
+    def test_unknown_case_and_option_rejected(self):
+        self.votes['votes']['other']={}
+        with self.assertRaises(ValueError):score(self.votes,self.key)
+        del self.votes['votes']['other'];self.votes['votes']['0']['layout']='creative'
+        with self.assertRaises(ValueError):score(self.votes,self.key)
+    def test_changed_images_and_unsafe_paths_rejected(self):
+        with tempfile.TemporaryDirectory() as folder:
+            p=Path(folder);(p/'a.png').write_bytes(b'original');key={'imageHashes':{'a.png':hashlib.sha256(b'original').hexdigest()}};verify_images(key,p)
+            (p/'a.png').write_bytes(b'changed')
+            with self.assertRaises(ValueError):verify_images(key,p)
+            with self.assertRaises(ValueError):verify_images({'imageHashes':{'../a.png':'ignored'}},p)
+    def test_revealed_cases_cannot_pass_a_new_blind_gate(self):
+        self.key['purpose']='feedback-regression'
+        self.assertEqual(score(self.votes,self.key)['gate'],'not_applicable_regression')
 if __name__=='__main__':unittest.main()

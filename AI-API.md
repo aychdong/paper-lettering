@@ -26,3 +26,5 @@ compose 可以替换可见文案；preserve 的每个非空可见源层对应一
 ## 0.8 预览创作协议
 
 新增 `/v1/creative`、`/jobs/{id}/renders`、`/jobs/{id}/cancel` 与 `/v1/preferences`。旧 `/advice` 保持兼容；新接口的阶段、摘要、取消与工程兼容见 [创作流程实现](docs/quality/IMPLEMENTATION.md)。偏好接口同样受每次启动的回环能力令牌保护。
+
+preview.2 的内部流水线为 `creative-2`。scene 额外返回参考线 `anchors` 与 `directionIntent`；editor 的 `alignments` 将某个层的实际 start/center/end 边缘对齐到指定参考线。回传检查记录包含实际应用的参考与逐字可读性。新创作及保留原文最多六层，旧 `/advice` 的结构保持不变。工程层的 `renderer` 区分旧 Canvas、harfbuzz-1 和 harfbuzz-2，不能在导入时静默升级旧层。

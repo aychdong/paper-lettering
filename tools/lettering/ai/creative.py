@@ -1,7 +1,7 @@
 """Bounded scene -> editor -> browser render -> visual review -> one repair workflow."""
 import datetime,hashlib,json,secrets,tempfile,threading,time
 from pathlib import Path
-from creative_contract import request,prompt,stage_schema,scene_check,editor_check,review_check,VERSION,PROMPT_VERSION,RULES
+from creative_contract import request,prompt,stage_schema,scene_check,editor_check,review_check,VERSION,PROMPT_VERSION,RULES,CREATIVE_DESIGN
 from design_contract import preview,validate,DESIGN
 from codex_client import Client
 
@@ -30,7 +30,7 @@ class Job:
             ids=set()
             for c in candidates:
                 if c.get('id') not in allowed or c['id'] in ids:raise ValueError('成图编号无效')
-                ids.add(c['id']);validate({k:c[k] for k in ['name','reason','layers']},DESIGN)
+                ids.add(c['id']);validate({k:c[k] for k in ['name','reason','layers']},CREATIVE_DESIGN)
                 from creative_contract import check_texts
                 expected=next(b for b in self.state['briefs'] if b['id']==c['id'])
                 check_texts([l['text'] for l in c['layers']],self.payload,[l['text'] for l in expected['layers']])
@@ -48,7 +48,7 @@ class Job:
             self.received=candidates;self.state.update(state='running',phase='成图已收到，准备审稿');self.condition.notify_all()
     def render(self,briefs,scene,revision):
         self.round+=1;self.received=None
-        self.update(state='awaiting_render',phase='本地排字与成图检查' if not revision else '本地重排与复核',ticket=secrets.token_urlsafe(18),briefs=briefs,scene={k:scene[k] for k in ['regions','facts','uncertainties']},round=self.round)
+        self.update(state='awaiting_render',phase='本地排字与成图检查' if not revision else '本地重排与复核',ticket=secrets.token_urlsafe(18),briefs=briefs,scene={k:scene.get(k,[] if k!='directionIntent' else 'auto') for k in ['regions','facts','uncertainties','anchors','directionIntent']},round=self.round)
         with self.condition:
             while self.received is None:self.check();self.condition.wait(timeout=min(1,max(.01,self.deadline-time.monotonic())))
             result=self.received;self.received=None;return result

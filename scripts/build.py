@@ -13,7 +13,7 @@ def main():
         if relative.is_absolute() or '..' in relative.parts:raise ValueError('Invalid example path')
         image=(ROOT/'examples'/relative).resolve();image.relative_to((ROOT/'examples').resolve())
         d['image']['dataURL']='data:image/png;base64,'+base64.b64encode(image.read_bytes()).decode('ascii')
-    dest=ROOT/'dist/Paper-Lettering-0.8.0-preview.1';dest.mkdir(parents=True,exist_ok=True)
+    dest=ROOT/'dist/Paper-Lettering-0.8.0-preview.2';dest.mkdir(parents=True,exist_ok=True)
     html,fonts,_=bundle(project,ROOT);(dest/'纸上文字.html').write_text(html,encoding='utf-8')
     shutil.copytree(ROOT/'tools/lettering/ai',dest/'ai',dirs_exist_ok=True,ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
     shutil.copytree(ROOT/'resources/fonts/licenses',dest/'font-licenses',dirs_exist_ok=True)

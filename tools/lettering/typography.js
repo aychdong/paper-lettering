@@ -31,5 +31,31 @@ function layout(l){
  const rawWidth=maxX-minX,height=maxY-minY,shear=Math.tan((l.slant||0)*Math.PI/180),result={items,lines:parts.map(graphemes),widths:lengths,rawWidth,width:rawWidth+Math.abs(shear)*height,height,vertical,shear,missing:[...new Set(missing)],fallbacks:[...fallbacks].filter(Boolean)};cache.set(key,result);if(cache.size>150)cache.delete(cache.keys().next().value);return result;
 }
 function draw(ctx,l,m){for(const item of m.items){if(!item.path)continue;ctx.save();ctx.translate(item.x,item.y);ctx.rotate(item.rotation*Math.PI/180);ctx.scale(item.scale,-item.scale);const p=new Path2D(item.path);ctx.lineJoin='round';if(l.outlineWidth){ctx.strokeStyle=l.outlineColor;ctx.lineWidth=(l.outlineWidth*2+(l.thickness||0)*l.size)/item.scale;ctx.stroke(p);}if(l.thickness){ctx.strokeStyle=l.color;ctx.lineWidth=l.thickness*l.size/item.scale;ctx.stroke(p);}ctx.fillStyle=l.color;ctx.fill(p);ctx.restore();}}
-g.PaperTypography={ready,lines,lint,breaks,layout,draw,version:'hb-1.6.1-zhCN-2'};
+// Version 2 is opt-in per layer. Existing HarfBuzz and Canvas projects keep their geometry.
+const han=/\p{Script=Han}/u,terminal=/^[，。、]$/u,punctCache=new Map();
+function horizontalFont(id,weight,char){
+ const f=choose(id,weight,char,false);if(!f||!terminal.test(char)||f.id==='gf-notoserifsc')return f;
+ const key=f.id+':'+weight+':'+char;let bad=punctCache.get(key);
+ if(bad===undefined){const r=shapeRun(char,f,false,100,0),e=r.items[0]?.ext;bad=!!e&&(e.xBearing>300||(char==='。'&&e.width<180));punctCache.set(key,bad);if(punctCache.size>512)punctCache.delete(punctCache.keys().next().value);}
+ return bad?font('gf-notoserifsc',weight):f;
+}
+function layoutV2(l){
+ if(!hb)throw new Error('排字引擎尚未就绪');const parts=lines(l),key='v2:'+JSON.stringify([l.text,parts,l.font,l.weight,l.size,l.tracking,l.lineHeight,l.direction,l.align,l.slant]);if(cache.has(key))return cache.get(key);
+ const vertical=l.direction==='vertical',items=[],missing=[],fallbacks=new Set(),lengths=[];let maxAlong=0;
+ parts.forEach((part,index)=>{let pen=0,previous='';const units=[];for(const ch of graphemes(part)){if(units.length&&/^[A-Za-z0-9]/.test(units.at(-1))&&/^[A-Za-z0-9.:/%+\-]$/.test(ch))units[units.length-1]+=ch;else units.push(ch);}
+  for(const unit of units){const latin=/^[A-Za-z0-9]/.test(unit),tcy=vertical&&/^\d{2,3}$/.test(unit),space=/^\s+$/.test(unit),closing=close.test(unit),opening=open.test(previous);
+   if(previous&&!space&&!/\s$/.test(previous)&&!closing&&!opening){pen+=l.tracking;if(!vertical&&((han.test(previous.at(-1))&&latin)||(/[A-Za-z0-9]$/.test(previous)&&han.test(unit))))pen+=l.size*.25;}
+   const groups=[];for(const ch of graphemes(unit)){const f=vertical?choose(l.font,l.weight,ch,!latin):horizontalFont(l.font,l.weight,ch);if(!f?.f.nominalGlyph(ch.codePointAt(0))&&!/\s/.test(ch))missing.push(ch);if(f?.id!==l.font)fallbacks.add(f?.id);const prev=groups.at(-1);if(prev?.f===f)prev.text+=ch;else groups.push({f,text:ch});}
+   let along=0,runItems=[];for(const group of groups){if(!group.f)throw new Error('请先载入内置字体');const run=shapeRun(group.text,group.f,vertical&&!latin,l.size,l.tracking);for(const item of run.items){if(vertical&&!latin)item.y+=along;else item.x+=along;runItems.push(item);}along+=run.advance;}
+   if(vertical&&latin){const scale=tcy?Math.min(1,l.size/Math.max(1,along)):1;for(const item of runItems){if(tcy){item.x=item.x*scale-along*scale/2;item.y=item.y*scale+l.size*.85+pen;item.scale*=scale;}else{const x=item.x,y=item.y;item.x=-y-l.size*.35;item.y=x+pen;item.rotation=90;}}pen+=tcy?l.size:along;}
+   else{for(const item of runItems){if(vertical)item.y+=pen;else item.x+=pen;}pen+=!vertical&&terminal.test(unit)?l.size*.5:along;}
+   for(const item of runItems){if(vertical)item.x+=(parts.length-1-index)*l.size*l.lineHeight;else item.y+=index*l.size*l.lineHeight;item.line=index;item.text=unit;items.push(item);}previous=unit;
+  }lengths.push(pen);maxAlong=Math.max(maxAlong,pen);
+ });
+ if(!vertical)for(const item of items)item.x+=l.align==='center'?(maxAlong-lengths[item.line])/2:l.align==='right'?maxAlong-lengths[item.line]:0;
+ const corners=[];for(const item of items){const e=item.ext;if(!e)continue;const x=e.xBearing*item.scale,y=-e.yBearing*item.scale,w=e.width*item.scale,h=-e.height*item.scale,a=item.rotation*Math.PI/180;for(const [px,py] of [[x,y],[x+w,y],[x+w,y+h],[x,y+h]])corners.push({x:item.x+px*Math.cos(a)-py*Math.sin(a),y:item.y+px*Math.sin(a)+py*Math.cos(a)});}
+ const minX=Math.min(0,...corners.map(p=>p.x)),minY=Math.min(0,...corners.map(p=>p.y)),maxX=Math.max(1,...corners.map(p=>p.x)),maxY=Math.max(1,...corners.map(p=>p.y));for(const item of items){item.x-=minX;item.y-=minY;}
+ const rawWidth=maxX-minX,height=maxY-minY,shear=Math.tan((l.slant||0)*Math.PI/180),result={items,lines:parts.map(graphemes),widths:lengths,rawWidth,width:rawWidth+Math.abs(shear)*height,height,vertical,shear,missing:[...new Set(missing)],fallbacks:[...fallbacks].filter(Boolean)};cache.set(key,result);if(cache.size>150)cache.delete(cache.keys().next().value);return result;
+}
+g.PaperTypography={ready,lines,lint,breaks,layout:l=>l.renderer==='harfbuzz-2'?layoutV2(l):layout(l),draw,version:'hb-1.6.1-zhCN-4'};
 })(window);

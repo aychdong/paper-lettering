@@ -6,7 +6,7 @@ let page = resources.appendingPathComponent("纸上文字.html")
 let bridge = resources.appendingPathComponent("ai/bridge.py")
 if CommandLine.arguments.contains("--check") {
     guard FileManager.default.fileExists(atPath: page.path), FileManager.default.fileExists(atPath: bridge.path) else { exit(1) }
-    print("Paper Lettering 0.8 preview resources present")
+    print("Paper Lettering 0.8 preview.2 resources present")
     exit(0)
 }
 let application = NSApplication.shared
